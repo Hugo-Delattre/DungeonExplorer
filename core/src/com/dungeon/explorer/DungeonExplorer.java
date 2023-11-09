@@ -8,14 +8,14 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.dungeon.explorer.Screens.PlayScreen;
 
 public class DungeonExplorer extends Game {
+	public static final int V_WIDTH = 400;
+	public static final int	V_HEIGHT = 208;
 	public SpriteBatch batch;
-	Texture img;
-	
+  
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		setScreen(new PlayScreen(this));
-		img = new Texture("badlogic.jpg");
 	}
 
 	@Override
@@ -26,6 +26,6 @@ public class DungeonExplorer extends Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
+//		img.dispose();
 	}
 }
