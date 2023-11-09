@@ -80,4 +80,6 @@ public class Hud {
         stage.addActor(bottomTable);
     }
 
+    public void dispose() {
+    }
 }
