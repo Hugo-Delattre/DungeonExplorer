@@ -56,7 +56,7 @@ public class PlayScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map);
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
-        world = new World(new Vector2(0, -10), true);
+        world = new World(new Vector2(0, 0), true);
         b2dr = new Box2DDebugRenderer();
         player = new Player(world);
 
@@ -120,18 +120,23 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float dt) {
+        float velocity = 10000.0f; // Vitesse du personnage
+        Vector2 movement = new Vector2();
+
         if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            player.b2body.applyLinearImpulse(new Vector2(0, 0.1f), player.b2body.getWorldCenter(), true);
+            movement.y += velocity;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+            movement.x += velocity;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+            movement.x -= velocity;
         }
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            player.b2body.applyLinearImpulse(new Vector2(0, -0.1f), player.b2body.getWorldCenter(), true);
+            movement.y -= velocity;
         }
+
+        player.b2body.setLinearVelocity(movement.scl(dt)); // Appliquer la vitesse multipliée par le delta pour un mouvement fluide
     }
 
     public void update(float dt) {
