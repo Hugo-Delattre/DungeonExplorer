@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -42,11 +43,15 @@ public class PlayScreen implements Screen {
 
     private Player player;
 
+    private TextureAtlas atlas;
+
     //private Texture heroTexture;
     //private Sprite heroSprite;
 
 
     public PlayScreen(DungeonExplorer game) {
+        atlas = new TextureAtlas("linkAndEnemies.atlas");
+
         this.game = game;
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(DungeonExplorer.V_WIDTH / Player.PPM, DungeonExplorer.V_HEIGHT / Player.PPM, gameCam);
@@ -59,9 +64,9 @@ public class PlayScreen implements Screen {
 
         world = new World(new Vector2(0, 0), true);
         b2dr = new Box2DDebugRenderer();
-        player = new Player(world);
-
         new B2WorldCreator(world, map);
+
+        player = new Player(world, this);
 
         //heroTexture = new Texture("sprites/link_sprite.png");
         //heroSprite = new Sprite(heroTexture);
@@ -69,6 +74,9 @@ public class PlayScreen implements Screen {
         //heroSprite.setPosition(gamePort.getWorldWidth() / 2 - heroSprite.getWidth() / 2, gamePort.getWorldHeight() / 2 - heroSprite.getHeight() / 2);
     }
 
+    public TextureAtlas getAtlas() {
+        return atlas;
+    }
 
     @Override
     public void show() {
@@ -99,6 +107,7 @@ public class PlayScreen implements Screen {
         handleInput(dt);
 
         world.step(1/60f, 6, 2);
+        player.update(dt);
         gameCam.update();
         renderer.setView(gameCam);
     }
@@ -116,7 +125,7 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
 
-        //heroSprite.draw(game.batch);
+        player.draw(game.batch);
 
         game.batch.end();
 
