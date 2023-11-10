@@ -48,12 +48,12 @@ public class PlayScreen implements Screen {
     public PlayScreen(DungeonExplorer game) {
         this.game = game;
         gameCam = new OrthographicCamera();
-        gamePort = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT, gameCam);
+        gamePort = new FitViewport(DungeonExplorer.V_WIDTH / Player.PPM, DungeonExplorer.V_HEIGHT / Player.PPM, gameCam);
         hud = new Hud(game.batch);
 
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("maps/DungeonRoom.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map);
+        renderer = new OrthogonalTiledMapRenderer(map,  1 / Player.PPM);
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, 0), true);
@@ -70,11 +70,11 @@ public class PlayScreen implements Screen {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set(rect.getX() + rect.getWidth() / 2, rect.getY() + rect.getHeight() / 2);
+            bdef.position.set((rect.getX() + rect.getWidth() / 2) / Player.PPM, (rect.getY() + rect.getHeight() / 2) / Player.PPM);
 
             body = world.createBody(bdef);
 
-            shape.setAsBox(rect.getWidth() / 2, rect.getHeight() / 2);
+            shape.setAsBox(rect.getWidth() / 2 / Player.PPM, rect.getHeight() / 2 / Player.PPM);
             fdef.shape = shape;
             body.createFixture(fdef);
         }
@@ -84,11 +84,11 @@ public class PlayScreen implements Screen {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set(rect.getX() + rect.getWidth() / 2, rect.getY() + rect.getHeight() / 2);
+            bdef.position.set((rect.getX() + rect.getWidth() / 2) / Player.PPM, (rect.getY() + rect.getHeight() / 2) / Player.PPM);
 
             body = world.createBody(bdef);
 
-            shape.setAsBox(rect.getWidth() / 2, rect.getHeight() / 2);
+            shape.setAsBox(rect.getWidth() / 2 / Player.PPM, rect.getHeight() / 2 / Player.PPM);
             fdef.shape = shape;
             body.createFixture(fdef);
         }
@@ -98,11 +98,11 @@ public class PlayScreen implements Screen {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set(rect.getX() + rect.getWidth() / 2, rect.getY() + rect.getHeight() / 2);
+            bdef.position.set((rect.getX() + rect.getWidth() / 2) / Player.PPM, (rect.getY() + rect.getHeight() / 2) / Player.PPM);
 
             body = world.createBody(bdef);
 
-            shape.setAsBox(rect.getWidth() / 2, rect.getHeight() / 2);
+            shape.setAsBox(rect.getWidth() / 2 / Player.PPM, rect.getHeight() / 2 / Player.PPM);
             fdef.shape = shape;
             body.createFixture(fdef);
         }
@@ -120,7 +120,7 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float dt) {
-        float velocity = 10000.0f; // Vitesse du personnage
+        float velocity = 150.0f; // Vitesse du personnage
         Vector2 movement = new Vector2();
 
         if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
