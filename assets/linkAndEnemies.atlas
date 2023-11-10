@@ -2,10 +2,10 @@ linkAndEnemies.png
 size:2048,2048
 repeat:none
 link
-bounds:2,857,1024,1024
+bounds:2,1016,1024,1024
 men
-bounds:2,2,920,853
+bounds:2,2,520,482
 ninja
-bounds:1028,737,900,528
+bounds:2,486,680,528
 pinkFish
-bounds:1028,1267,920,614
+bounds:1028,1779,768,261
