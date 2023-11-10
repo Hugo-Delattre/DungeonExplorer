@@ -24,6 +24,7 @@ import com.dungeon.explorer.Scenes.Hud;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dungeon.explorer.Sprites.Player;
+import com.dungeon.explorer.Tools.B2WorldCreator;
 
 public class PlayScreen implements Screen {
     private DungeonExplorer game;
@@ -60,52 +61,7 @@ public class PlayScreen implements Screen {
         b2dr = new Box2DDebugRenderer();
         player = new Player(world);
 
-        BodyDef bdef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
-        FixtureDef fdef = new FixtureDef();
-        Body body;
-
-        //Potion
-        for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2) / Player.PPM, (rect.getY() + rect.getHeight() / 2) / Player.PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(rect.getWidth() / 2 / Player.PPM, rect.getHeight() / 2 / Player.PPM);
-            fdef.shape = shape;
-            body.createFixture(fdef);
-        }
-
-        //Wall
-        for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2) / Player.PPM, (rect.getY() + rect.getHeight() / 2) / Player.PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(rect.getWidth() / 2 / Player.PPM, rect.getHeight() / 2 / Player.PPM);
-            fdef.shape = shape;
-            body.createFixture(fdef);
-        }
-
-        //Stone
-        for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2) / Player.PPM, (rect.getY() + rect.getHeight() / 2) / Player.PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(rect.getWidth() / 2 / Player.PPM, rect.getHeight() / 2 / Player.PPM);
-            fdef.shape = shape;
-            body.createFixture(fdef);
-        }
+        new B2WorldCreator(world, map);
 
         //heroTexture = new Texture("sprites/link_sprite.png");
         //heroSprite = new Sprite(heroTexture);
@@ -195,7 +151,8 @@ public class PlayScreen implements Screen {
     public void dispose() {
         map.dispose();
         renderer.dispose();
-        //heroTexture.dispose();
+        world.dispose();
+        b2dr.dispose();
         hud.dispose();
     }
 }
