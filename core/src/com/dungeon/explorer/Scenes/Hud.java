@@ -9,11 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dungeon.explorer.DungeonExplorer;
 
-public class Hud {
+public class Hud implements Disposable {
     public Stage stage;
     private Viewport viewport;
 
@@ -42,7 +43,7 @@ public class Hud {
         level = 0;
         lifePoints = 10;
         lifeImages = new Image[lifePoints];
-        Texture heartTexture = new Texture("heart.png");
+        Texture heartTexture = new Texture("textures/heart.png");
 
         viewport = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
@@ -59,9 +60,9 @@ public class Hud {
         worldLabel = new Label("ROOM", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
 
-        topTable.add(timeLabel).expandX().padTop(5);
-        topTable.add(dungeonLabel).expandX().padTop(5);
-        topTable.add(worldLabel).expandX().padTop(5);
+        topTable.add(timeLabel).expandX().padTop(10);
+        topTable.add(dungeonLabel).expandX().padTop(10);
+        topTable.add(worldLabel).expandX().padTop(10);
         topTable.row();
         topTable.add(counterLabel).expandX();
         topTable.add(scoreLabel).expandX();
@@ -74,10 +75,13 @@ public class Hud {
         bottomTable.setFillParent(true);
 
         for (int i = 0; i < lifePoints; i++) {
-            bottomTable.add(lifeImages[i] = new Image(heartTexture)).padBottom(5);
+            bottomTable.add(lifeImages[i] = new Image(heartTexture)).padBottom(10);
         }
         
         stage.addActor(bottomTable);
     }
 
+    public void dispose() {
+        stage.dispose();
+    }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="1">
- <tileset firstgid="1" source="dungeonCrawl.tsx"/>
+ <tileset firstgid="1" source="../textures/dungeonCrawl.tsx"/>
  <layer id="3" name="Floor" width="30" height="20">
   <data encoding="csv">
 1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,1158,
