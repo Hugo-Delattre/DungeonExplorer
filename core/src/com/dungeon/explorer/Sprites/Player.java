@@ -3,6 +3,7 @@ package com.dungeon.explorer.Sprites;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.dungeon.explorer.Screens.PlayScreen;
@@ -102,6 +103,7 @@ public class Player extends Sprite {
                 region = (TextureRegion) playerGoingLeft.getKeyFrame(stateTimer, true);
                 break;
             case STANDINGDOWN:
+                region = (TextureRegion) playerStandingDown.getKeyFrame(stateTimer, true);
             default:
                 region = playerStand;
                 break;
@@ -149,5 +151,13 @@ public class Player extends Sprite {
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
+
+        PolygonShape playerBody = new PolygonShape();
+        playerBody.setAsBox(25 / Player.PPM, 25 / Player.PPM);
+        fdef.shape = playerBody;
+        fdef.isSensor = true;
+
+        b2body.createFixture(fdef).setUserData("playerBody");
+
     }
 }

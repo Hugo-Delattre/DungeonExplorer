@@ -41,7 +41,7 @@ public class Hud implements Disposable {
         score = 0;
         dungeon = 0;
         level = 0;
-        lifePoints = 10;
+        lifePoints = 6;
         lifeImages = new Image[lifePoints];
         Texture heartTexture = new Texture("textures/heart.png");
 
