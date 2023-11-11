@@ -14,6 +14,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dungeon.explorer.DungeonExplorer;
 
+import java.util.ArrayList;
+
 public class Hud implements Disposable {
     public Stage stage;
     private Viewport viewport;
@@ -24,8 +26,10 @@ public class Hud implements Disposable {
     private Integer level;
     private Integer dungeon;
 
-    private int lifePoints;
-    private Image[] lifeImages; 
+    private static int lifePoints;
+    private static ArrayList<Image> lifeImages;
+
+    private static Table bottomTable;
     
     Label counterLabel;
     Label scoreLabel;
@@ -41,8 +45,8 @@ public class Hud implements Disposable {
         score = 0;
         dungeon = 0;
         level = 0;
-        lifePoints = 6;
-        lifeImages = new Image[lifePoints];
+        lifePoints = 3;
+        lifeImages = new ArrayList<Image>();
         Texture heartTexture = new Texture("textures/heart.png");
 
         viewport = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT, new OrthographicCamera());
@@ -70,15 +74,47 @@ public class Hud implements Disposable {
 
         stage.addActor(topTable);
         
-        Table bottomTable = new Table();
+        bottomTable = new Table();
         bottomTable.bottom();
         bottomTable.setFillParent(true);
 
         for (int i = 0; i < lifePoints; i++) {
-            bottomTable.add(lifeImages[i] = new Image(heartTexture)).padBottom(10);
+            lifeImages.add(new Image(heartTexture));
+            bottomTable.add(lifeImages.get(i)).padBottom(10);
         }
         
         stage.addActor(bottomTable);
+    }
+    
+    public static void addLifePoints(int HP) {
+        for (int i = 0; i < HP; i++) {
+            lifePoints++;
+            System.out.println("Your life points increased!");
+            Texture heartTexture = new Texture("textures/heart.png");
+            Image heartImage = new Image(heartTexture);
+            lifeImages.add(heartImage);
+            bottomTable.add(heartImage).padBottom(10);
+        }
+
+    }
+
+    public void update(float dt) {
+        timeCount += dt;
+        if (timeCount >= 1) {
+            worldTimer++;
+            counterLabel.setText(String.format("%04d", worldTimer));
+            timeCount = 0;
+        }
+    }
+
+    public void addDungeon() {
+        dungeon++;
+        dungeonLabel.setText(String.format("%01d", dungeon));
+    }
+
+    public void addLevel() {
+        level++;
+        levelLabel.setText(String.format("%01d", level));
     }
 
     public void dispose() {
