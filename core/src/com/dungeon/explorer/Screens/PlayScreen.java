@@ -26,6 +26,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.dungeon.explorer.Sprites.Player;
 import com.dungeon.explorer.Tools.B2WorldCreator;
+import com.dungeon.explorer.Tools.WorldContactListener;
 
 public class PlayScreen implements Screen {
     private DungeonExplorer game;
@@ -63,10 +64,14 @@ public class PlayScreen implements Screen {
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, 0), true);
+
+//        Uncomment this line and the b2dr.render(world, gameCam.combined); below to see the Box2D debug lines
         b2dr = new Box2DDebugRenderer();
         new B2WorldCreator(world, map);
 
         player = new Player(world, this);
+
+        world.setContactListener(new WorldContactListener());
 
         //heroTexture = new Texture("sprites/link_sprite.png");
         //heroSprite = new Sprite(heroTexture);
@@ -108,6 +113,7 @@ public class PlayScreen implements Screen {
 
         world.step(1/60f, 6, 2);
         player.update(dt);
+        hud.update(dt);
         gameCam.update();
         renderer.setView(gameCam);
     }
