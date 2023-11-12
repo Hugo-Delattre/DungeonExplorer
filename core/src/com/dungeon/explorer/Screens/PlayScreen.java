@@ -24,6 +24,7 @@ import com.dungeon.explorer.DungeonExplorer;
 import com.dungeon.explorer.Scenes.Hud;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.dungeon.explorer.Sprites.Ninja;
 import com.dungeon.explorer.Sprites.Player;
 import com.dungeon.explorer.Tools.B2WorldCreator;
 import com.dungeon.explorer.Tools.WorldContactListener;
@@ -43,8 +44,11 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer b2dr;
 
     private Player player;
+    private Ninja ninja;
+    private Ninja ninja2;
 
     private TextureAtlas atlas;
+
 
     //private Texture heroTexture;
     //private Sprite heroSprite;
@@ -67,16 +71,14 @@ public class PlayScreen implements Screen {
 
 //        Uncomment this line and the b2dr.render(world, gameCam.combined); below to see the Box2D debug lines
         b2dr = new Box2DDebugRenderer();
-        new B2WorldCreator(world, map);
+        new B2WorldCreator(this);
 
-        player = new Player(world, this);
+        player = new Player(this);
 
         world.setContactListener(new WorldContactListener());
 
-        //heroTexture = new Texture("sprites/link_sprite.png");
-        //heroSprite = new Sprite(heroTexture);
-
-        //heroSprite.setPosition(gamePort.getWorldWidth() / 2 - heroSprite.getWidth() / 2, gamePort.getWorldHeight() / 2 - heroSprite.getHeight() / 2);
+        ninja = new Ninja(this, 2.92f, 2.92f);
+        ninja2 = new Ninja(this, 6.92f, 3.92f);
     }
 
     public TextureAtlas getAtlas() {
@@ -113,6 +115,8 @@ public class PlayScreen implements Screen {
 
         world.step(1/60f, 6, 2);
         player.update(dt);
+        ninja.update(dt);
+        ninja2.update(dt);
         hud.update(dt);
         gameCam.update();
         renderer.setView(gameCam);
@@ -132,6 +136,8 @@ public class PlayScreen implements Screen {
         game.batch.begin();
 
         player.draw(game.batch);
+        ninja.draw(game.batch);
+        ninja2.draw(game.batch);
 
         game.batch.end();
 
@@ -145,6 +151,14 @@ public class PlayScreen implements Screen {
 //        gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 //        gameCam.update();
 //        game.batch.setProjectionMatrix(gameCam.combined);
+    }
+
+    public TiledMap getMap() {
+        return map;
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     @Override
