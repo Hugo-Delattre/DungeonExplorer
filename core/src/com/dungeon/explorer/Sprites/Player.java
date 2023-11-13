@@ -3,8 +3,10 @@ package com.dungeon.explorer.Sprites;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import com.dungeon.explorer.DungeonExplorer;
 import com.dungeon.explorer.Screens.PlayScreen;
 
 public class Player extends Sprite {
@@ -102,6 +104,7 @@ public class Player extends Sprite {
                 region = (TextureRegion) playerGoingLeft.getKeyFrame(stateTimer, true);
                 break;
             case STANDINGDOWN:
+                region = (TextureRegion) playerStandingDown.getKeyFrame(stateTimer, true);
             default:
                 region = playerStand;
                 break;
@@ -146,8 +149,18 @@ public class Player extends Sprite {
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(25 / Player.PPM);
+        fdef.filter.categoryBits = DungeonExplorer.PLAYER_BIT;
+        fdef.filter.maskBits = DungeonExplorer.DEFAULT_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
+
+        PolygonShape playerBody = new PolygonShape();
+        playerBody.setAsBox(25 / Player.PPM, 25 / Player.PPM);
+        fdef.shape = playerBody;
+        fdef.isSensor = true;
+
+        b2body.createFixture(fdef).setUserData("playerBody");
+
     }
 }

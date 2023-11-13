@@ -39,5 +39,8 @@ public class B2WorldCreator {
             new Stone(world, map, rect);
         }
 
+        //Lava
+        //TODO Implémenter la lave
+
     }
 }

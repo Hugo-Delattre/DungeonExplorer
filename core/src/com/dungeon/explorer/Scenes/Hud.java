@@ -14,6 +14,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dungeon.explorer.DungeonExplorer;
 
+import java.util.ArrayList;
+
 public class Hud implements Disposable {
     public Stage stage;
     private Viewport viewport;
@@ -21,28 +23,30 @@ public class Hud implements Disposable {
     private Integer worldTimer;
     private float timeCount;
     private Integer score;
-    private Integer level;
-    private Integer dungeon;
+    private static Integer level;
+    private static Integer dungeon;
 
-    private int lifePoints;
-    private Image[] lifeImages; 
-    
+    private static int lifePoints;
+    private static ArrayList<Image> lifeImages;
+
+    private static Table bottomTable;
+
     Label counterLabel;
-    Label scoreLabel;
+    Label dungeonNumberLabel;
     Label timeLabel;
-    Label levelLabel;
-    Label worldLabel;
-    Label dungeonLabel;
+    static Label roomNumberLabel;
+    Label roomLabel;
+    static Label dungeonLabel;
 
 
     public Hud(SpriteBatch sb) {
         worldTimer = 0;
         timeCount = 0;
         score = 0;
-        dungeon = 0;
-        level = 0;
-        lifePoints = 10;
-        lifeImages = new Image[lifePoints];
+        dungeon = 1;
+        level = 1;
+        lifePoints = 3;
+        lifeImages = new ArrayList<Image>();
         Texture heartTexture = new Texture("textures/heart.png");
 
         viewport = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT, new OrthographicCamera());
@@ -52,33 +56,65 @@ public class Hud implements Disposable {
         topTable.top();
         topTable.setFillParent(true);
 
-        counterLabel = new Label(String.format("%04d", worldTimer), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        scoreLabel = new Label(String.format("%01d", score), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
         timeLabel = new Label("TIMER", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        levelLabel = new Label(String.format("%01d", level), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        counterLabel = new Label(String.format("%04d", worldTimer), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
         dungeonLabel = new Label("DUNGEON", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        worldLabel = new Label("ROOM", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        dungeonNumberLabel = new Label(String.format("%01d", dungeon), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        roomLabel = new Label("ROOM", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        roomNumberLabel = new Label(String.format("%01d", level), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
 
         topTable.add(timeLabel).expandX().padTop(10);
         topTable.add(dungeonLabel).expandX().padTop(10);
-        topTable.add(worldLabel).expandX().padTop(10);
+        topTable.add(roomLabel).expandX().padTop(10);
         topTable.row();
         topTable.add(counterLabel).expandX();
-        topTable.add(scoreLabel).expandX();
-        topTable.add(levelLabel).expandX();
+        topTable.add(dungeonNumberLabel).expandX();
+        topTable.add(roomNumberLabel).expandX();
 
         stage.addActor(topTable);
-        
-        Table bottomTable = new Table();
+
+        bottomTable = new Table();
         bottomTable.bottom();
         bottomTable.setFillParent(true);
 
         for (int i = 0; i < lifePoints; i++) {
-            bottomTable.add(lifeImages[i] = new Image(heartTexture)).padBottom(10);
+            lifeImages.add(new Image(heartTexture));
+            bottomTable.add(lifeImages.get(i)).padBottom(10);
         }
-        
+
         stage.addActor(bottomTable);
+    }
+
+    public static void addLifePoints(int HP) {
+        for (int i = 0; i < HP; i++) {
+            lifePoints++;
+            Texture heartTexture = new Texture("textures/heart.png");
+            Image heartImage = new Image(heartTexture);
+            lifeImages.add(heartImage);
+            bottomTable.add(heartImage).padBottom(10);
+        }
+            System.out.println("Your life points increased!");
+
+    }
+
+    public void update(float dt) {
+        timeCount += dt;
+        if (timeCount >= 1) {
+            worldTimer++;
+            counterLabel.setText(String.format("%04d", worldTimer));
+            timeCount = 0;
+        }
+    }
+
+    public static void addDungeon() {
+        dungeon++;
+        dungeonLabel.setText(String.format("%01d", dungeon));
+    }
+
+    public static void addLevel() {
+        level++;
+        roomNumberLabel.setText(String.format("%01d", level));
     }
 
     public void dispose() {
