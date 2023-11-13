@@ -74,7 +74,7 @@ public class PlayScreen implements Screen {
 
         player = new Player(this);
 
-        world.setContactListener(new WorldContactListener());
+        world.setContactListener(new WorldContactListener(player));
 
         ninja = new Ninja(this, 2.92f, 2.92f);
         ninja2 = new Ninja(this, 6.92f, 3.92f);
@@ -89,7 +89,7 @@ public class PlayScreen implements Screen {
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/dungeonBoss.mp3"));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(0.5f);
-        backgroundMusic.play();
+//        backgroundMusic.play();
     }
 
     public void handleInput(float dt) {

@@ -1,5 +1,7 @@
 package com.dungeon.explorer.Scenes;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,6 +31,8 @@ public class Hud implements Disposable {
     private static int lifePoints;
     private static ArrayList<Image> lifeImages;
 
+    private static Sound damageSound;
+
     private static Table bottomTable;
 
     Label counterLabel;
@@ -48,6 +52,8 @@ public class Hud implements Disposable {
         lifePoints = 3;
         lifeImages = new ArrayList<Image>();
         Texture heartTexture = new Texture("textures/heart.png");
+        damageSound = Gdx.audio.newSound(Gdx.files.internal("music/damageHit.mp3"));
+
 
         viewport = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);
@@ -96,6 +102,17 @@ public class Hud implements Disposable {
         }
             System.out.println("Your life points increased!");
 
+    }
+
+    public static void removeLifePoints(int HP) {
+        for (int i = 0; i < HP; i++) {
+            lifePoints--;
+            bottomTable.removeActor(lifeImages.get(lifePoints));
+            lifeImages.remove(lifePoints);
+            damageSound.play();
+            System.out.println("Damage taken");
+        }
+        System.out.println("Your life points decreased.");
     }
 
     public void update(float dt) {

@@ -2,7 +2,9 @@ package com.dungeon.explorer.Sprites;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -20,6 +22,8 @@ public class Ninja extends Enemy {
     private Array<TextureRegion> frames;
     private boolean setToDestroy;
     private boolean destroyed;
+    private float timeSinceLastChange;
+    private float timeToChangeDirection;
 
     public Ninja(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -33,10 +37,22 @@ public class Ninja extends Enemy {
         setBounds(getX(), getY(), 75 / Player.PPM, 90 / Player.PPM);
         setToDestroy = false;
         destroyed = false;
+        timeSinceLastChange = 0;
+        timeToChangeDirection = 2.0f; //Change direction every 2 seconds
     }
 
     public void update(float dt) {
         stateTime += dt;
+        timeSinceLastChange += dt;
+
+        if (timeSinceLastChange >= timeToChangeDirection) {
+            // Change direction randomly
+            velocity.x = MathUtils.random(-1, 1); // Random value between -1 and 1
+            velocity.y = MathUtils.random(-1, 1); // Random value between -1 and 1
+            velocity.nor().scl(1.8f); // Adjust the speed (1.8f in your case)
+            timeSinceLastChange = 0;
+        }
+
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(walkAnimation.getKeyFrame(stateTime, true));
         if(setToDestroy && !destroyed) {
@@ -46,8 +62,15 @@ public class Ninja extends Enemy {
             setRegion(new TextureRegion(screen.getAtlas().findRegion("ninja"), 300, 255, 100, 130));
             stateTime = 0;
         } else if(!destroyed) {
+            b2body.setLinearVelocity(velocity);
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
             setRegion(walkAnimation.getKeyFrame(stateTime, true));
+        }
+    }
+
+    public void draw(Batch batch) {
+        if(!destroyed || stateTime < 1) {
+            super.draw(batch);
         }
     }
 
@@ -66,7 +89,7 @@ public class Ninja extends Enemy {
         fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT;
 
         fdef.shape = shape;
-        b2body.createFixture(fdef);
+        b2body.createFixture(fdef).setUserData(this);
 
         PolygonShape ninjaBody = new PolygonShape();
         Vector2[] vertice = new Vector2[4];
