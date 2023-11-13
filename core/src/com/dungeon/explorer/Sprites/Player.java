@@ -117,7 +117,7 @@ public class Player extends Sprite {
             setAlpha(1); // Make sure the sprite is opaque when not invincible
         }
 
-        handleInput(); // TODO Assuming you have a handleInput method to check for input, adjust it accordingly
+        handleInput();
         updateProjectiles(dt);
     }
 
@@ -155,9 +155,16 @@ public class Player extends Sprite {
 
         // Check if the direction has changed (avoid creating null projectiles if no key is pressed)
         if (directionX != 0 || directionY != 0) {
+            float speedMultiplier = 3.5f;
+            directionX *= speedMultiplier;
+            directionY *= speedMultiplier;
             // Create a projectile with the calculated direction
             projectiles.add(new Projectile(screen, b2body.getPosition().x, b2body.getPosition().y, directionX, directionY));
-        }}
+        } else {
+            // Create a projectile with a default direction
+            projectiles.add(new Projectile(screen, b2body.getPosition().x, b2body.getPosition().y, 0, -1));
+        }
+    }
 
     private void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {

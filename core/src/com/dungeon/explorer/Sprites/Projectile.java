@@ -1,6 +1,7 @@
 package com.dungeon.explorer.Sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
@@ -13,18 +14,30 @@ public class Projectile extends Sprite {
     private World world;
     private Body b2body;
     private boolean toDestroy;
-    private Texture texture;
+    private Texture projectileTexture;
     private PlayScreen screen;
 
     public Projectile(PlayScreen screen, float x, float y, float directionX, float directionY) {
-        super(screen.getAtlas().findRegion("link"));
+        // super(screen.getAtlas().findRegion("link"));
+        projectileTexture = new Texture("textures/egg.png");
+        setTexture(projectileTexture);
 //        this.texture = atlas.findRegion("link").getTexture();
         this.world = screen.getWorld();
         defineProjectile(x, y);
-        setBounds(0, 0, 16 / Player.PPM, 16 / Player.PPM); // Adjust the size as needed
+        setBounds(0, 0, 48 / Player.PPM, 48 / Player.PPM); // Adjust the size as needed
         toDestroy = false;
         b2body.setLinearVelocity(new Vector2(directionX, directionY)); // Set the velocity based on the player's input
     }
+
+    // In the Projectile class
+    public void draw(Batch batch) {
+        // Check if the projectile is not destroyed
+//        if (!destroyed) {
+            // Draw the projectile texture at the projectile's position
+            batch.draw(projectileTexture, b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2, getWidth(), getHeight());
+//        }
+    }
+
 
     private void defineProjectile(float x, float y) {
         BodyDef bdef = new BodyDef();
@@ -34,7 +47,7 @@ public class Projectile extends Sprite {
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(5 / Player.PPM); // Ajustez le rayon selon vos besoins
+        shape.setRadius(12 / Player.PPM); // Ajustez le rayon selon vos besoins
         fdef.filter.categoryBits = DungeonExplorer.PROJECTILE_BIT;
         fdef.filter.maskBits = DungeonExplorer.ENEMY_BIT | DungeonExplorer.WALL_BIT; // Ajustez les bits de masque selon vos besoins
 
