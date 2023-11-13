@@ -25,6 +25,7 @@ import com.dungeon.explorer.DungeonExplorer;
 import com.dungeon.explorer.Scenes.Hud;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.dungeon.explorer.Sprites.Men;
 import com.dungeon.explorer.Sprites.Ninja;
 import com.dungeon.explorer.Sprites.Player;
 import com.dungeon.explorer.Tools.B2WorldCreator;
@@ -47,6 +48,8 @@ public class PlayScreen implements Screen {
     private Player player;
     private Ninja ninja;
     private Ninja ninja2;
+    private Men men;
+    private Men men2;
 
     private TextureAtlas atlas;
 
@@ -78,6 +81,9 @@ public class PlayScreen implements Screen {
 
         ninja = new Ninja(this, 2.92f, 2.92f);
         ninja2 = new Ninja(this, 6.92f, 3.92f);
+
+        men = new Men(this, 4.92f, 4.92f);
+        men2 = new Men(this, 8.92f, 4.92f);
     }
 
     public TextureAtlas getAtlas() {
@@ -119,6 +125,8 @@ public class PlayScreen implements Screen {
         player.update(dt);
         ninja.update(dt);
         ninja2.update(dt);
+        men.update(dt);
+        men2.update(dt);
         hud.update(dt);
         gameCam.update();
         renderer.setView(gameCam);
@@ -140,6 +148,8 @@ public class PlayScreen implements Screen {
         player.draw(game.batch);
         ninja.draw(game.batch);
         ninja2.draw(game.batch);
+        men.draw(game.batch);
+        men2.draw(game.batch);
 
         game.batch.end();
 
