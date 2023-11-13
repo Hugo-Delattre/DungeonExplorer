@@ -66,6 +66,18 @@ public class Ninja extends Enemy {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
             setRegion(walkAnimation.getKeyFrame(stateTime, true));
         }
+
+        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+
+        TextureRegion region = walkAnimation.getKeyFrame(stateTime, true);
+
+        if (b2body.getLinearVelocity().x < 0 && !region.isFlipX()) {
+            region.flip(true, false);
+        }
+        else if (b2body.getLinearVelocity().x > 0 && region.isFlipX()) {
+            region.flip(true, false);
+        }
+        setRegion(region);
     }
 
     public void draw(Batch batch) {

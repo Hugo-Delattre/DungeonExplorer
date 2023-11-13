@@ -23,10 +23,10 @@
                 10
             ],
             "scale": 0.5,
-            "selectedLayer": 0,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 449,
-                "y": 2118
+                "x": 447,
+                "y": 854
             }
         },
         "assets/maps/DungeonRoomL1.tmx": {

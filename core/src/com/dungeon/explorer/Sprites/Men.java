@@ -1,6 +1,7 @@
 package com.dungeon.explorer.Sprites;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -64,6 +65,18 @@ public class Men extends Enemy {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
             setRegion(walkAnimation.getKeyFrame(stateTime, true));
         }
+
+        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+
+        TextureRegion region = walkAnimation.getKeyFrame(stateTime, true);
+
+        if (b2body.getLinearVelocity().x < 0 && !region.isFlipX()) {
+            region.flip(true, false);
+        }
+        else if (b2body.getLinearVelocity().x > 0 && region.isFlipX()) {
+            region.flip(true, false);
+        }
+        setRegion(region);
     }
 
     private void moveRandomly() {
@@ -82,6 +95,7 @@ public class Men extends Enemy {
         b2body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
+        fdef.density = 1000f;
         CircleShape shape = new CircleShape();
         shape.setRadius(25 / Player.PPM);
         fdef.filter.categoryBits = DungeonExplorer.ENEMY_BIT;
@@ -92,10 +106,10 @@ public class Men extends Enemy {
 
         PolygonShape menBody = new PolygonShape();
         Vector2[] vertice = new Vector2[4];
-        vertice[0] = new Vector2(-25, 25).scl(1 / Player.PPM);
-        vertice[1] = new Vector2(25, 25).scl(1 / Player.PPM);
-        vertice[2] = new Vector2(-25, -25).scl(1 / Player.PPM);
-        vertice[3] = new Vector2(25, -25).scl(1 / Player.PPM);
+        vertice[0] = new Vector2(-25, 40).scl(1 / Player.PPM);
+        vertice[1] = new Vector2(25, 40).scl(1 / Player.PPM);
+        vertice[2] = new Vector2(-25, -40).scl(1 / Player.PPM);
+        vertice[3] = new Vector2(25, -40).scl(1 / Player.PPM);
         menBody.set(vertice);
 
         fdef.shape = menBody;
