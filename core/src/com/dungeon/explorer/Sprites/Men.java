@@ -1,8 +1,8 @@
 package com.dungeon.explorer.Sprites;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -11,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import com.dungeon.explorer.DungeonExplorer;
 import com.dungeon.explorer.Screens.PlayScreen;
-import org.w3c.dom.Text;
 
 public class Men extends Enemy {
 
@@ -20,6 +19,9 @@ public class Men extends Enemy {
     private Array<TextureRegion> frames;
     private boolean setToDestroy;
     private boolean destroyed;
+    private float moveTimer;
+    private float moveInterval = 1.8f;
+    private float moveSpeed = 1f;
 
     public Men(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -28,14 +30,15 @@ public class Men extends Enemy {
         for (int i = 0; i <= 0; i++) {
             frames.add(new TextureRegion(screen.getAtlas().findRegion("men"), i * 60, 75, 50, 80));
         }
-        walkAnimation = new Animation(0.8f, frames);
+        walkAnimation = new Animation(0.8f, frames); // ?
         stateTime = 0;
         setBounds(getX(), getY(), 75 / Player.PPM, 90 / Player.PPM);
         setToDestroy = false;
         destroyed = false;
+
     }
 
-    public void update(float dt) {
+    public void update(float dt, Player player) {
         stateTime += dt;
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(walkAnimation.getKeyFrame(stateTime, true));
@@ -49,6 +52,24 @@ public class Men extends Enemy {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
             setRegion(walkAnimation.getKeyFrame(stateTime, true));
         }
+
+        moveTimer += dt;
+
+        if (moveTimer > moveInterval) {
+            moveRandomly();
+            moveTimer = 0;
+        }
+
+        if (!setToDestroy && !destroyed) {
+            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+            setRegion(walkAnimation.getKeyFrame(stateTime, true));
+        }
+    }
+
+    private void moveRandomly() {
+        float randomAngle = MathUtils.random(0f, 2 * MathUtils.PI);
+        Vector2 movement = new Vector2(MathUtils.cos(randomAngle), MathUtils.sin(randomAngle)).scl(moveSpeed);
+        b2body.setLinearVelocity(movement);
     }
 
     @Override
@@ -77,7 +98,7 @@ public class Men extends Enemy {
         menBody.set(vertice);
 
         fdef.shape = menBody;
-        fdef.restitution = 0.5f;
+        fdef.restitution = 0f;
         fdef.filter.categoryBits = DungeonExplorer.ENEMY_BODY_BIT;
         b2body.createFixture(fdef).setUserData(this);
     }
