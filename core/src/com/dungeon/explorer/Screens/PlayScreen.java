@@ -3,6 +3,7 @@ package com.dungeon.explorer.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -45,9 +46,7 @@ public class PlayScreen implements Screen {
     private Player player;
 
     private TextureAtlas atlas;
-
-    //private Texture heroTexture;
-    //private Sprite heroSprite;
+    private Music backgroundMusic;
 
 
     public PlayScreen(DungeonExplorer game) {
@@ -72,11 +71,6 @@ public class PlayScreen implements Screen {
         player = new Player(world, this);
 
         world.setContactListener(new WorldContactListener());
-
-        //heroTexture = new Texture("sprites/link_sprite.png");
-        //heroSprite = new Sprite(heroTexture);
-
-        //heroSprite.setPosition(gamePort.getWorldWidth() / 2 - heroSprite.getWidth() / 2, gamePort.getWorldHeight() / 2 - heroSprite.getHeight() / 2);
     }
 
     public TextureAtlas getAtlas() {
@@ -85,7 +79,10 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
-
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/dungeonBoss.mp3"));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0.5f);
+        backgroundMusic.play();
     }
 
     public void handleInput(float dt) {
@@ -169,5 +166,6 @@ public class PlayScreen implements Screen {
         world.dispose();
         b2dr.dispose();
         hud.dispose();
+        backgroundMusic.dispose();
     }
 }
