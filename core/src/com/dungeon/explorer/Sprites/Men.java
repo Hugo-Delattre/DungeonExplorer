@@ -27,10 +27,10 @@ public class Men extends Enemy {
         super(screen, x, y);
         frames = new Array<TextureRegion>();
 //        Array<TextureRegion> frames = new Array<TextureRegion>();
-        for (int i = 0; i <= 0; i++) {
-            frames.add(new TextureRegion(screen.getAtlas().findRegion("men"), i * 60, 75, 50, 80));
+        for (int i = 0; i <= 7; i++) {
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("men"), i * 70-20, 0, 70, 80));
         }
-        walkAnimation = new Animation(0.8f, frames); // ?
+        walkAnimation = new Animation(0.2f, frames); // ?
         stateTime = 0;
         setBounds(getX(), getY(), 75 / Player.PPM, 90 / Player.PPM);
         setToDestroy = false;
@@ -74,6 +74,7 @@ public class Men extends Enemy {
 
     @Override
     protected void defineEnemy() {
+        // TODO : modifier les masks pour que Link ne puisse pas pousser les ennemis
         BodyDef bdef = new BodyDef();
 //        bdef.position.set(200 / Player.PPM, 400 / Player.PPM);
         bdef.position.set(getX(), getY());
