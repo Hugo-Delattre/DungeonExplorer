@@ -1,6 +1,7 @@
 package com.dungeon.explorer.Sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -22,6 +23,7 @@ public class Player extends Sprite {
     public World world;
     public Body b2body;
     private TextureRegion playerStand;
+    private PlayScreen screen;
 
     public static final float PPM = 100;
 
@@ -32,11 +34,11 @@ public class Player extends Sprite {
     private Animation<TextureRegion> playerGoingLeft;
     private float stateTimer;
     private boolean runningRight;
-    
+    private Array<Projectile> projectiles;
+
     private boolean invincible = false;
     private float invincibilityTimer = 0;
     private float blinkTimer = 0;
-    
 
 
     public Player(PlayScreen screen) {
@@ -45,6 +47,8 @@ public class Player extends Sprite {
         currentState = State.STANDINGDOWN;
         previousState = State.STANDINGDOWN;
         stateTimer = 0;
+        projectiles = new Array<Projectile>();
+        this.screen = screen;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
 
@@ -92,14 +96,14 @@ public class Player extends Sprite {
     public void update(float dt) {
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(getFrame(dt));
-        
+
         if (invincible) {
             invincibilityTimer += dt;
             if (invincibilityTimer > 1.5) {
                 invincible = false;
             }
         }
-        
+
         if (invincible) {
             blinkTimer += dt;
             if (blinkTimer < 0.2f) {
@@ -111,6 +115,53 @@ public class Player extends Sprite {
             }
         } else {
             setAlpha(1); // Make sure the sprite is opaque when not invincible
+        }
+
+        handleInput(); // TODO Assuming you have a handleInput method to check for input, adjust it accordingly
+        updateProjectiles(dt);
+    }
+
+
+    private void updateProjectiles(float dt) {
+        for (Projectile projectile : projectiles) {
+            projectile.update(dt);
+            if (projectile.isDestroyed()) {
+                projectiles.removeValue(projectile, true);
+            }
+        }
+    }
+
+    private void fireProjectile() {
+        boolean moveUp = Gdx.input.isKeyPressed(Input.Keys.UP);
+        boolean moveDown = Gdx.input.isKeyPressed(Input.Keys.DOWN);
+        boolean moveRight = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+        boolean moveLeft = Gdx.input.isKeyPressed(Input.Keys.LEFT);
+
+        float directionX = 0;
+        float directionY = 0;
+
+        // Calculate direction based on pressed keys
+        if (moveUp && !moveDown) {
+            directionY = 1;
+        } else if (moveDown && !moveUp) {
+            directionY = -1;
+        }
+
+        if (moveRight && !moveLeft) {
+            directionX = 1;
+        } else if (moveLeft && !moveRight) {
+            directionX = -1;
+        }
+
+        // Check if the direction has changed (avoid creating null projectiles if no key is pressed)
+        if (directionX != 0 || directionY != 0) {
+            // Create a projectile with the calculated direction
+            projectiles.add(new Projectile(screen, b2body.getPosition().x, b2body.getPosition().y, directionX, directionY));
+        }}
+
+    private void handleInput() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            fireProjectile();
         }
     }
 
@@ -192,8 +243,7 @@ public class Player extends Sprite {
 
     }
 
-    
-    
+
     public void loseLifePoint() {
         if (!invincible) {
             Hud.removeLifePoints(1);
@@ -201,7 +251,11 @@ public class Player extends Sprite {
             invincibilityTimer = 0;
         }
     }
-    
+
+    public Array<Projectile> getProjectiles() {
+        return projectiles;
+    }
+
     // public void repelFrom(Vector2 position) {
     //     Vector2 repelForce = b2body.getPosition().sub(position).nor();
     //     float repelStrength = 2.0f; // Adjust the strength of the repulsion as needed
