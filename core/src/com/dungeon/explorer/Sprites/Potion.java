@@ -6,10 +6,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.dungeon.explorer.DungeonExplorer;
 import com.dungeon.explorer.Scenes.Hud;
+import com.dungeon.explorer.Screens.PlayScreen;
 
 public class Potion extends InteractiveTileObject {
-    public Potion(World world, TiledMap map, Rectangle bounds) {
-        super(world, map, bounds);
+    public Potion(PlayScreen screen, Rectangle bounds) {
+        super(screen, bounds);
         fixture.setUserData(this);
         setCategoryFilter(DungeonExplorer.POTION_BIT);
     }

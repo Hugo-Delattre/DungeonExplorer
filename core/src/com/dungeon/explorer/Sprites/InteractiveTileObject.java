@@ -5,18 +5,19 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
+import com.dungeon.explorer.Screens.PlayScreen;
 
 public abstract class InteractiveTileObject {
-    protected World word;
+    protected World world;
     protected TiledMap map;
     protected TiledMapTile tile;
     protected Rectangle bounds;
     protected Body body;
     protected Fixture fixture;
 
-    public InteractiveTileObject(World world, TiledMap map, Rectangle bounds){
-        this.word = world;
-        this.map = map;
+    public InteractiveTileObject(PlayScreen screen, Rectangle bounds){
+        this.world = screen.getWorld();
+        this.map = screen.getMap();
         this.bounds = bounds;
 
         BodyDef bdef = new BodyDef();
@@ -30,6 +31,7 @@ public abstract class InteractiveTileObject {
 
         shape.setAsBox(bounds.getWidth() / 2 / Player.PPM, bounds.getHeight() / 2 / Player.PPM);
         fdef.shape = shape;
+//        fdef.filter.categoryBits = Player.OBJECT_BIT;
         fixture = body.createFixture(fdef);
     }
 

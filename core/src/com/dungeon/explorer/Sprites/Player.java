@@ -3,7 +3,6 @@ package com.dungeon.explorer.Sprites;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.dungeon.explorer.DungeonExplorer;
@@ -22,18 +21,18 @@ public class Player extends Sprite {
 
     public static final float PPM = 100;
 
-    private Animation playerStandingDown;
-    private Animation playerGoingUp;
-    private Animation playerGoingDown;
-    private Animation playerGoingRight;
-    private Animation playerGoingLeft;
+    private Animation<TextureRegion> playerStandingDown;
+    private Animation<TextureRegion> playerGoingUp;
+    private Animation<TextureRegion> playerGoingDown;
+    private Animation<TextureRegion> playerGoingRight;
+    private Animation<TextureRegion> playerGoingLeft;
     private float stateTimer;
     private boolean runningRight;
 
 
-    public Player(World world, PlayScreen screen) {
+    public Player(PlayScreen screen) {
         super(screen.getAtlas().findRegion("link"));
-        this.world = world;
+        this.world = screen.getWorld();
         currentState = State.STANDINGDOWN;
         previousState = State.STANDINGDOWN;
         stateTimer = 0;
@@ -150,7 +149,7 @@ public class Player extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(25 / Player.PPM);
         fdef.filter.categoryBits = DungeonExplorer.PLAYER_BIT;
-        fdef.filter.maskBits = DungeonExplorer.DEFAULT_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT;
+        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.ENEMY_BODY_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
