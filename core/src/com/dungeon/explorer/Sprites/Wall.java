@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Timer;
 import com.dungeon.explorer.DungeonExplorer;
+import com.dungeon.explorer.Scenes.Hud;
 import com.dungeon.explorer.Screens.PlayScreen;
 
 public class Wall extends InteractiveTileObject {
@@ -16,6 +18,18 @@ public class Wall extends InteractiveTileObject {
 
     @Override
     public void onPlayerContact() {
-        Gdx.app.log("Wall", "Collision");
+        Gdx.app.log("Wall", "-1 HP");
+        setCategoryFilter(DungeonExplorer.DESTROYED_BIT);
+        Hud.removeLifePoints(1);
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                setCategoryFilter(DungeonExplorer.WALL_BIT);
+            }
+        }, 2f);
+
+//        player.repelFrom(new Vector2(getBounds().getX(), getBounds().getY()));
+
     }
 }

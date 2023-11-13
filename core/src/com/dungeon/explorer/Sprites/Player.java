@@ -1,11 +1,15 @@
 package com.dungeon.explorer.Sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.dungeon.explorer.DungeonExplorer;
+import com.dungeon.explorer.Scenes.Hud;
 import com.dungeon.explorer.Screens.PlayScreen;
 
 public class Player extends Sprite {
@@ -28,6 +32,11 @@ public class Player extends Sprite {
     private Animation<TextureRegion> playerGoingLeft;
     private float stateTimer;
     private boolean runningRight;
+    
+    private boolean invincible = false;
+    private float invincibilityTimer = 0;
+    private float blinkTimer = 0;
+    
 
 
     public Player(PlayScreen screen) {
@@ -83,6 +92,26 @@ public class Player extends Sprite {
     public void update(float dt) {
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(getFrame(dt));
+        
+        if (invincible) {
+            invincibilityTimer += dt;
+            if (invincibilityTimer > 1.5) {
+                invincible = false;
+            }
+        }
+        
+        if (invincible) {
+            blinkTimer += dt;
+            if (blinkTimer < 0.2f) {
+                setAlpha(0); // Make the sprite transparent
+            } else if (blinkTimer < 0.4f) {
+                setAlpha(1); // Make the sprite opaque
+            } else {
+                blinkTimer = 0;
+            }
+        } else {
+            setAlpha(1); // Make sure the sprite is opaque when not invincible
+        }
     }
 
     public TextureRegion getFrame(float dt) {
@@ -111,11 +140,11 @@ public class Player extends Sprite {
 
         //POUR POISSON
         //if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()) {
-            //region.flip(true, false);
-            //runningRight = false;
+        //region.flip(true, false);
+        //runningRight = false;
         //} else if ((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()) {
-            //region.flip(true, false);
-            //runningRight = true;
+        //region.flip(true, false);
+        //runningRight = true;
         //}
 
         stateTimer = currentState == previousState ? stateTimer + dt : 0;
@@ -141,7 +170,7 @@ public class Player extends Sprite {
 
     public void definePlayer() {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(200 / Player.PPM, 200 / Player.PPM);
+        bdef.position.set(484 / Player.PPM, 90 / Player.PPM);
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
@@ -162,4 +191,22 @@ public class Player extends Sprite {
         b2body.createFixture(fdef).setUserData("playerBody");
 
     }
+
+    
+    
+    public void loseLifePoint() {
+        if (!invincible) {
+            Hud.removeLifePoints(1);
+            invincible = true;
+            invincibilityTimer = 0;
+        }
+    }
+    
+    // public void repelFrom(Vector2 position) {
+    //     Vector2 repelForce = b2body.getPosition().sub(position).nor();
+    //     float repelStrength = 2.0f; // Adjust the strength of the repulsion as needed
+    //     repelForce = repelForce.scl(repelStrength);
+    //     b2body.applyLinearImpulse(repelForce, b2body.getWorldCenter(), true);
+    // }
+
 }
