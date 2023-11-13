@@ -19,6 +19,7 @@ import com.dungeon.explorer.Scenes.Hud;
 import com.dungeon.explorer.Sprites.Men;
 import com.dungeon.explorer.Sprites.Ninja;
 import com.dungeon.explorer.Sprites.Player;
+import com.dungeon.explorer.Sprites.Projectile;
 import com.dungeon.explorer.Tools.B2WorldCreator;
 import com.dungeon.explorer.Tools.WorldContactListener;
 
@@ -86,7 +87,7 @@ public class PlayScreen implements Screen {
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/dungeonBoss.mp3"));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(0.5f);
-//        backgroundMusic.play();
+       backgroundMusic.play();
     }
 
     public void handleInput(float dt) {
@@ -141,7 +142,9 @@ public class PlayScreen implements Screen {
         ninja2.draw(game.batch);
         men.draw(game.batch);
         men2.draw(game.batch);
-
+        for (Projectile projectile : player.getProjectiles()) {
+            projectile.draw(game.batch);
+        }
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
