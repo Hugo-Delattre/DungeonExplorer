@@ -20,6 +20,7 @@ public class DungeonExplorer extends Game {
 	public static final short ENEMY_BIT = 64;
 	public static final short OBJECT_BIT = 128;
 	public static final short ENEMY_BODY_BIT = 256;
+	public static final short PROJECTILE_BIT = 512;
 	
 	public static final int V_WIDTH = 960;
 	public static final int V_HEIGHT = 700;

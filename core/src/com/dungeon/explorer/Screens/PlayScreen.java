@@ -19,6 +19,7 @@ import com.dungeon.explorer.Scenes.Hud;
 import com.dungeon.explorer.Sprites.Men;
 import com.dungeon.explorer.Sprites.Ninja;
 import com.dungeon.explorer.Sprites.Player;
+import com.dungeon.explorer.Sprites.Projectile;
 import com.dungeon.explorer.Tools.B2WorldCreator;
 import com.dungeon.explorer.Tools.WorldContactListener;
 
@@ -27,7 +28,6 @@ public class PlayScreen implements Screen {
     private OrthographicCamera gameCam;
     private Viewport gamePort;
     private Hud hud;
-
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -41,38 +41,31 @@ public class PlayScreen implements Screen {
     private Ninja ninja2;
     private Men men;
     private Men men2;
-
     private TextureAtlas atlas;
-
     private Music backgroundMusic;
-
 
     public PlayScreen(DungeonExplorer game) {
         atlas = new TextureAtlas("linkAndEnemies.atlas");
-
         this.game = game;
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(DungeonExplorer.V_WIDTH / Player.PPM, DungeonExplorer.V_HEIGHT / Player.PPM, gameCam);
         hud = new Hud(game.batch);
-
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("maps/DungeonRoom.tmx");
         renderer = new OrthogonalTiledMapRenderer(map,  1 / Player.PPM);
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, 0), true);
+        createBorders();
 
 //        Uncomment this line and the b2dr.render(world, gameCam.combined); below to see the Box2D debug lines
         b2dr = new Box2DDebugRenderer();
         new B2WorldCreator(this);
 
         player = new Player(this);
-
         world.setContactListener(new WorldContactListener(player));
-
         ninja = new Ninja(this, 2.92f, 2.92f);
         ninja2 = new Ninja(this, 6.92f, 3.92f);
-
         men = new Men(this, 4.92f, 4.92f);
         men2 = new Men(this, 8.92f, 4.92f);
     }
@@ -130,8 +123,7 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         renderer.render();
-
-        b2dr.render(world, gameCam.combined);
+        //b2dr.render(world, gameCam.combined);
 
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
@@ -141,7 +133,9 @@ public class PlayScreen implements Screen {
         ninja2.draw(game.batch);
         men.draw(game.batch);
         men2.draw(game.batch);
-
+        for (Projectile projectile : player.getProjectiles()) {
+            projectile.draw(game.batch);
+        }
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
@@ -159,6 +153,44 @@ public class PlayScreen implements Screen {
     public TiledMap getMap() {
         return map;
     }
+
+    private void createBorders() {
+        BodyDef bdef = new BodyDef();
+        FixtureDef fdef = new FixtureDef();
+        EdgeShape edge = new EdgeShape();
+
+        bdef.type = BodyDef.BodyType.StaticBody;
+
+        // Créé frontières
+        float mapWidth = DungeonExplorer.V_WIDTH / Player.PPM;
+        float mapHeight = DungeonExplorer.V_HEIGHT / Player.PPM;
+
+        // Créer les bords
+        Body body = world.createBody(bdef);
+
+        // Haut
+        edge.set(new Vector2(0, mapHeight), new Vector2(mapWidth, mapHeight));
+        fdef.shape = edge;
+        body.createFixture(fdef);
+
+        // Bas
+        edge.set(new Vector2(0, 0), new Vector2(mapWidth, 0));
+        fdef.shape = edge;
+        body.createFixture(fdef);
+
+        // Gauche
+        edge.set(new Vector2(0, 0), new Vector2(0, mapHeight));
+        fdef.shape = edge;
+        body.createFixture(fdef);
+
+        // Droite
+        edge.set(new Vector2(mapWidth, 0), new Vector2(mapWidth, mapHeight));
+        fdef.shape = edge;
+        body.createFixture(fdef);
+
+        edge.dispose();
+    }
+
 
     public World getWorld() {
         return world;
