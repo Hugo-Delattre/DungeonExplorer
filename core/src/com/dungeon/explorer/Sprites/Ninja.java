@@ -100,7 +100,7 @@ public class Ninja extends Enemy {
         ninjaBody.set(vertice);
 
         fdef.shape = ninjaBody;
-        fdef.restitution = 0.5f;
+        fdef.restitution = 0f;
         fdef.filter.categoryBits = DungeonExplorer.ENEMY_BIT;
         b2body.createFixture(fdef).setUserData(this);
     }
