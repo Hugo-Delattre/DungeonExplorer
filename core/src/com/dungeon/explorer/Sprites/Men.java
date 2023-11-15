@@ -1,12 +1,11 @@
 package com.dungeon.explorer.Sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
@@ -36,7 +35,7 @@ public class Men extends Enemy {
         setBounds(getX(), getY(), 75 / Player.PPM, 90 / Player.PPM);
         setToDestroy = false;
         destroyed = false;
-
+        lifePoints=2;
     }
 
     public void update(float dt, Player player) {
@@ -96,13 +95,13 @@ public class Men extends Enemy {
 
         FixtureDef fdef = new FixtureDef();
         fdef.density = 1000f;
-        CircleShape shape = new CircleShape();
-        shape.setRadius(25 / Player.PPM);
+//        CircleShape shape = new CircleShape();
+//        shape.setRadius(25 / Player.PPM);
         fdef.filter.categoryBits = DungeonExplorer.ENEMY_BIT;
-        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT;
+        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT | DungeonExplorer.PROJECTILE_BIT;
 
-        fdef.shape = shape;
-        b2body.createFixture(fdef);
+//        fdef.shape = shape;
+//        b2body.createFixture(fdef);
 
         PolygonShape menBody = new PolygonShape();
         Vector2[] vertice = new Vector2[4];
@@ -114,12 +113,16 @@ public class Men extends Enemy {
 
         fdef.shape = menBody;
         fdef.restitution = 0f;
-        fdef.filter.categoryBits = DungeonExplorer.ENEMY_BODY_BIT;
+        fdef.filter.categoryBits = DungeonExplorer.ENEMY_BIT;
         b2body.createFixture(fdef).setUserData(this);
     }
 
     @Override
     public void hit() {
-
+        Gdx.app.log("Test2", "Collision détectée !");
+        lifePoints--;
+        if (lifePoints == 0) {
+            setToDestroy = true;
+        }
     }
 }

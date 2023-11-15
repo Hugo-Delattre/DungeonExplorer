@@ -2,11 +2,9 @@ package com.dungeon.explorer.Sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.dungeon.explorer.DungeonExplorer;
@@ -234,16 +232,16 @@ public class Player extends Sprite {
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(25 / Player.PPM);
+        shape.setRadius(18 / Player.PPM);
         fdef.filter.categoryBits = DungeonExplorer.PLAYER_BIT;
-        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.ENEMY_BODY_BIT;
+        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.ENEMY_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
 
-        PolygonShape playerBody = new PolygonShape();
-        playerBody.setAsBox(25 / Player.PPM, 25 / Player.PPM);
-        fdef.shape = playerBody;
+//        PolygonShape playerBody = new PolygonShape();
+//        playerBody.setAsBox(25 / Player.PPM, 25 / Player.PPM);
+//        fdef.shape = playerBody;
         fdef.isSensor = true;
 
         b2body.createFixture(fdef).setUserData("playerBody");

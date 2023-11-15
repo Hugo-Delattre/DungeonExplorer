@@ -1,27 +1,20 @@
 package com.dungeon.explorer.Sprites;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import com.dungeon.explorer.DungeonExplorer;
 import com.dungeon.explorer.Screens.PlayScreen;
-import org.w3c.dom.Text;
 
 public class Ninja extends Enemy {
 
-    private float stateTime;
-    private Animation<TextureRegion> walkAnimation;
-    private Array<TextureRegion> frames;
-    private boolean setToDestroy;
-    private boolean destroyed;
     private float timeSinceLastChange;
     private float timeToChangeDirection;
 
@@ -39,6 +32,7 @@ public class Ninja extends Enemy {
         destroyed = false;
         timeSinceLastChange = 0;
         timeToChangeDirection = 2.0f; //Change direction every 2 seconds
+        lifePoints = 2;
     }
 
     public void update(float dt) {
@@ -55,13 +49,13 @@ public class Ninja extends Enemy {
 
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(walkAnimation.getKeyFrame(stateTime, true));
-        if(setToDestroy && !destroyed) {
+        if (setToDestroy && !destroyed) {
             world.destroyBody(b2body);
             destroyed = true;
             //Texture of dying ninja
             setRegion(new TextureRegion(screen.getAtlas().findRegion("ninja"), 300, 255, 100, 130));
             stateTime = 0;
-        } else if(!destroyed) {
+        } else if (!destroyed) {
             b2body.setLinearVelocity(velocity);
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
             setRegion(walkAnimation.getKeyFrame(stateTime, true));
@@ -73,15 +67,14 @@ public class Ninja extends Enemy {
 
         if (b2body.getLinearVelocity().x < 0 && !region.isFlipX()) {
             region.flip(true, false);
-        }
-        else if (b2body.getLinearVelocity().x > 0 && region.isFlipX()) {
+        } else if (b2body.getLinearVelocity().x > 0 && region.isFlipX()) {
             region.flip(true, false);
         }
         setRegion(region);
     }
 
     public void draw(Batch batch) {
-        if(!destroyed || stateTime < 1) {
+        if (!destroyed || stateTime < 1) {
             super.draw(batch);
         }
     }
@@ -89,19 +82,12 @@ public class Ninja extends Enemy {
     @Override
     protected void defineEnemy() {
         BodyDef bdef = new BodyDef();
-//        bdef.position.set(200 / Player.PPM, 400 / Player.PPM);
         bdef.position.set(getX(), getY());
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
-
         FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        shape.setRadius(25 / Player.PPM);
         fdef.filter.categoryBits = DungeonExplorer.ENEMY_BIT;
-        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT;
-
-        fdef.shape = shape;
-        b2body.createFixture(fdef).setUserData(this);
+        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT | DungeonExplorer.PROJECTILE_BIT;
 
         PolygonShape ninjaBody = new PolygonShape();
         Vector2[] vertice = new Vector2[4];
@@ -113,12 +99,8 @@ public class Ninja extends Enemy {
 
         fdef.shape = ninjaBody;
         fdef.restitution = 0.5f;
-        fdef.filter.categoryBits = DungeonExplorer.ENEMY_BODY_BIT;
+        fdef.filter.categoryBits = DungeonExplorer.ENEMY_BIT;
         b2body.createFixture(fdef).setUserData(this);
     }
 
-    @Override
-    public void hit() {
-
-    }
 }
