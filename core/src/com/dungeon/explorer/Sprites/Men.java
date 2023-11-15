@@ -2,6 +2,7 @@ package com.dungeon.explorer.Sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -39,6 +40,7 @@ public class Men extends Enemy {
     }
 
     public void update(float dt, Player player) {
+
         stateTime += dt;
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(walkAnimation.getKeyFrame(stateTime, true));
@@ -78,6 +80,12 @@ public class Men extends Enemy {
         setRegion(region);
     }
 
+    public void draw(Batch batch) {
+        if (!destroyed || stateTime < 1) {
+            super.draw(batch);
+        }
+    }
+
     private void moveRandomly() {
         float randomAngle = MathUtils.random(0f, 2 * MathUtils.PI);
         Vector2 movement = new Vector2(MathUtils.cos(randomAngle), MathUtils.sin(randomAngle)).scl(moveSpeed);
@@ -86,7 +94,6 @@ public class Men extends Enemy {
 
     @Override
     protected void defineEnemy() {
-        // TODO : modifier les masks pour que Link ne puisse pas pousser les ennemis
         BodyDef bdef = new BodyDef();
 //        bdef.position.set(200 / Player.PPM, 400 / Player.PPM);
         bdef.position.set(getX(), getY());

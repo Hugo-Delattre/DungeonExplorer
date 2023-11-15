@@ -16,6 +16,8 @@ public class Projectile extends Sprite {
     private Texture projectileTexture;
     private PlayScreen screen;
 
+    private float timeSinceCreation;
+
     public Projectile(PlayScreen screen, float x, float y, float directionX, float directionY) {
         //Comment these lines to remove the texture
         projectileTexture = new Texture("textures/egg.png");
@@ -25,15 +27,15 @@ public class Projectile extends Sprite {
         setBounds(0, 0, 48 / Player.PPM, 48 / Player.PPM); // Adjust the size as needed
         toDestroy = false;
         b2body.setLinearVelocity(new Vector2(directionX, directionY)); // Set the velocity based on the player's input
+        timeSinceCreation = 0;
     }
 
     // In the Projectile class
     public void draw(Batch batch) {
         // Check if the projectile is not destroyed
-//        if (!destroyed) {
-            // Draw the projectile texture at the projectile's position
+        //if (!toDestroy) {
             batch.draw(projectileTexture, b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2, getWidth(), getHeight());
-//        }
+       // }
     }
 
 
@@ -57,6 +59,11 @@ public class Projectile extends Sprite {
     }
 
     public void update(float dt) {
+        timeSinceCreation += dt;
+        if (timeSinceCreation > 5) { // 10 secondes
+            setToDestroy();
+        }
+
         if (toDestroy && !world.isLocked()) {
             world.destroyBody(b2body);
             setToDestroy();
