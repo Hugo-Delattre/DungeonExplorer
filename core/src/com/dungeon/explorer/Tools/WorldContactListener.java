@@ -63,7 +63,7 @@ public class WorldContactListener implements ContactListener {
                 } else {
                     ((Enemy) fixtureB.getUserData()).hit();
                 }
-                Gdx.app.log("Enemy collision", "Enemy hit by projectile");
+                // Gdx.app.log("Enemy collision", "Enemy hit by projectile");
                 break;
 
         }

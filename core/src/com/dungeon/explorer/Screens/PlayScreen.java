@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dungeon.explorer.DungeonExplorer;
 import com.dungeon.explorer.Scenes.Hud;
+import com.dungeon.explorer.Sprites.Enemy;
 import com.dungeon.explorer.Sprites.Men;
 import com.dungeon.explorer.Sprites.Ninja;
 import com.dungeon.explorer.Sprites.Player;
@@ -48,17 +49,19 @@ public class PlayScreen implements Screen {
         atlas = new TextureAtlas("linkAndEnemies.atlas");
         this.game = game;
         gameCam = new OrthographicCamera();
-        gamePort = new FitViewport(DungeonExplorer.V_WIDTH / Player.PPM, DungeonExplorer.V_HEIGHT / Player.PPM, gameCam);
+        gamePort = new FitViewport(DungeonExplorer.V_WIDTH / Player.PPM, DungeonExplorer.V_HEIGHT / Player.PPM,
+                gameCam);
         hud = new Hud(game.batch);
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("maps/DungeonRoom.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map,  1 / Player.PPM);
+        renderer = new OrthogonalTiledMapRenderer(map, 1 / Player.PPM);
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         world = new World(new Vector2(0, 0), true);
         createBorders();
 
-//        Uncomment this line and the b2dr.render(world, gameCam.combined); below to see the Box2D debug lines
+        // Uncomment this line and the b2dr.render(world, gameCam.combined); below to
+        // see the Box2D debug lines
         b2dr = new Box2DDebugRenderer();
         new B2WorldCreator(this);
 
@@ -79,33 +82,39 @@ public class PlayScreen implements Screen {
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/dungeonBoss.mp3"));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(0.5f);
-       backgroundMusic.play();
+        backgroundMusic.play();
     }
 
     public void handleInput(float dt) {
         float velocity = 150.0f; // Vitesse du personnage
         Vector2 movement = new Vector2();
 
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
             movement.y += velocity;
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             movement.x += velocity;
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             movement.x -= velocity;
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             movement.y -= velocity;
         }
 
-        player.b2body.setLinearVelocity(movement.scl(dt)); // Appliquer la vitesse multipliée par le delta pour un mouvement fluide
+        player.b2body.setLinearVelocity(movement.scl(dt)); // Appliquer la vitesse multipliée par le delta pour un
+                                                           // mouvement fluide
     }
 
     public void update(float dt) {
         handleInput(dt);
 
-        world.step(1/60f, 6, 2);
+        if (Enemy.instanceCount <= 0) {
+            System.out.println("All enemies have been destroyed!");
+            Gdx.app.log("EnemyCounter", "All enemies have been destroyed!");
+        }
+
+        world.step(1 / 60f, 6, 2);
         player.update(dt);
         ninja.update(dt);
         ninja2.update(dt);
@@ -114,6 +123,7 @@ public class PlayScreen implements Screen {
         hud.update(dt);
         gameCam.update();
         renderer.setView(gameCam);
+
     }
 
     @Override
@@ -145,9 +155,10 @@ public class PlayScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
-//        gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
-//        gameCam.update();
-//        game.batch.setProjectionMatrix(gameCam.combined);
+        // gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight()
+        // / 2, 0);
+        // gameCam.update();
+        // game.batch.setProjectionMatrix(gameCam.combined);
     }
 
     public TiledMap getMap() {
@@ -190,7 +201,6 @@ public class PlayScreen implements Screen {
 
         edge.dispose();
     }
-
 
     public World getWorld() {
         return world;
