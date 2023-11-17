@@ -126,10 +126,11 @@ public class Men extends Enemy {
 
     @Override
     public void hit() {
-        Gdx.app.log("Test2", "Collision détectée !");
+        // Gdx.app.log("Test2", "Collision détectée !");
         lifePoints--;
         if (lifePoints == 0) {
             setToDestroy = true;
+            dispose();
         }
     }
 }

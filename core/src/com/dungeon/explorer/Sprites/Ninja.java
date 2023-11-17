@@ -55,6 +55,8 @@ public class Ninja extends Enemy {
             //Texture of dying ninja
             setRegion(new TextureRegion(screen.getAtlas().findRegion("ninja"), 300, 255, 100, 130));
             stateTime = 0;
+            
+            dispose();
         } else if (!destroyed) {
             b2body.setLinearVelocity(velocity);
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
