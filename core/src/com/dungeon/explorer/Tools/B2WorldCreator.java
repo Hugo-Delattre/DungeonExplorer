@@ -11,7 +11,11 @@ import com.dungeon.explorer.Sprites.Potion;
 import com.dungeon.explorer.Sprites.Stone;
 import com.dungeon.explorer.Sprites.Wall;
 
+import java.util.HashMap;
+
 public class B2WorldCreator {
+
+    private HashMap<String, Stone> stoneMap;
 
     public B2WorldCreator(PlayScreen screen) {
         World world = screen.getWorld();
@@ -21,6 +25,9 @@ public class B2WorldCreator {
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
         Body body;
+
+        stoneMap = new HashMap<String, Stone>();
+
 
         //Potion
         for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
@@ -41,10 +48,20 @@ public class B2WorldCreator {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             new Stone(screen, rect);
+            Stone stone = new Stone(screen, rect);
+            stoneMap.put(object.getName(), stone);
+
+//            if ("S1".equals(object.getName()) && object instanceof Stone) {
+//                Stone S1 = (Stone) object;
+//            }
         }
 
         //Lava
         //TODO Implémenter la lave
 
+    }
+
+    public HashMap<String, Stone> getStoneMap() {
+        return stoneMap;
     }
 }

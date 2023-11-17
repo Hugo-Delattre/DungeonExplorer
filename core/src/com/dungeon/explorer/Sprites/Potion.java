@@ -2,6 +2,7 @@ package com.dungeon.explorer.Sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.dungeon.explorer.DungeonExplorer;
@@ -15,12 +16,15 @@ public class Potion extends InteractiveTileObject {
         setCategoryFilter(DungeonExplorer.POTION_BIT);
     }
 
+
     @Override
     public void onPlayerContact() {
         Gdx.app.log("Potion", "Collision");
         //TODO sound effect potion
         Hud.addLifePoints(3);
         setCategoryFilter(DungeonExplorer.DESTROYED_BIT);
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(2);
+        layer.getCell((int)(body.getPosition().x * Player.PPM / 32), (int)(body.getPosition().y * Player.PPM / 32));
         getCell().setTile(null);
     }
 }

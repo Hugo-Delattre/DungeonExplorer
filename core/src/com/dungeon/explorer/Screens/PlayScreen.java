@@ -11,22 +11,22 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dungeon.explorer.DungeonExplorer;
 import com.dungeon.explorer.Scenes.Hud;
-import com.dungeon.explorer.Sprites.Enemy;
-import com.dungeon.explorer.Sprites.Men;
-import com.dungeon.explorer.Sprites.Ninja;
-import com.dungeon.explorer.Sprites.Player;
-import com.dungeon.explorer.Sprites.Projectile;
+import com.dungeon.explorer.Sprites.*;
 import com.dungeon.explorer.Tools.B2WorldCreator;
 import com.dungeon.explorer.Tools.WorldContactListener;
+
+import java.util.HashMap;
 
 public class PlayScreen implements Screen {
     private DungeonExplorer game;
     private OrthographicCamera gameCam;
+
     private Viewport gamePort;
     private Hud hud;
     private TmxMapLoader mapLoader;
@@ -44,6 +44,18 @@ public class PlayScreen implements Screen {
     private Men men2;
     private TextureAtlas atlas;
     private Music backgroundMusic;
+
+    private B2WorldCreator worldCreator;
+    public static int currentLevel = 1;
+    private boolean shouldMoveCamera = false;
+    private float cameraMoveTime = 0;
+
+    public void setShouldMoveCamera(boolean moveCamera) {
+        this.shouldMoveCamera = moveCamera;
+        if (moveCamera) {
+            cameraMoveTime = 0; // Réinitialiser le compteur de temps quand on commence à déplacer
+        }
+    }
 
     public PlayScreen(DungeonExplorer game) {
         atlas = new TextureAtlas("linkAndEnemies.atlas");
@@ -68,9 +80,11 @@ public class PlayScreen implements Screen {
         player = new Player(this);
         world.setContactListener(new WorldContactListener(player));
         ninja = new Ninja(this, 2.92f, 2.92f);
-        ninja2 = new Ninja(this, 6.92f, 3.92f);
-        men = new Men(this, 4.92f, 4.92f);
-        men2 = new Men(this, 8.92f, 4.92f);
+//        ninja2 = new Ninja(this, 6.92f, 3.92f);
+//        men = new Men(this, 4.92f, 4.92f);
+//        men2 = new Men(this, 8.92f, 4.92f);
+
+        worldCreator = new B2WorldCreator(this);
     }
 
     public TextureAtlas getAtlas() {
@@ -103,23 +117,64 @@ public class PlayScreen implements Screen {
         }
 
         player.b2body.setLinearVelocity(movement.scl(dt)); // Appliquer la vitesse multipliée par le delta pour un
-                                                           // mouvement fluide
+        // mouvement fluide
     }
 
     public void update(float dt) {
         handleInput(dt);
 
-        if (Enemy.instanceCount <= 0) {
-            System.out.println("All enemies have been destroyed!");
+        if (Enemy.enemyCounter <= 0 && currentLevel == 1) {
             Gdx.app.log("EnemyCounter", "All enemies have been destroyed!");
+            currentLevel++;
+            // Get stones from B2WorldCreator
+            HashMap<String, Stone> stoneMap = worldCreator.getStoneMap();
+            Gdx.app.log("StoneCounter", "There are " + stoneMap.size() + " stones in the map.");
+
+            if (stoneMap.size() > 0) {
+                //get first element of the hashMap
+                String firstStoneKey = (String) stoneMap.keySet().toArray()[0];
+                Stone stone = stoneMap.get(firstStoneKey);
+
+                System.out.println(stone);
+                System.out.println(stoneMap);
+
+                if (stone != null) {
+                    // Appeler la méthode pour casser la pierre
+                    stone.breakStone();
+
+                    // Supprimer la première pierre de la stoneMap
+                    stoneMap.remove(firstStoneKey);
+                }
+
+                System.out.println(stoneMap);
+
+
+            }
         }
+
+        if (shouldMoveCamera) {
+            cameraMoveTime += dt;
+            if (cameraMoveTime <= 2f) {
+                float targetY = gameCam.position.y + 0.1f; // Par exemple, 5 unités plus haut que la position actuelle
+
+                Vector3 targetPosition = new Vector3(gameCam.position.x, targetY, 0);
+                gameCam.position.lerp(targetPosition, cameraMoveTime / 2);
+//                gameCam.position.set(0, 0, 30);
+            } else {
+                cameraMoveTime = 0;
+                shouldMoveCamera = false;
+            }
+
+
+        }
+
 
         world.step(1 / 60f, 6, 2);
         player.update(dt);
         ninja.update(dt);
-        ninja2.update(dt);
-        men.update(dt, player);
-        men2.update(dt, player);
+//        ninja2.update(dt);
+//        men.update(dt, player);
+//        men2.update(dt, player);
         hud.update(dt);
         gameCam.update();
         renderer.setView(gameCam);
@@ -140,9 +195,9 @@ public class PlayScreen implements Screen {
 
         player.draw(game.batch);
         ninja.draw(game.batch);
-        ninja2.draw(game.batch);
-        men.draw(game.batch);
-        men2.draw(game.batch);
+//        ninja2.draw(game.batch);
+//        men.draw(game.batch);
+//        men2.draw(game.batch);
         for (Projectile projectile : player.getProjectiles()) {
             projectile.draw(game.batch);
         }

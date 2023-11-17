@@ -23,14 +23,14 @@ public abstract class Enemy extends Sprite {
     protected Animation<TextureRegion> walkAnimation;
     protected Array<TextureRegion> frames;
     
-    public static int instanceCount = 0;
+    public static int enemyCounter = 0;
 
     public Enemy(PlayScreen screen, float x, float y) {
         this.world = screen.getWorld();
         this.screen = screen;
         setPosition(x, y);
-        instanceCount++;
-        Gdx.app.log("Enemy", "Created. " + instanceCount + " instances.");
+        enemyCounter++;
+        Gdx.app.log("Enemy", "Created. " + enemyCounter + " instances.");
         defineEnemy();
         velocity = new Vector2(1, 0);
     }
@@ -45,8 +45,10 @@ public abstract class Enemy extends Sprite {
     }
     
     public void dispose() {
-        instanceCount--;
-        Gdx.app.log("Enemy", "Disposed. " + instanceCount + " instances left.");
+        enemyCounter--;
+        Gdx.app.log("Enemy", "Disposed. " + enemyCounter + " instances left.");
+        // stone method here
+//        Stone.destroyRow = true;
     }
 
     public void reverseVelocity(boolean x, boolean y) {
