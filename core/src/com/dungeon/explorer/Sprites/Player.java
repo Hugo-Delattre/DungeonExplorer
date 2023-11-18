@@ -12,7 +12,7 @@ import com.dungeon.explorer.Scenes.Hud;
 import com.dungeon.explorer.Screens.PlayScreen;
 
 public class Player extends Sprite {
-    public enum State {GOINGUP, GOINGDOWN, GOINGRIGHT, GOINGLEFT, STANDINGDOWN}
+    public enum State {GOINGUP, GOINGDOWN, GOINGRIGHT, GOINGLEFT, STANDINGDOWN, DEAD}
 
     ;
     // TODO: Implémenter STANDINGRIGHT, UP, LEFT en utilisant previous state cf 9:00 dans la partie 11
@@ -38,6 +38,7 @@ public class Player extends Sprite {
     private float invincibilityTimer = 0;
     private float blinkTimer = 0;
 
+    private static boolean playerIsDead = false;
 
     public Player(PlayScreen screen) {
         super(screen.getAtlas().findRegion("link"));
@@ -255,6 +256,19 @@ public class Player extends Sprite {
             invincible = true;
             invincibilityTimer = 0;
         }
+    }
+
+    public static void setPlayerIsDead() {
+        playerIsDead = true;
+    }
+
+
+    public boolean isDead()    {
+        return playerIsDead;
+    }
+
+    public float getStateTimer() {
+        return stateTimer;
     }
 
     public Array<Projectile> getProjectiles() {

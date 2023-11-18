@@ -205,6 +205,12 @@ public class PlayScreen implements Screen {
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+
+        if(gameOver()) {
+            System.out.println("game over true");
+            game.setScreen(new GameOverScreen(game));
+            dispose();
+        }
     }
 
     @Override
@@ -259,6 +265,13 @@ public class PlayScreen implements Screen {
 
     public World getWorld() {
         return world;
+    }
+
+    public boolean gameOver() {
+        if (player.isDead() && player.getStateTimer() > 0) { //we might move this value to 2 or 3 if we add a tomb sprite
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dungeon.explorer.DungeonExplorer;
+import com.dungeon.explorer.Sprites.Player;
 
 import java.util.ArrayList;
 
@@ -111,6 +112,11 @@ public class Hud implements Disposable {
             lifeImages.remove(lifePoints);
             damageSound.play();
             System.out.println("Damage taken");
+
+            if (lifePoints == 0) {
+                System.out.println("You died");
+                Player.setPlayerIsDead();
+            }
         }
         System.out.println("Your life points decreased.");
     }
