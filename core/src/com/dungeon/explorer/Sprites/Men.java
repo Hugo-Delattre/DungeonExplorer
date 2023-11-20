@@ -23,34 +23,42 @@ public class Men extends Enemy {
     private float moveTimer;
     private float moveInterval = 1.8f;
     private float moveSpeed = 1f;
+    private float shootTimer;
+    private float shootCooldown; // Le temps avant le prochain tir
 
     public Men(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         frames = new Array<TextureRegion>();
 //        Array<TextureRegion> frames = new Array<TextureRegion>();
         for (int i = 0; i <= 7; i++) {
-            frames.add(new TextureRegion(screen.getAtlas().findRegion("men"), i * 70-20, 0, 70, 80));
+            frames.add(new TextureRegion(screen.getAtlas().findRegion("men"), i * 70 - 20, 0, 70, 80));
         }
         walkAnimation = new Animation(0.2f, frames); // ?
         stateTime = 0;
         setBounds(getX(), getY(), 75 / Player.PPM, 90 / Player.PPM);
         setToDestroy = false;
         destroyed = false;
-        lifePoints=4;
+        lifePoints = 4;
+        resetShootCooldown();
     }
 
     public void update(float dt, Player player) {
 
+        shootTimer += dt;
+        if (shootTimer >= shootCooldown) {
+            fireProjectile();
+            resetShootCooldown();
+        }
         stateTime += dt;
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(walkAnimation.getKeyFrame(stateTime, true));
-        if(setToDestroy && !destroyed) {
+        if (setToDestroy && !destroyed) {
             world.destroyBody(b2body);
             destroyed = true;
             //Texture of dying men
             setRegion(new TextureRegion(screen.getAtlas().findRegion("men"), 60, 80, 90, 100));
             stateTime = 0;
-        } else if(!destroyed) {
+        } else if (!destroyed) {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
             setRegion(walkAnimation.getKeyFrame(stateTime, true));
         }
@@ -80,8 +88,7 @@ public class Men extends Enemy {
 
         if (b2body.getLinearVelocity().x < 0 && !region.isFlipX()) {
             region.flip(true, false);
-        }
-        else if (b2body.getLinearVelocity().x > 0 && region.isFlipX()) {
+        } else if (b2body.getLinearVelocity().x > 0 && region.isFlipX()) {
             region.flip(true, false);
         }
         setRegion(region);
@@ -97,6 +104,22 @@ public class Men extends Enemy {
         float randomAngle = MathUtils.random(0f, 2 * MathUtils.PI);
         Vector2 movement = new Vector2(MathUtils.cos(randomAngle), MathUtils.sin(randomAngle)).scl(moveSpeed);
         b2body.setLinearVelocity(movement);
+    }
+
+    private void resetShootCooldown() {
+        shootCooldown = MathUtils.random(1.0f, 3.0f); // Temps aléatoire entre 1 et 3 secondes
+        shootTimer = 0;
+    }
+
+    private void fireProjectile() {
+        float directionX = MathUtils.random(-1.0f, 1.0f);
+        float directionY = MathUtils.random(-1.0f, 1.0f);
+        Vector2 direction = new Vector2(directionX, directionY).nor();
+        float speed = 2.5f; // Vitesse du projectile
+        direction.scl(speed);
+
+        EnemyProjectile projectile = new EnemyProjectile(screen, b2body.getPosition().x, b2body.getPosition().y, direction.x, direction.y);
+        screen.addEnemyProjectile(projectile); // Ajoutez cette méthode à PlayScreen pour gérer les projectiles ennemis
     }
 
     @Override
