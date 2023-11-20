@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dungeon.explorer.DungeonExplorer;
@@ -45,17 +46,13 @@ public class PlayScreen implements Screen {
     private TextureAtlas atlas;
     private Music backgroundMusic;
 
+    private Array<EnemyProjectile> enemyProjectiles;
     private B2WorldCreator worldCreator;
     public static int currentLevel = 1;
     private boolean shouldMoveCamera = false;
     private float cameraMoveTime = 0;
 
-    public void setShouldMoveCamera(boolean moveCamera) {
-        this.shouldMoveCamera = moveCamera;
-        if (moveCamera) {
-            cameraMoveTime = 0; // Réinitialiser le compteur de temps quand on commence à déplacer
-        }
-    }
+
 
     public PlayScreen(DungeonExplorer game) {
         Gdx.input.setInputProcessor(null);
@@ -84,12 +81,24 @@ public class PlayScreen implements Screen {
 //        ninja2 = new Ninja(this, 6.92f, 3.92f);
         men = new Men(this, 4.92f, 4.92f);
 //        men2 = new Men(this, 8.92f, 4.92f);
+        enemyProjectiles = new Array<EnemyProjectile>();
 
         worldCreator = new B2WorldCreator(this, player);
     }
 
     public TextureAtlas getAtlas() {
         return atlas;
+    }
+
+    public void setShouldMoveCamera(boolean moveCamera) {
+        this.shouldMoveCamera = moveCamera;
+        if (moveCamera) {
+            cameraMoveTime = 0; // Réinitialiser le compteur de temps quand on commence à déplacer
+        }
+    }
+
+    public void addEnemyProjectile(EnemyProjectile projectile) {
+        enemyProjectiles.add(projectile);
     }
 
     @Override
@@ -130,6 +139,13 @@ public class PlayScreen implements Screen {
             // Get stones from B2WorldCreator
             HashMap<String, Stone> stoneMap = worldCreator.getStoneMap();
             Gdx.app.log("StoneCounter", "There are " + stoneMap.size() + " stones in the map.");
+
+            for (EnemyProjectile projectile : enemyProjectiles) {
+                projectile.update(dt);
+                if (projectile.isDestroyed()) {
+                    enemyProjectiles.removeValue(projectile, true);
+                }
+            }
 
             if (stoneMap.size() > 0) {
                 //get first element of the hashMap
@@ -176,6 +192,13 @@ public class PlayScreen implements Screen {
 //        ninja2.update(dt);
         men.update(dt, player);
 //        men2.update(dt, player);
+
+        for (EnemyProjectile projectile : enemyProjectiles) {
+            projectile.update(dt);
+            if (projectile.isDestroyed()) {
+                enemyProjectiles.removeValue(projectile, true);
+            }
+        }
         hud.update(dt);
         gameCam.update();
         renderer.setView(gameCam);
@@ -202,6 +225,9 @@ public class PlayScreen implements Screen {
         for (Projectile projectile : player.getProjectiles()) {
             projectile.draw(game.batch);
         }
+        for (EnemyProjectile projectile : enemyProjectiles) {
+            projectile.draw(game.batch);
+        }
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
@@ -212,6 +238,8 @@ public class PlayScreen implements Screen {
             game.setScreen(new GameOverScreen(game));
             dispose();
         }
+
+
     }
 
     @Override
