@@ -9,7 +9,7 @@ import com.dungeon.explorer.Screens.PlayScreen;
 
 public class EnemyProjectile extends Projectile {
     public EnemyProjectile(PlayScreen screen, float x, float y, float directionX, float directionY) {
-        super(screen, x, y, new Texture("heart/egg.png"), directionX, directionY);
+        super(screen, x, y, new Texture("textures/heart.png"), directionX, directionY);
         defineProjectile(x, y);
         setVelocity(directionX, directionY);
     }
@@ -26,11 +26,21 @@ public class EnemyProjectile extends Projectile {
         shape.setRadius(12 / Player.PPM);
 
         fdef.filter.categoryBits = DungeonExplorer.ENEMY_PROJECTILE_BIT;
-        fdef.filter.maskBits = DungeonExplorer.PLAYER_BIT | DungeonExplorer.ALLY_PROJECTILE_BIT;
+        fdef.filter.maskBits = DungeonExplorer.PLAYER_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
 
         shape.dispose();
     }
+
+    @Override
+    public void update(float dt) {
+        super.update(dt);
+        if (b2body != null) {
+            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+        }
+    }
+
+
 }
