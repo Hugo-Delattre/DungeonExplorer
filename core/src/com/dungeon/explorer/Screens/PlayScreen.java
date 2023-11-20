@@ -75,7 +75,7 @@ public class PlayScreen implements Screen {
         // Uncomment this line and the b2dr.render(world, gameCam.combined); below to
         // see the Box2D debug lines
         b2dr = new Box2DDebugRenderer();
-        new B2WorldCreator(this);
+        new B2WorldCreator(this, player);
 
         player = new Player(this);
         world.setContactListener(new WorldContactListener(player));
@@ -84,7 +84,7 @@ public class PlayScreen implements Screen {
 //        men = new Men(this, 4.92f, 4.92f);
 //        men2 = new Men(this, 8.92f, 4.92f);
 
-        worldCreator = new B2WorldCreator(this);
+        worldCreator = new B2WorldCreator(this, player);
     }
 
     public TextureAtlas getAtlas() {

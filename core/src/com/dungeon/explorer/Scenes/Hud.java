@@ -50,7 +50,7 @@ public class Hud implements Disposable {
         score = 0;
         dungeon = 1;
         level = 1;
-        lifePoints = 3;
+        lifePoints = 5;
         lifeImages = new ArrayList<Image>();
         Texture heartTexture = new Texture("textures/heart.png");
         damageSound = Gdx.audio.newSound(Gdx.files.internal("music/damageHit.mp3"));
@@ -101,21 +101,24 @@ public class Hud implements Disposable {
             lifeImages.add(heartImage);
             bottomTable.add(heartImage).padBottom(10);
         }
-            System.out.println("Your life points increased!");
+        System.out.println("Your life points increased!");
 
     }
 
     public static void removeLifePoints(int HP) {
         for (int i = 0; i < HP; i++) {
-            lifePoints--;
-            bottomTable.removeActor(lifeImages.get(lifePoints));
-            lifeImages.remove(lifePoints);
-            damageSound.play();
-            System.out.println("Damage taken");
+            if (lifePoints > 0) {
+                lifePoints--;
+                bottomTable.removeActor(lifeImages.get(lifePoints));
+                lifeImages.remove(lifePoints);
+                damageSound.play();
+                System.out.println("Damage taken");
+            }
 
-            if (lifePoints == 0) {
+
+            if (lifePoints <= 0) {
                 System.out.println("You died");
-                Player.setPlayerIsDead();
+                Player.setPlayerIsDead(true);
             }
         }
         System.out.println("Your life points decreased.");

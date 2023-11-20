@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dungeon.explorer.DungeonExplorer;
+import com.dungeon.explorer.Scenes.Hud;
+import com.dungeon.explorer.Sprites.Player;
 
 public class GameOverScreen implements Screen {
     private Viewport viewport;
@@ -52,8 +54,10 @@ public class GameOverScreen implements Screen {
     @Override
     public void render(float delta) {
         if (Gdx.input.justTouched()) {
-            game.setScreen(new PlayScreen((DungeonExplorer) game));
+            Player.setPlayerIsDead(false);
+            // TODO Détruire les instances de Ninja et de Men
             dispose();
+            game.setScreen(new PlayScreen((DungeonExplorer) game));
         }
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

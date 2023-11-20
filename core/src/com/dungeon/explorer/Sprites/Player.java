@@ -34,8 +34,8 @@ public class Player extends Sprite {
     private boolean runningRight;
     private Array<Projectile> projectiles;
 
-    private boolean invincible = false;
-    private float invincibilityTimer = 0;
+    private static boolean invincible = false;
+    private static float invincibilityTimer = 0;
     private float blinkTimer = 0;
 
     private static boolean playerIsDead = false;
@@ -240,9 +240,6 @@ public class Player extends Sprite {
         fdef.shape = shape;
         b2body.createFixture(fdef);
 
-//        PolygonShape playerBody = new PolygonShape();
-//        playerBody.setAsBox(25 / Player.PPM, 25 / Player.PPM);
-//        fdef.shape = playerBody;
         fdef.isSensor = true;
 
         b2body.createFixture(fdef).setUserData("playerBody");
@@ -250,7 +247,7 @@ public class Player extends Sprite {
     }
 
 
-    public void loseLifePoint() {
+    public static void loseLifePoint() {
         if (!invincible) {
             Hud.removeLifePoints(1);
             invincible = true;
@@ -258,12 +255,12 @@ public class Player extends Sprite {
         }
     }
 
-    public static void setPlayerIsDead() {
-        playerIsDead = true;
+    public static void setPlayerIsDead(boolean isDead) {
+        playerIsDead = isDead;
     }
 
 
-    public boolean isDead()    {
+    public boolean isDead() {
         return playerIsDead;
     }
 

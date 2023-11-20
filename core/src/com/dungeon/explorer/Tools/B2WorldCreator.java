@@ -16,8 +16,9 @@ import java.util.HashMap;
 public class B2WorldCreator {
 
     private HashMap<String, Stone> stoneMap;
+    private Player player;
 
-    public B2WorldCreator(PlayScreen screen) {
+    public B2WorldCreator(PlayScreen screen, Player player) {
         World world = screen.getWorld();
         TiledMap map = screen.getMap();
 
@@ -26,6 +27,7 @@ public class B2WorldCreator {
         FixtureDef fdef = new FixtureDef();
         Body body;
 
+        this.player = player;
         stoneMap = new HashMap<String, Stone>();
 
 
@@ -50,14 +52,8 @@ public class B2WorldCreator {
             new Stone(screen, rect);
             Stone stone = new Stone(screen, rect);
             stoneMap.put(object.getName(), stone);
-
-//            if ("S1".equals(object.getName()) && object instanceof Stone) {
-//                Stone S1 = (Stone) object;
-//            }
         }
 
-        //Lava
-        //TODO Implémenter la lave
 
     }
 
