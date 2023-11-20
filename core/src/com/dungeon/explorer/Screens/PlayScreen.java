@@ -79,7 +79,7 @@ public class PlayScreen implements Screen {
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/dungeonBoss.mp3"));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(0.5f);
-       backgroundMusic.play();
+        backgroundMusic.play();
     }
 
     public void handleInput(float dt) {
