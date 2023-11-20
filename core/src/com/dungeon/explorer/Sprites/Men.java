@@ -36,7 +36,7 @@ public class Men extends Enemy {
         setBounds(getX(), getY(), 75 / Player.PPM, 90 / Player.PPM);
         setToDestroy = false;
         destroyed = false;
-        lifePoints=2;
+        lifePoints=4;
     }
 
     public void update(float dt, Player player) {
@@ -65,6 +65,13 @@ public class Men extends Enemy {
         if (!setToDestroy && !destroyed) {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
             setRegion(walkAnimation.getKeyFrame(stateTime, true));
+        }
+
+        if (invincible) {
+            invincibilityTimer += dt;
+            if (invincibilityTimer > 1.5f) { // Durée d'invincibilité, à ajuster selon le besoin
+                invincible = false;
+            }
         }
 
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
@@ -105,7 +112,9 @@ public class Men extends Enemy {
 //        CircleShape shape = new CircleShape();
 //        shape.setRadius(25 / Player.PPM);
         fdef.filter.categoryBits = DungeonExplorer.ENEMY_BIT;
-        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT | DungeonExplorer.PROJECTILE_BIT;
+//        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT | DungeonExplorer.ALLY_PROJECTILE_BIT;
+        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT | DungeonExplorer.ALLY_PROJECTILE_BIT;
+
 
 //        fdef.shape = shape;
 //        b2body.createFixture(fdef);

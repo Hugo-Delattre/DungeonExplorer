@@ -82,7 +82,7 @@ public class PlayScreen implements Screen {
         world.setContactListener(new WorldContactListener(player));
         ninja = new Ninja(this, 2.92f, 2.92f);
 //        ninja2 = new Ninja(this, 6.92f, 3.92f);
-//        men = new Men(this, 4.92f, 4.92f);
+        men = new Men(this, 4.92f, 4.92f);
 //        men2 = new Men(this, 8.92f, 4.92f);
 
         worldCreator = new B2WorldCreator(this, player);
@@ -174,7 +174,7 @@ public class PlayScreen implements Screen {
         player.update(dt);
         ninja.update(dt);
 //        ninja2.update(dt);
-//        men.update(dt, player);
+        men.update(dt, player);
 //        men2.update(dt, player);
         hud.update(dt);
         gameCam.update();
@@ -197,7 +197,7 @@ public class PlayScreen implements Screen {
         player.draw(game.batch);
         ninja.draw(game.batch);
 //        ninja2.draw(game.batch);
-//        men.draw(game.batch);
+        men.draw(game.batch);
 //        men2.draw(game.batch);
         for (Projectile projectile : player.getProjectiles()) {
             projectile.draw(game.batch);
