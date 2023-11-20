@@ -32,7 +32,7 @@ public class Player extends Sprite {
     private Animation<TextureRegion> playerGoingLeft;
     private float stateTimer;
     private boolean runningRight;
-    private Array<Projectile> projectiles;
+    private Array<AllyProjectile> projectiles;
 
     private static boolean invincible = false;
     private static float invincibilityTimer = 0;
@@ -46,7 +46,7 @@ public class Player extends Sprite {
         currentState = State.STANDINGDOWN;
         previousState = State.STANDINGDOWN;
         stateTimer = 0;
-        projectiles = new Array<Projectile>();
+        projectiles = new Array<AllyProjectile>();
         this.screen = screen;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
@@ -122,7 +122,7 @@ public class Player extends Sprite {
 
 
     private void updateProjectiles(float dt) {
-        for (Projectile projectile : projectiles) {
+        for (AllyProjectile projectile : projectiles) {
             projectile.update(dt);
             if (projectile.isDestroyed()) {
                 projectiles.removeValue(projectile, true);
@@ -158,10 +158,10 @@ public class Player extends Sprite {
             directionX *= speedMultiplier;
             directionY *= speedMultiplier;
             // Create a projectile with the calculated direction
-            projectiles.add(new Projectile(screen, b2body.getPosition().x, b2body.getPosition().y, directionX, directionY));
+            projectiles.add(new AllyProjectile(screen, b2body.getPosition().x, b2body.getPosition().y, directionX, directionY));
         } else {
             // Create a projectile with a default direction
-            projectiles.add(new Projectile(screen, b2body.getPosition().x, b2body.getPosition().y, 0, -1));
+            projectiles.add(new AllyProjectile(screen, b2body.getPosition().x, b2body.getPosition().y, 0, -1));
         }
     }
 
@@ -268,7 +268,7 @@ public class Player extends Sprite {
         return stateTimer;
     }
 
-    public Array<Projectile> getProjectiles() {
+    public Array<AllyProjectile> getProjectiles() {
         return projectiles;
     }
 
