@@ -2,6 +2,7 @@ package com.dungeon.explorer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dungeon.explorer.Screens.IntroScreen;
 import com.dungeon.explorer.Screens.PlayScreen;
 
 public class DungeonExplorer extends Game {
@@ -26,11 +27,11 @@ public class DungeonExplorer extends Game {
 	public static final int V_HEIGHT = 700;
 
 	public SpriteBatch batch;
-  
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		setScreen(new PlayScreen(this));
+		setScreen(new IntroScreen(this));
 	}
 
 	@Override
