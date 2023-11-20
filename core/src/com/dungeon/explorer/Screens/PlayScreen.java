@@ -58,6 +58,7 @@ public class PlayScreen implements Screen {
     }
 
     public PlayScreen(DungeonExplorer game) {
+        Gdx.input.setInputProcessor(null);
         atlas = new TextureAtlas("linkAndEnemies.atlas");
         this.game = game;
         gameCam = new OrthographicCamera();
