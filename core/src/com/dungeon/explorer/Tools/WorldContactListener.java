@@ -57,7 +57,10 @@ public class WorldContactListener implements ContactListener {
             case DungeonExplorer.PLAYER_BIT | DungeonExplorer.ENEMY_BIT:
                 player.loseLifePoint();
                 break;
-            case DungeonExplorer.PROJECTILE_BIT | DungeonExplorer.ENEMY_BIT:
+            case DungeonExplorer.PLAYER_BIT | DungeonExplorer.ENEMY_PROJECTILE_BIT :
+                player.loseLifePoint();
+                break;
+            case DungeonExplorer.ALLY_PROJECTILE_BIT | DungeonExplorer.ENEMY_BIT:
                 if (fixtureA.getFilterData().categoryBits == DungeonExplorer.ENEMY_BIT) {
                     ((Enemy) fixtureA.getUserData()).hit();
                 } else {

@@ -47,6 +47,13 @@ public class Ninja extends Enemy {
             timeSinceLastChange = 0;
         }
 
+        if (invincible) {
+            invincibilityTimer += dt;
+            if (invincibilityTimer > 1f) { // Durée d'invincibilité, à ajuster selon le besoin
+                invincible = false;
+            }
+        }
+
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(walkAnimation.getKeyFrame(stateTime, true));
         if (setToDestroy && !destroyed) {
@@ -89,7 +96,8 @@ public class Ninja extends Enemy {
         b2body = world.createBody(bdef);
         FixtureDef fdef = new FixtureDef();
         fdef.filter.categoryBits = DungeonExplorer.ENEMY_BIT;
-        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT | DungeonExplorer.PROJECTILE_BIT;
+//        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT | DungeonExplorer.PROJECTILE_BIT;
+        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT | DungeonExplorer.ALLY_PROJECTILE_BIT;
 
         PolygonShape ninjaBody = new PolygonShape();
         Vector2[] vertice = new Vector2[4];

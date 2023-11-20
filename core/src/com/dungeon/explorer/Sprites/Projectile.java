@@ -10,17 +10,16 @@ import com.dungeon.explorer.Screens.PlayScreen;
 
 public class Projectile extends Sprite {
 
-    private World world;
-    private Body b2body;
+    public World world;
+    public Body b2body;
     private boolean toDestroy;
     private Texture projectileTexture;
     private PlayScreen screen;
-
     private float timeSinceCreation;
 
-    public Projectile(PlayScreen screen, float x, float y, float directionX, float directionY) {
-        //Comment these lines to remove the texture
-        projectileTexture = new Texture("textures/egg.png");
+    public Projectile(PlayScreen screen, float x, float y, Texture texture, float directionX, float directionY) {
+//        projectileTexture = new Texture("textures/egg.png");
+        this.projectileTexture = texture;
         setTexture(projectileTexture);
         this.world = screen.getWorld();
         defineProjectile(x, y);
@@ -39,7 +38,7 @@ public class Projectile extends Sprite {
     }
 
 
-    private void defineProjectile(float x, float y) {
+    public void defineProjectile(float x, float y) {
         BodyDef bdef = new BodyDef();
         bdef.position.set(x, y);
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -70,6 +69,12 @@ public class Projectile extends Sprite {
         }
     }
 
+    protected void setVelocity(float directionX, float directionY) {
+        if (b2body != null) {
+            b2body.setLinearVelocity(new Vector2(directionX, directionY));
+        }
+    }
+
     public void setToDestroy() {
         toDestroy = true;
     }
@@ -77,4 +82,6 @@ public class Projectile extends Sprite {
     public boolean isDestroyed() {
         return toDestroy;
     }
+
+
 }
