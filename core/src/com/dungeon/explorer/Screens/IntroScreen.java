@@ -28,7 +28,7 @@ public class IntroScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
 
         Image buttonBeginImage = new Image(buttonBeginTexture);
-        buttonBeginImage.setPosition(500, 150); // Position du bouton
+        buttonBeginImage.setPosition(520, 150); // Position du bouton
         buttonBeginImage.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -49,8 +49,8 @@ public class IntroScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         game.batch.begin();
-        game.batch.draw(backgroundTexture, 150, 125, DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT);
-        game.batch.draw(logoDungeonExplorerTexture, 300, 300);
+        game.batch.draw(backgroundTexture, 0, 0, 1280, 922);
+        game.batch.draw(logoDungeonExplorerTexture, 330, 300);
         game.batch.end();
 
         stage.act(delta);
