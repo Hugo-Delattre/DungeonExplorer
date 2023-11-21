@@ -76,7 +76,6 @@ public class Projectile extends Sprite {
             b2body.setLinearVelocity(new Vector2(directionX, directionY));
         }
     }
-
     public void setToDestroy() {
         if (!toDestroy && b2body != null && !world.isLocked()) {
             world.destroyBody(b2body);
