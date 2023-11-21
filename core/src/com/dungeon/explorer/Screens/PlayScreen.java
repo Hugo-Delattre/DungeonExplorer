@@ -48,6 +48,7 @@ public class PlayScreen implements Screen {
     private Music backgroundMusic;
 
     private Array<EnemyProjectile> enemyProjectiles;
+//    private Array<Enemy> enemies;
     private B2WorldCreator worldCreator;
     public static int currentLevel = 1;
     private boolean shouldMoveCamera = false;
@@ -77,6 +78,7 @@ public class PlayScreen implements Screen {
 
         player = new Player(this);
         world.setContactListener(new WorldContactListener(player));
+//        enemies = new Array<Enemy>();
         ninja = new Ninja(this, 2.92f, 2.92f);
 //        ninja2 = new Ninja(this, 6.92f, 3.92f);
         men = new Men(this, 4.92f, 4.92f);
@@ -134,6 +136,23 @@ public class PlayScreen implements Screen {
     public void update(float dt) {
         handleInput(dt);
 
+//        if (enemies.size > 0) {
+//            for (Enemy enemy : enemies) {
+//                System.out.println("Enemy update");
+//                enemy.update(dt, player);
+////            if (enemy.isDestroyed()) {
+////                enemies.removeValue(enemy, true);
+////            }
+//            }
+//        }
+//
+//        for (EnemyProjectile projectile : enemyProjectiles) {
+//            projectile.update(dt);
+//            if (projectile.isDestroyed()) {
+//                enemyProjectiles.removeValue(projectile, true);
+//            }
+//        }
+
         if (Enemy.enemyCounter <= 0 && currentLevel == 1) {
             Gdx.app.log("EnemyCounter", "All enemies have been destroyed!");
             currentLevel++;
@@ -141,12 +160,6 @@ public class PlayScreen implements Screen {
             HashMap<String, Stone> stoneMap = worldCreator.getStoneMap();
             Gdx.app.log("StoneCounter", "There are " + stoneMap.size() + " stones in the map.");
 
-            for (EnemyProjectile projectile : enemyProjectiles) {
-                projectile.update(dt);
-                if (projectile.isDestroyed()) {
-                    enemyProjectiles.removeValue(projectile, true);
-                }
-            }
 
             if (stoneMap.size() > 0) {
                 //get first element of the hashMap
@@ -193,12 +206,7 @@ public class PlayScreen implements Screen {
 //        men2.update(dt, player);
 //        bobby.update(dt, player);
 
-        for (EnemyProjectile projectile : enemyProjectiles) {
-            projectile.update(dt);
-            if (projectile.isDestroyed()) {
-                enemyProjectiles.removeValue(projectile, true);
-            }
-        }
+
         hud.update(dt);
         gameCam.update();
         renderer.setView(gameCam);
@@ -230,6 +238,13 @@ public class PlayScreen implements Screen {
         for (EnemyProjectile projectile : enemyProjectiles) {
             projectile.draw(game.batch);
         }
+//
+//        if (enemies.size > 0) {
+//            for (Enemy enemy : enemies) {
+//                enemy.draw(game.batch);
+//            }
+//        }
+//
         game.batch.end();
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
@@ -294,8 +309,26 @@ public class PlayScreen implements Screen {
         edge.dispose();
     }
 
-    public void spawnEnemiesForNextRoom() {
-        System.out.println("New enemies spawning");
+    public void spawnEnemiesForCurrentRoom() {
+        System.out.println("New enemies spawning for level " + currentLevel + "!");
+        switch (currentLevel) {
+            case 1:
+                System.out.println("Level 1");
+                break;
+            case 2:
+                System.out.println("Level 2");
+//                Enemy ninja3 = new Ninja(this, 3.92f, 9.92f);
+//                Enemy man3 = new Men(this, 5.92f, 9.92f);
+//                enemies.add(ninja3);
+//                enemies.add(man3);
+                break;
+            case 3:
+                System.out.println("Level 3");
+                break;
+            case 4:
+                System.out.println("Level 4");
+                break;
+        }
     }
 
     public World getWorld() {
