@@ -41,7 +41,9 @@ public abstract class Enemy extends Sprite {
         velocity = new Vector2(1, 0);
     }
 
+
     protected abstract void defineEnemy();
+    public abstract void update(float dt, Player player);
 
     public void hit() {
         if (!invincible) {

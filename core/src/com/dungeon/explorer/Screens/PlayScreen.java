@@ -54,7 +54,6 @@ public class PlayScreen implements Screen {
     private float cameraMoveTime = 0;
 
 
-
     public PlayScreen(DungeonExplorer game) {
         Gdx.input.setInputProcessor(null);
         atlas = new TextureAtlas("linkAndEnemies.atlas");
@@ -82,7 +81,7 @@ public class PlayScreen implements Screen {
 //        ninja2 = new Ninja(this, 6.92f, 3.92f);
         men = new Men(this, 4.92f, 4.92f);
 //        men2 = new Men(this, 8.92f, 4.92f);
-        bobby = new PinkFish(this, 6.92f, 5.22f, player);
+//        bobby = new PinkFish(this, 6.92f, 5.22f, player);
         enemyProjectiles = new Array<EnemyProjectile>();
 
         worldCreator = new B2WorldCreator(this, player);
@@ -185,24 +184,14 @@ public class PlayScreen implements Screen {
             }
         }
 
-        for (int i = 0; i < enemyProjectiles.size; ) {
-            EnemyProjectile proj = enemyProjectiles.get(i);
-            proj.update(dt);
-            if (proj.isDestroyed()) {
-                enemyProjectiles.removeIndex(i);
-            } else {
-                i++;
-            }
-        }
-
 
         world.step(1 / 60f, 6, 2);
         player.update(dt);
-        ninja.update(dt);
+        ninja.update(dt, player);
 //        ninja2.update(dt);
         men.update(dt, player);
 //        men2.update(dt, player);
-        bobby.update(dt, player);
+//        bobby.update(dt, player);
 
         for (EnemyProjectile projectile : enemyProjectiles) {
             projectile.update(dt);
@@ -233,7 +222,7 @@ public class PlayScreen implements Screen {
 //        ninja2.draw(game.batch);
         men.draw(game.batch);
 //        men2.draw(game.batch);
-        bobby.draw(game.batch);
+//        bobby.draw(game.batch);
         //TODO delete projectile after launch
         for (Projectile projectile : player.getProjectiles()) {
             projectile.draw(game.batch);
@@ -246,7 +235,7 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
 
-        if(gameOver()) {
+        if (gameOver()) {
             System.out.println("game over true");
             game.setScreen(new GameOverScreen(game));
             dispose();
@@ -283,9 +272,9 @@ public class PlayScreen implements Screen {
         Body body = world.createBody(bdef);
 
         // Haut
-        edge.set(new Vector2(0, mapHeight), new Vector2(mapWidth, mapHeight));
-        fdef.shape = edge;
-        body.createFixture(fdef);
+//        edge.set(new Vector2(0, mapHeight), new Vector2(mapWidth, mapHeight));
+//        fdef.shape = edge;
+//        body.createFixture(fdef);
 
         // Bas
         edge.set(new Vector2(0, 0), new Vector2(mapWidth, 0));
@@ -303,6 +292,10 @@ public class PlayScreen implements Screen {
         body.createFixture(fdef);
 
         edge.dispose();
+    }
+
+    public void spawnEnemiesForNextRoom() {
+        System.out.println("New enemies spawning");
     }
 
     public World getWorld() {

@@ -35,7 +35,7 @@ public class Ninja extends Enemy {
         lifePoints = 2;
     }
 
-    public void update(float dt) {
+    public void update(float dt, Player player) {
         stateTime += dt;
         timeSinceLastChange += dt;
 

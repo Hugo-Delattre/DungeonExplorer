@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.dungeon.explorer.DungeonExplorer;
 import com.dungeon.explorer.Screens.PlayScreen;
 
-public class Projectile extends Sprite {
+public abstract class Projectile extends Sprite {
 
     public World world;
     public Body b2body;
