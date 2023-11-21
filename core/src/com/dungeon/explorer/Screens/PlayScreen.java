@@ -43,6 +43,7 @@ public class PlayScreen implements Screen {
     private Ninja ninja2;
     private Men men;
     private Men men2;
+    private PinkFish bobby;
     private TextureAtlas atlas;
     private Music backgroundMusic;
 
@@ -81,6 +82,7 @@ public class PlayScreen implements Screen {
 //        ninja2 = new Ninja(this, 6.92f, 3.92f);
         men = new Men(this, 4.92f, 4.92f);
 //        men2 = new Men(this, 8.92f, 4.92f);
+        bobby = new PinkFish(this, 6.92f, 5.22f, player);
         enemyProjectiles = new Array<EnemyProjectile>();
 
         worldCreator = new B2WorldCreator(this, player);
@@ -200,6 +202,7 @@ public class PlayScreen implements Screen {
 //        ninja2.update(dt);
         men.update(dt, player);
 //        men2.update(dt, player);
+        bobby.update(dt, player);
 
         for (EnemyProjectile projectile : enemyProjectiles) {
             projectile.update(dt);
@@ -230,6 +233,8 @@ public class PlayScreen implements Screen {
 //        ninja2.draw(game.batch);
         men.draw(game.batch);
 //        men2.draw(game.batch);
+        bobby.draw(game.batch);
+        //TODO delete projectile after launch
         for (Projectile projectile : player.getProjectiles()) {
             projectile.draw(game.batch);
         }
