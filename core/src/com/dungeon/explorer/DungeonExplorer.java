@@ -18,7 +18,7 @@ public class DungeonExplorer extends Game {
 	public static final short WALL_BIT = 8;
 	public static final short DESTROYED_BIT = 16;
 	public static final short STONE_BIT = 32;
-//	public static final short ENEMY_BIT = 64;
+	public static final short BARRIER_BIT = 64;
 	public static final short OBJECT_BIT = 128;
 	public static final short ENEMY_BIT = 256;
 	public static final short PROJECTILE_BIT = 512;

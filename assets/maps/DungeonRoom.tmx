@@ -627,7 +627,7 @@
 </data>
  </layer>
  <objectgroup id="17" name="Barrieres">
-  <object id="109" name="Barriere" x="-6" y="1887" width="422.667" height="30"/>
+  <object id="109" name="Barriere" x="-7.5" y="1889.5" width="422.667" height="30"/>
   <object id="112" name="Barriere" x="546" y="1890" width="414" height="30"/>
   <object id="114" name="Barriere" x="546.833" y="1280" width="415.667" height="30"/>
   <object id="115" name="Barriere" x="-5.5" y="1280.5" width="420.333" height="31.25"/>

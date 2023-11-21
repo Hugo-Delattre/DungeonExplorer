@@ -28,8 +28,29 @@ public class Stone extends InteractiveTileObject {
             PlayScreen.currentLevel++;
             Gdx.app.log("Stone", "Reached");
             setCategoryFilter(DungeonExplorer.DESTROYED_BIT);
-            screen.spawnEnemiesForCurrentRoom();
+//            screen.spawnEnemiesForCurrentRoom();
             screen.setShouldMoveCamera(true);
+            switch (PlayScreen.currentLevel) {
+                case 3:
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            Enemy.enemyCounter = 4; // When changing level, the enemy counter updates
+                            System.out.println("Enemy counter: " + Enemy.enemyCounter);
+                        }
+                    }, 5);
+                    break;
+
+                case 4:
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            Enemy.enemyCounter = 1; // There's only the boss in the final room
+                            System.out.println("Enemy counter: " + Enemy.enemyCounter);
+                        }
+                    }, 5);
+                    break;
+            }
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
@@ -40,6 +61,8 @@ public class Stone extends InteractiveTileObject {
         } else if (Enemy.enemyCounter <= 0 && hasStoneBeenRecentlyActivated) {
             setCategoryFilter(DungeonExplorer.DESTROYED_BIT);
         }
+
+
     }
 
     public void breakStone() {

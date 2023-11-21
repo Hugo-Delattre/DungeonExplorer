@@ -41,8 +41,12 @@ public class PlayScreen implements Screen {
     private Player player;
     private Ninja ninja;
     private Ninja ninja2;
+    private Ninja ninja3;
+    private Ninja ninja4;
     private Men men;
     private Men men2;
+    private Men men3;
+    private Men men4;
     private PinkFish bobby;
     private TextureAtlas atlas;
     private Music backgroundMusic;
@@ -79,13 +83,25 @@ public class PlayScreen implements Screen {
         player = new Player(this);
         world.setContactListener(new WorldContactListener(player));
 //        enemies = new Array<Enemy>();
-        ninja = new Ninja(this, 2.92f, 2.92f);
-//        ninja2 = new Ninja(this, 6.92f, 3.92f);
-        men = new Men(this, 4.92f, 4.92f);
-//        men2 = new Men(this, 8.92f, 4.92f);
-//        bobby = new PinkFish(this, 6.92f, 5.22f, player);
-        enemyProjectiles = new Array<EnemyProjectile>();
 
+        //Level 1
+        ninja = new Ninja(this, 2.92f, 2.92f);
+        ninja2 = new Ninja(this, 6.92f, 3.92f);
+        men = new Men(this, 4.92f, 4.92f);
+        men2 = new Men(this, 8.92f, 4.92f);
+
+//        Level 2
+        ninja3 = new Ninja(this, 2.92f, 9.92f);
+        ninja4 = new Ninja(this, 6.92f, 9.92f);
+        men3 = new Men(this, 4.92f, 10.92f);
+        men4 = new Men(this, 8.92f, 10.92f);
+
+
+        //Level 3 - Boss Level
+        bobby = new PinkFish(this, 6.92f, 15.22f, player);
+
+
+        enemyProjectiles = new Array<EnemyProjectile>();
         worldCreator = new B2WorldCreator(this, player);
     }
 
@@ -201,10 +217,14 @@ public class PlayScreen implements Screen {
         world.step(1 / 60f, 6, 2);
         player.update(dt);
         ninja.update(dt, player);
-//        ninja2.update(dt);
+        ninja2.update(dt, player);
+        ninja3.update(dt, player);
+        ninja4.update(dt, player);
         men.update(dt, player);
-//        men2.update(dt, player);
-//        bobby.update(dt, player);
+        men2.update(dt, player);
+        men3.update(dt, player);
+        men4.update(dt, player);
+        bobby.update(dt, player);
 
 
         hud.update(dt);
@@ -227,10 +247,14 @@ public class PlayScreen implements Screen {
 
         player.draw(game.batch);
         ninja.draw(game.batch);
-//        ninja2.draw(game.batch);
+        ninja2.draw(game.batch);
+        ninja3.draw(game.batch);
+        ninja4.draw(game.batch);
         men.draw(game.batch);
-//        men2.draw(game.batch);
-//        bobby.draw(game.batch);
+        men2.draw(game.batch);
+        men3.draw(game.batch);
+        men4.draw(game.batch);
+        bobby.draw(game.batch);
         //TODO delete projectile after launch
         for (Projectile projectile : player.getProjectiles()) {
             projectile.draw(game.batch);
@@ -365,5 +389,14 @@ public class PlayScreen implements Screen {
         b2dr.dispose();
         hud.dispose();
         backgroundMusic.dispose();
+        ninja.dispose();
+        ninja2.dispose();
+        ninja3.dispose();
+        ninja4.dispose();
+        men.dispose();
+        men2.dispose();
+        men3.dispose();
+        men4.dispose();
+        bobby.dispose();
     }
 }

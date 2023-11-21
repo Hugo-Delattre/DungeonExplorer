@@ -29,13 +29,13 @@ public abstract class Enemy extends Sprite {
     protected float invincibilityTimer = 0;
     protected float blinkTimer = 0;
 
-    public static int enemyCounter = 0;
+    public static int enemyCounter = 4;
 
     public Enemy(PlayScreen screen, float x, float y) {
         this.world = screen.getWorld();
         this.screen = screen;
         setPosition(x, y);
-        enemyCounter++;
+//        enemyCounter++;
         Gdx.app.log("Enemy", "Created. " + enemyCounter + " instances.");
         defineEnemy();
         velocity = new Vector2(1, 0);

@@ -33,7 +33,6 @@ public class WorldContactListener implements ContactListener {
                 || (fixtureA.getUserData() instanceof Enemy && fixtureB.getUserData() instanceof Projectile)) {
             System.out.println("Collision détectée !");
             Gdx.app.log("Projectile collision", "Projectile hit enemy");
-            // Autres actions à effectuer lors de la collision
         }
 
         switch (cDef) {
@@ -59,7 +58,6 @@ public class WorldContactListener implements ContactListener {
                 } else {
                     ((Enemy) fixtureB.getUserData()).hit();
                 }
-                // Gdx.app.log("Enemy collision", "Enemy hit by projectile");
                 break;
 
         }

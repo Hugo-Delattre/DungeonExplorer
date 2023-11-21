@@ -6,10 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.dungeon.explorer.Screens.PlayScreen;
-import com.dungeon.explorer.Sprites.Player;
-import com.dungeon.explorer.Sprites.Potion;
-import com.dungeon.explorer.Sprites.Stone;
-import com.dungeon.explorer.Sprites.Wall;
+import com.dungeon.explorer.Sprites.*;
 
 import java.util.HashMap;
 
@@ -52,6 +49,13 @@ public class B2WorldCreator {
             new Stone(screen, rect);
             Stone stone = new Stone(screen, rect);
             stoneMap.put(object.getName(), stone);
+        }
+
+        //invisibleBarrier
+        for (MapObject object : map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            new Barrier(screen, rect);
         }
 
 

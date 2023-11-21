@@ -27,7 +27,7 @@ public class EnemyProjectile extends Projectile {
         shape.setRadius(12 / Player.PPM);
 
         fdef.filter.categoryBits = DungeonExplorer.ENEMY_PROJECTILE_BIT;
-        fdef.filter.maskBits = DungeonExplorer.PLAYER_BIT;
+        fdef.filter.maskBits = DungeonExplorer.PLAYER_BIT | DungeonExplorer.BARRIER_BIT | DungeonExplorer.STONE_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
