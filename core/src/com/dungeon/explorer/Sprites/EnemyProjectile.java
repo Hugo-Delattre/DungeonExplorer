@@ -1,6 +1,7 @@
 package com.dungeon.explorer.Sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -42,5 +43,15 @@ public class EnemyProjectile extends Projectile {
         }
     }
 
+    @Override
+    public void draw(Batch batch) {
+        if (b2body != null) {
+            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+//            super.draw(batch);
+            batch.draw(projectileTexture, b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2, getWidth(), getHeight());
+        }
+
+
+    }
 
 }

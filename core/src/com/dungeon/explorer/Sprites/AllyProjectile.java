@@ -28,7 +28,7 @@ public class AllyProjectile extends Projectile {
         shape.setRadius(12 / Player.PPM);
 
         fdef.filter.categoryBits = DungeonExplorer.ALLY_PROJECTILE_BIT;
-        fdef.filter.maskBits = DungeonExplorer.ENEMY_BIT | DungeonExplorer.WALL_BIT;
+        fdef.filter.maskBits = DungeonExplorer.ENEMY_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
@@ -38,7 +38,12 @@ public class AllyProjectile extends Projectile {
 
     @Override
     public void draw(Batch batch) {
-        setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-        super.draw(batch);
+        if (b2body != null) {
+            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+//            super.draw(batch);
+            batch.draw(projectileTexture, b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2, getWidth(), getHeight());
+        }
+
+
     }
 }

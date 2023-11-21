@@ -181,8 +181,16 @@ public class PlayScreen implements Screen {
                 cameraMoveTime = 0;
                 shouldMoveCamera = false;
             }
+        }
 
-
+        for (int i = 0; i < enemyProjectiles.size; ) {
+            EnemyProjectile proj = enemyProjectiles.get(i);
+            proj.update(dt);
+            if (proj.isDestroyed()) {
+                enemyProjectiles.removeIndex(i);
+            } else {
+                i++;
+            }
         }
 
 

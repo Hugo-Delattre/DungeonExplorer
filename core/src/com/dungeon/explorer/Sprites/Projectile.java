@@ -13,7 +13,7 @@ public class Projectile extends Sprite {
     public World world;
     public Body b2body;
     private boolean toDestroy;
-    private Texture projectileTexture;
+    protected Texture projectileTexture;
     private PlayScreen screen;
     private float timeSinceCreation;
 
@@ -32,9 +32,9 @@ public class Projectile extends Sprite {
     // In the Projectile class
     public void draw(Batch batch) {
         // Check if the projectile is not destroyed
-        //if (!toDestroy) {
+        if (!toDestroy) {
             batch.draw(projectileTexture, b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2, getWidth(), getHeight());
-       // }
+         }
     }
 
 
@@ -59,14 +59,16 @@ public class Projectile extends Sprite {
 
     public void update(float dt) {
         timeSinceCreation += dt;
-        if (timeSinceCreation > 5) { // 10 secondes
+        if (timeSinceCreation > 3 && !toDestroy) { // 10 secondes
+            System.out.println("Projectile destroyed");
             setToDestroy();
         }
 
-        if (toDestroy && !world.isLocked()) {
-            world.destroyBody(b2body);
-            setToDestroy();
-        }
+//        if (toDestroy && b2body != null) {
+//            world.destroyBody(b2body);
+//            b2body = null;
+//            setToDestroy();
+//        }
     }
 
     protected void setVelocity(float directionX, float directionY) {
@@ -76,7 +78,11 @@ public class Projectile extends Sprite {
     }
 
     public void setToDestroy() {
-        toDestroy = true;
+        if (!toDestroy && b2body != null && !world.isLocked()) {
+            world.destroyBody(b2body);
+            b2body = null;
+            toDestroy = true;
+        }
     }
 
     public boolean isDestroyed() {

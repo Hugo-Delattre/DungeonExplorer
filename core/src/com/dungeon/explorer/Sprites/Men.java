@@ -44,19 +44,23 @@ public class Men extends Enemy {
 
     public void update(float dt, Player player) {
 
+        if (!destroyed) {
         shootTimer += dt;
         if (shootTimer >= shootCooldown) {
             fireProjectile();
             resetShootCooldown();
+            }
         }
+
         stateTime += dt;
         setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
         setRegion(walkAnimation.getKeyFrame(stateTime, true));
+
         if (setToDestroy && !destroyed) {
             world.destroyBody(b2body);
             destroyed = true;
             //Texture of dying men
-            setRegion(new TextureRegion(screen.getAtlas().findRegion("men"), 60, 80, 90, 100));
+//            setRegion(new TextureRegion(screen.getAtlas().findRegion("men"), 60, 80, 90, 100));
             stateTime = 0;
         } else if (!destroyed) {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
