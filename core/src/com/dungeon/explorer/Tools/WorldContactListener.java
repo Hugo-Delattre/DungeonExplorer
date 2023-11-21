@@ -3,10 +3,7 @@ package com.dungeon.explorer.Tools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.dungeon.explorer.DungeonExplorer;
-import com.dungeon.explorer.Sprites.Enemy;
-import com.dungeon.explorer.Sprites.InteractiveTileObject;
-import com.dungeon.explorer.Sprites.Player;
-import com.dungeon.explorer.Sprites.Projectile;
+import com.dungeon.explorer.Sprites.*;
 
 public class WorldContactListener implements ContactListener {
     
@@ -40,13 +37,6 @@ public class WorldContactListener implements ContactListener {
         }
 
         switch (cDef) {
-//            case DungeonExplorer.ENEMY_BODY_BIT | DungeonExplorer.OBJECT_BIT:
-//                if (fixtureA.getFilterData().categoryBits == DungeonExplorer.ENEMY_BODY_BIT) {
-//                    ((Enemy) fixtureA.getUserData()).hit();
-//                } else {
-//                    ((InteractiveTileObject) fixtureA.getUserData()).onPlayerContact();
-//                }
-//                break;
             case DungeonExplorer.ENEMY_BIT | DungeonExplorer.OBJECT_BIT:
                 if (fixtureA.getFilterData().categoryBits == DungeonExplorer.ENEMY_BIT) {
                     ((Enemy) fixtureA.getUserData()).reverseVelocity(true, false);
@@ -57,8 +47,11 @@ public class WorldContactListener implements ContactListener {
             case DungeonExplorer.PLAYER_BIT | DungeonExplorer.ENEMY_BIT:
                 player.loseLifePoint();
                 break;
-            case DungeonExplorer.PLAYER_BIT | DungeonExplorer.ENEMY_PROJECTILE_BIT :
-                player.loseLifePoint();
+            case DungeonExplorer.PLAYER_BIT | DungeonExplorer.ENEMY_PROJECTILE_BIT:
+                Gdx.app.log("Player collision", "Player hit by projectile");
+                if (fixtureA.getUserData() instanceof EnemyProjectile || fixtureB.getUserData() instanceof EnemyProjectile) {
+                    player.loseLifePoint();
+                }
                 break;
             case DungeonExplorer.ALLY_PROJECTILE_BIT | DungeonExplorer.ENEMY_BIT:
                 if (fixtureA.getFilterData().categoryBits == DungeonExplorer.ENEMY_BIT) {
