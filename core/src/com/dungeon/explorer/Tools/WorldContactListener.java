@@ -31,8 +31,8 @@ public class WorldContactListener implements ContactListener {
 
         if ((fixtureA.getUserData() instanceof Projectile && fixtureB.getUserData() instanceof Enemy)
                 || (fixtureA.getUserData() instanceof Enemy && fixtureB.getUserData() instanceof Projectile)) {
-            System.out.println("Collision détectée !");
-            Gdx.app.log("Projectile collision", "Projectile hit enemy");
+//            System.out.println("Collision détectée !");
+//            Gdx.app.log("Projectile collision", "Projectile hit enemy");
         }
 
         switch (cDef) {
@@ -47,7 +47,7 @@ public class WorldContactListener implements ContactListener {
                 player.loseLifePoint();
                 break;
             case DungeonExplorer.PLAYER_BIT | DungeonExplorer.ENEMY_PROJECTILE_BIT:
-                Gdx.app.log("Player collision", "Player hit by projectile");
+//                Gdx.app.log("Player collision", "Player hit by projectile");
                 if (fixtureA.getUserData() instanceof EnemyProjectile || fixtureB.getUserData() instanceof EnemyProjectile) {
                     player.loseLifePoint();
                 }

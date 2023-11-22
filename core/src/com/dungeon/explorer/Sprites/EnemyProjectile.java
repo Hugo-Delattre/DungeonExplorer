@@ -36,14 +36,6 @@ public class EnemyProjectile extends Projectile {
     }
 
     @Override
-    public void update(float dt) {
-        super.update(dt);
-        if (b2body != null) {
-            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-        }
-    }
-
-    @Override
     public void draw(Batch batch) {
         if (b2body != null) {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);

@@ -12,10 +12,10 @@ public abstract class Projectile extends Sprite {
 
     public World world;
     public Body b2body;
-    private boolean toDestroy;
+    protected boolean toDestroy;
     protected Texture projectileTexture;
     private PlayScreen screen;
-    private float timeSinceCreation;
+    protected float timeSinceCreation;
 
     public Projectile(PlayScreen screen, float x, float y, Texture texture, float directionX, float directionY) {
 //        projectileTexture = new Texture("textures/egg.png");
@@ -48,7 +48,7 @@ public abstract class Projectile extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(12 / Player.PPM); // Ajustez le rayon selon vos besoins
         fdef.filter.categoryBits = DungeonExplorer.PROJECTILE_BIT;
-        fdef.filter.maskBits = DungeonExplorer.ENEMY_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.ENEMY_BIT; // Ajustez les bits de masque selon vos besoins
+        fdef.filter.maskBits = DungeonExplorer.ENEMY_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.STONE_BIT; // Ajustez les bits de masque selon vos besoins
 
         fdef.shape = shape; // Assurez-vous que la forme est définie avant de l'utiliser
         b2body.createFixture(fdef);
@@ -59,16 +59,12 @@ public abstract class Projectile extends Sprite {
 
     public void update(float dt) {
         timeSinceCreation += dt;
+        // After 3s the projectile is destroyed
         if (timeSinceCreation > 3 && !toDestroy) { // 10 secondes
-            System.out.println("Projectile destroyed");
-            setToDestroy();
-        }
-
-//        if (toDestroy && b2body != null) {
+            toDestroy = true;
+//            System.out.println("Projectile to be destroyed");
 //            world.destroyBody(b2body);
-//            b2body = null;
-//            setToDestroy();
-//        }
+        }
     }
 
     protected void setVelocity(float directionX, float directionY) {
@@ -76,11 +72,12 @@ public abstract class Projectile extends Sprite {
             b2body.setLinearVelocity(new Vector2(directionX, directionY));
         }
     }
-    public void setToDestroy() {
-        if (!toDestroy && b2body != null && !world.isLocked()) {
+
+    public void destroyBody() {
+        if (b2body != null && !world.isLocked()) {
             world.destroyBody(b2body);
             b2body = null;
-            toDestroy = true;
+//            System.out.println("Projectile destroyed");
         }
     }
 

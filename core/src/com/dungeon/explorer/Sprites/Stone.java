@@ -15,7 +15,7 @@ public class Stone extends InteractiveTileObject {
     public Stone(PlayScreen screen, Rectangle bounds) {
         super(screen, bounds);
         fixture.setUserData(this);
-        setCategoryFilter(DungeonExplorer.WALL_BIT);
+        setCategoryFilter(DungeonExplorer.STONE_BIT);
         this.screen = screen;
     }
 
@@ -23,32 +23,33 @@ public class Stone extends InteractiveTileObject {
     public void onPlayerContact() {
         Gdx.app.log("Stone", "Collision");
         //TODO sound effect stone destroyed
-        if (Enemy.enemyCounter <= 0 && !hasStoneBeenRecentlyActivated) {
+        if (Enemy.enemyCounter == 0 && !hasStoneBeenRecentlyActivated) {
             hasStoneBeenRecentlyActivated = true;
-            PlayScreen.currentLevel++;
+//            PlayScreen.currentLevel++;
             Gdx.app.log("Stone", "Reached");
             setCategoryFilter(DungeonExplorer.DESTROYED_BIT);
-//            screen.spawnEnemiesForCurrentRoom();
             screen.setShouldMoveCamera(true);
             switch (PlayScreen.currentLevel) {
-                case 3:
+                case 1:
                     Timer.schedule(new Timer.Task() {
                         @Override
                         public void run() {
-                            Enemy.enemyCounter = 4; // When changing level, the enemy counter updates
+                            Enemy.enemyCounter = 6; // When changing level, the enemy counter updates
+                            PlayScreen.currentLevel++;
                             System.out.println("Enemy counter: " + Enemy.enemyCounter);
                         }
-                    }, 5);
+                    }, 2);
                     break;
 
-                case 4:
+                case 2:
                     Timer.schedule(new Timer.Task() {
                         @Override
                         public void run() {
                             Enemy.enemyCounter = 1; // There's only the boss in the final room
+                            PlayScreen.currentLevel++;
                             System.out.println("Enemy counter: " + Enemy.enemyCounter);
                         }
-                    }, 5);
+                    }, 2);
                     break;
             }
             Timer.schedule(new Timer.Task() {
