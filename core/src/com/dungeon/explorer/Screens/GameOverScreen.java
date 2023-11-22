@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -11,14 +13,21 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dungeon.explorer.DungeonExplorer;
 
 public class GameOverScreen implements Screen {
-    private DungeonExplorer game;
-    private Viewport viewport;
-    private SpriteBatch batch;
-    private BitmapFont font;
+    private final DungeonExplorer game;
+    private final SpriteBatch batch;
+    private final BitmapFont font;
+    //private final Texture backgroundTexture;
+    private OrthographicCamera gameCam;
+    private Viewport gamePort;
 
     public GameOverScreen(DungeonExplorer game) {
+        //backgroundTexture = new Texture("assetsIntro/backgroundIntro.png");
         this.game = game;
-        viewport = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT);
+        gameCam = new OrthographicCamera();
+        gameCam.setToOrtho(false, DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT);
+        gamePort = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT, gameCam);
+
+        //gamePort = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT);
         batch = new SpriteBatch();
         font = new BitmapFont();
     }
@@ -31,21 +40,24 @@ public class GameOverScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.setProjectionMatrix(viewport.getCamera().combined);
-        batch.begin();
-        font.draw(batch, "Game Over!", 80, 150); // You can adjust the position
-        batch.end();
+
+        game.batch.setProjectionMatrix(gamePort.getCamera().combined);
+
+        game.batch.begin();
+        //game.batch.draw(backgroundTexture, 0, 0, 960, 700);
+        font.draw(game.batch, "Game over!", 460, 480);
+        game.batch.end();
 
         if (Gdx.input.justTouched()) {
             game.setScreen(new IntroScreen(game));
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY) && (!Gdx.input.isKeyJustPressed(Input.Keys.SPACE))) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY) && (!Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) && (!Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) && (!Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) && (!Gdx.input.isKeyJustPressed(Input.Keys.UP)) && (!Gdx.input.isKeyJustPressed(Input.Keys.DOWN))) {
             game.setScreen(new IntroScreen(game));
         }
     }
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width, height);
+        gamePort.update(width, height);
     }
 
     @Override
@@ -64,5 +76,6 @@ public class GameOverScreen implements Screen {
     public void dispose() {
         batch.dispose();
         font.dispose();
+        //backgroundTexture.dispose();
     }
 }

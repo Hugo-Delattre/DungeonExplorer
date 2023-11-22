@@ -6,6 +6,7 @@ import com.dungeon.explorer.Game.GameState;
 import com.dungeon.explorer.Screens.GameOverScreen;
 import com.dungeon.explorer.Screens.IntroScreen;
 import com.dungeon.explorer.Screens.PlayScreen;
+import com.dungeon.explorer.Screens.WinScreen;
 
 public class DungeonExplorer extends Game {
 //	public static final int V_WIDTH = 400;
