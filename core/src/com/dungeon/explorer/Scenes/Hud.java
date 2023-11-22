@@ -50,7 +50,7 @@ public class Hud implements Disposable {
         score = 0;
         dungeon = 1;
         level = 1;
-        lifePoints = 6;
+        lifePoints = 5;
         lifeImages = new ArrayList<Image>();
         Texture heartTexture = new Texture("textures/heart.png");
         damageSound = Gdx.audio.newSound(Gdx.files.internal("music/damageHit.mp3"));

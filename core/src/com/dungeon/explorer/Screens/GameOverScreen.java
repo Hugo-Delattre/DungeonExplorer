@@ -38,10 +38,8 @@ public class GameOverScreen implements Screen {
 
         if (Gdx.input.justTouched()) {
             game.setScreen(new IntroScreen(game));
-            dispose();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY) && (!Gdx.input.isKeyJustPressed(Input.Keys.SPACE))) {
             game.setScreen(new IntroScreen(game));
-            dispose();
         }
     }
 
