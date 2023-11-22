@@ -9,7 +9,6 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("Dungeon Explorer");
-		// width 1920 * 1080 works well, or 1371*1000
 		config.setWindowedMode(1280, 922);
 		new Lwjgl3Application(new DungeonExplorer(), config);
 	}

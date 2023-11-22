@@ -20,7 +20,7 @@ public class Wall extends InteractiveTileObject {
     public void onPlayerContact() {
         Gdx.app.log("Wall", "-1 HP");
         setCategoryFilter(DungeonExplorer.DESTROYED_BIT);
-        Hud.removeLifePoints(1);
+        Player.loseLifePoint();
 
         Timer.schedule(new Timer.Task() {
             @Override
@@ -28,8 +28,6 @@ public class Wall extends InteractiveTileObject {
                 setCategoryFilter(DungeonExplorer.WALL_BIT);
             }
         }, 2f);
-
-//        player.repelFrom(new Vector2(getBounds().getX(), getBounds().getY()));
 
     }
 }

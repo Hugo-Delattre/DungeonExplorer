@@ -6,14 +6,16 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.dungeon.explorer.Screens.PlayScreen;
-import com.dungeon.explorer.Sprites.Player;
-import com.dungeon.explorer.Sprites.Potion;
-import com.dungeon.explorer.Sprites.Stone;
-import com.dungeon.explorer.Sprites.Wall;
+import com.dungeon.explorer.Sprites.*;
+
+import java.util.HashMap;
 
 public class B2WorldCreator {
 
-    public B2WorldCreator(PlayScreen screen) {
+    private HashMap<String, Stone> stoneMap;
+    private Player player;
+
+    public B2WorldCreator(PlayScreen screen, Player player) {
         World world = screen.getWorld();
         TiledMap map = screen.getMap();
 
@@ -21,6 +23,10 @@ public class B2WorldCreator {
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
         Body body;
+
+        this.player = player;
+        stoneMap = new HashMap<String, Stone>();
+
 
         //Potion
         for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
@@ -41,10 +47,21 @@ public class B2WorldCreator {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             new Stone(screen, rect);
+            Stone stone = new Stone(screen, rect);
+            stoneMap.put(object.getName(), stone);
         }
 
-        //Lava
-        //TODO Implémenter la lave
+        //invisibleBarrier
+        for (MapObject object : map.getLayers().get(12).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
+            new Barrier(screen, rect);
+        }
+
+
+    }
+
+    public HashMap<String, Stone> getStoneMap() {
+        return stoneMap;
     }
 }

@@ -12,7 +12,7 @@ import com.dungeon.explorer.Scenes.Hud;
 import com.dungeon.explorer.Screens.PlayScreen;
 
 public class Player extends Sprite {
-    public enum State {GOINGUP, GOINGDOWN, GOINGRIGHT, GOINGLEFT, STANDINGDOWN}
+    public enum State {GOINGUP, GOINGDOWN, GOINGRIGHT, GOINGLEFT, STANDINGDOWN, DEAD}
 
     ;
     // TODO: Implémenter STANDINGRIGHT, UP, LEFT en utilisant previous state cf 9:00 dans la partie 11
@@ -32,12 +32,13 @@ public class Player extends Sprite {
     private Animation<TextureRegion> playerGoingLeft;
     private float stateTimer;
     private boolean runningRight;
-    private Array<Projectile> projectiles;
+    private Array<AllyProjectile> projectiles;
 
-    private boolean invincible = false;
-    private float invincibilityTimer = 0;
+    private static boolean invincible = false;
+    private static float invincibilityTimer = 0;
     private float blinkTimer = 0;
 
+    private static boolean playerIsDead = false;
 
     public Player(PlayScreen screen) {
         super(screen.getAtlas().findRegion("link"));
@@ -45,7 +46,7 @@ public class Player extends Sprite {
         currentState = State.STANDINGDOWN;
         previousState = State.STANDINGDOWN;
         stateTimer = 0;
-        projectiles = new Array<Projectile>();
+        projectiles = new Array<AllyProjectile>();
         this.screen = screen;
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
@@ -121,7 +122,7 @@ public class Player extends Sprite {
 
 
     private void updateProjectiles(float dt) {
-        for (Projectile projectile : projectiles) {
+        for (AllyProjectile projectile : projectiles) {
             projectile.update(dt);
             if (projectile.isDestroyed()) {
                 projectiles.removeValue(projectile, true);
@@ -157,10 +158,10 @@ public class Player extends Sprite {
             directionX *= speedMultiplier;
             directionY *= speedMultiplier;
             // Create a projectile with the calculated direction
-            projectiles.add(new Projectile(screen, b2body.getPosition().x, b2body.getPosition().y, directionX, directionY));
+            projectiles.add(new AllyProjectile(screen, b2body.getPosition().x, b2body.getPosition().y, directionX, directionY));
         } else {
             // Create a projectile with a default direction
-            projectiles.add(new Projectile(screen, b2body.getPosition().x, b2body.getPosition().y, 0, -1));
+            projectiles.add(new AllyProjectile(screen, b2body.getPosition().x, b2body.getPosition().y, 0, -1));
         }
     }
 
@@ -234,14 +235,11 @@ public class Player extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(18 / Player.PPM);
         fdef.filter.categoryBits = DungeonExplorer.PLAYER_BIT;
-        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.ENEMY_BIT;
+        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.ENEMY_PROJECTILE_BIT | DungeonExplorer.BARRIER_BIT | DungeonExplorer.STONE_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);
 
-//        PolygonShape playerBody = new PolygonShape();
-//        playerBody.setAsBox(25 / Player.PPM, 25 / Player.PPM);
-//        fdef.shape = playerBody;
         fdef.isSensor = true;
 
         b2body.createFixture(fdef).setUserData("playerBody");
@@ -249,7 +247,7 @@ public class Player extends Sprite {
     }
 
 
-    public void loseLifePoint() {
+    public static void loseLifePoint() {
         if (!invincible) {
             Hud.removeLifePoints(1);
             invincible = true;
@@ -257,7 +255,20 @@ public class Player extends Sprite {
         }
     }
 
-    public Array<Projectile> getProjectiles() {
+    public static void setPlayerIsDead(boolean isDead) {
+        playerIsDead = isDead;
+    }
+
+
+    public boolean isDead() {
+        return playerIsDead;
+    }
+
+    public float getStateTimer() {
+        return stateTimer;
+    }
+
+    public Array<AllyProjectile> getProjectiles() {
         return projectiles;
     }
 
