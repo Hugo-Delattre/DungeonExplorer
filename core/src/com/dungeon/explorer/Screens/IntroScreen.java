@@ -29,8 +29,6 @@ public class IntroScreen extends ScreenAdapter {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
-
-
         Image buttonBeginImage = new Image(buttonBeginTexture);
         buttonBeginImage.setPosition(520, 150); // Position du bouton
         buttonBeginImage.addListener(new ClickListener() {
