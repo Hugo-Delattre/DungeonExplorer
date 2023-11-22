@@ -132,6 +132,8 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
+        Gdx.graphics.setWindowedMode(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT);
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/dungeonBoss.mp3"));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(0.5f);
@@ -311,9 +313,8 @@ public class PlayScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         gamePort.update(width, height);
-        // gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight()
-        // / 2, 0);
-        // gameCam.update();
+        gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+        gameCam.update();
         // game.batch.setProjectionMatrix(gameCam.combined);
     }
 
