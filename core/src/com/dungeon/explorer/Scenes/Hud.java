@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dungeon.explorer.DungeonExplorer;
+import com.dungeon.explorer.Screens.PlayScreen;
 import com.dungeon.explorer.Sprites.Player;
 
 import java.util.ArrayList;
@@ -67,8 +68,7 @@ public class Hud implements Disposable {
         dungeonLabel = new Label("DUNGEON", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         dungeonNumberLabel = new Label(String.format("%01d", dungeon), new com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle(new BitmapFont(), Color.WHITE));
         roomLabel = new Label("ROOM", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        roomNumberLabel = new Label(String.format("%01d", level), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-
+        roomNumberLabel = new Label(String.format("%01d", PlayScreen.currentLevel), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         topTable.add(timeLabel).expandX().padTop(10);
         topTable.add(dungeonLabel).expandX().padTop(10);
@@ -130,6 +130,10 @@ public class Hud implements Disposable {
             worldTimer++;
             counterLabel.setText(String.format("%04d", worldTimer));
             timeCount = 0;
+        }
+        if (PlayScreen.currentLevel != level) {
+            level = PlayScreen.currentLevel;
+            roomNumberLabel.setText(String.format("%01d", level));
         }
     }
 
