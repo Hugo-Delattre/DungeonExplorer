@@ -110,6 +110,7 @@ public class Hud implements Disposable {
                 lifePoints--;
                 bottomTable.removeActor(lifeImages.get(lifePoints));
                 lifeImages.remove(lifePoints);
+                damageSound.setVolume(0, 0.2f);
                 damageSound.play();
                 System.out.println("Damage taken");
             }

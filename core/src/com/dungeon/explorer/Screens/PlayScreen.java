@@ -62,6 +62,7 @@ public class PlayScreen implements Screen {
     private boolean shouldMoveCamera = false;
     private float cameraMoveTime = 0;
     private Sound wooshShound;
+    private Sound breakStoneSound;
 
     private HashMap<Integer, Integer> levelToStoneLayerMap;
     private boolean hasLevelChangedRecently = false;
@@ -85,6 +86,7 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0, 0), true);
         createBorders();
         wooshShound = Gdx.audio.newSound(Gdx.files.internal("music/woosh.mp3"));
+        breakStoneSound = Gdx.audio.newSound(Gdx.files.internal("music/breakStone.mp3"));
 
         // Uncomment this line and the b2dr.render(world, gameCam.combined); below to
         // see the Box2D debug lines
@@ -102,9 +104,9 @@ public class PlayScreen implements Screen {
         men2 = new Men(this, 8.92f, 4.92f);
 
 //        Level 2
-        ninja3 = new Ninja(this, 2.92f, 9.92f);
-        ninja4 = new Ninja(this, 6.92f, 9.92f);
-        ninja5 = new Ninja(this, 6.92f, 9.92f);
+        ninja3 = new Ninja(this, 2.92f, 11.92f);
+        ninja4 = new Ninja(this, 6.92f, 11.92f);
+        ninja5 = new Ninja(this, 6.92f, 11.92f);
         men3 = new Men(this, 4.92f, 10.92f);
         men4 = new Men(this, 3.42f, 10.92f);
         men5 = new Men(this, 7.52f, 10.92f);
@@ -166,11 +168,12 @@ public class PlayScreen implements Screen {
     public void update(float dt) {
         handleInput(dt);
 
-        System.out.println("CurrentLevel" + currentLevel);
+//        System.out.println("CurrentLevel" + currentLevel);
 
         if (Enemy.enemyCounter <= 0 && !hasLevelChangedRecently && currentLevel == 1) {
             hasLevelChangedRecently = true;
             System.out.println("Destroying level 1 stones");
+            breakStoneSound.play();
 
             TiledMapTileLayer layerToRemove = (TiledMapTileLayer) map.getLayers().get(8);
             if (layerToRemove != null) {
@@ -181,7 +184,7 @@ public class PlayScreen implements Screen {
                 @Override
                 public void run() {
                     hasLevelChangedRecently = false;
-                    System.out.println("mob can be checked again, hasLevelChangedRecently: " + hasLevelChangedRecently);
+//                    System.out.println("mob can be checked again, hasLevelChangedRecently: " + hasLevelChangedRecently);
                 }
             }, 10);
         }
@@ -189,6 +192,8 @@ public class PlayScreen implements Screen {
         if (Enemy.enemyCounter <= 0 && !hasLevelChangedRecently && currentLevel == 2) {
             hasLevelChangedRecently = true;
             System.out.println("Destroying level 2 stones");
+            breakStoneSound.play();
+
 
 
             TiledMapTileLayer layerToRemove = (TiledMapTileLayer) map.getLayers().get(8);
@@ -200,16 +205,17 @@ public class PlayScreen implements Screen {
                 @Override
                 public void run() {
                     hasLevelChangedRecently = false;
-                    System.out.println("mob can be checked again");
+//                    System.out.println("mob can be checked again");
                 }
             }, 10);
         }
 
-        System.out.println("Enemy counter: " + Enemy.enemyCounter);
+//        System.out.println("Enemy counter: " + Enemy.enemyCounter);
 
         if (Enemy.enemyCounter <= 0 && !hasLevelChangedRecently && currentLevel == 3) {
             hasLevelChangedRecently = true;
             System.out.println("Destroying level 3 stones");
+            breakStoneSound.play();
 
 
             TiledMapTileLayer layerToRemove = (TiledMapTileLayer) map.getLayers().get(8);
@@ -222,7 +228,7 @@ public class PlayScreen implements Screen {
                 @Override
                 public void run() {
                     hasLevelChangedRecently = false;
-                    System.out.println("mob can be checked again");
+//                    System.out.println("mob can be checked again");
                 }
             }, 5);
         }
@@ -362,6 +368,7 @@ public class PlayScreen implements Screen {
 
     public boolean gameOver() {
         if (player.isDead() && player.getStateTimer() > 0) {
+            backgroundMusic.pause();
             DungeonExplorer.resetStaticVariables();
             return true;
         }
@@ -419,7 +426,7 @@ public class PlayScreen implements Screen {
 //        b2dr.dispose();
         hud.dispose();
         ninja.dispose();
-        backgroundMusic.pause();
+//        backgroundMusic.pause();
         backgroundMusic.dispose();
         ninja2.dispose();
         ninja3.dispose();
