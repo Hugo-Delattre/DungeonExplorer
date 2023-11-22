@@ -2,6 +2,8 @@ package com.dungeon.explorer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dungeon.explorer.Game.GameState;
+import com.dungeon.explorer.Screens.GameOverScreen;
 import com.dungeon.explorer.Screens.IntroScreen;
 import com.dungeon.explorer.Screens.PlayScreen;
 
@@ -34,6 +36,10 @@ public class DungeonExplorer extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		setScreen(new IntroScreen(this));
+	}
+
+	public static void resetStaticVariables() {
+		GameState.reset();
 	}
 
 	@Override

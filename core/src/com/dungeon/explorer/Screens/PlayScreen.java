@@ -1,5 +1,6 @@
 package com.dungeon.explorer.Screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -22,22 +23,20 @@ import com.dungeon.explorer.Sprites.*;
 import com.dungeon.explorer.Tools.B2WorldCreator;
 import com.dungeon.explorer.Tools.WorldContactListener;
 
+
+import java.awt.*;
 import java.util.HashMap;
 
 public class PlayScreen implements Screen {
     private DungeonExplorer game;
     private OrthographicCamera gameCam;
-
     private Viewport gamePort;
     private Hud hud;
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
-
-    // Box2d variables
     private World world;
     private Box2DDebugRenderer b2dr;
-
     private Player player;
     private Ninja ninja;
     private Ninja ninja2;
@@ -50,14 +49,11 @@ public class PlayScreen implements Screen {
     private PinkFish bobby;
     private TextureAtlas atlas;
     private Music backgroundMusic;
-
     private Array<EnemyProjectile> enemyProjectiles;
-//    private Array<Enemy> enemies;
     private B2WorldCreator worldCreator;
     public static int currentLevel = 1;
     private boolean shouldMoveCamera = false;
     private float cameraMoveTime = 0;
-
 
     public PlayScreen(DungeonExplorer game) {
         Gdx.input.setInputProcessor(null);
@@ -172,30 +168,17 @@ public class PlayScreen implements Screen {
         if (Enemy.enemyCounter <= 0 && currentLevel == 1) {
             Gdx.app.log("EnemyCounter", "All enemies have been destroyed!");
             currentLevel++;
-            // Get stones from B2WorldCreator
             HashMap<String, Stone> stoneMap = worldCreator.getStoneMap();
             Gdx.app.log("StoneCounter", "There are " + stoneMap.size() + " stones in the map.");
 
-
             if (stoneMap.size() > 0) {
-                //get first element of the hashMap
                 String firstStoneKey = (String) stoneMap.keySet().toArray()[0];
                 Stone stone = stoneMap.get(firstStoneKey);
 
-                System.out.println(stone);
-                System.out.println(stoneMap);
-
                 if (stone != null) {
-                    // Appeler la méthode pour casser la pierre
                     stone.breakStone();
-
-                    // Supprimer la première pierre de la stoneMap
                     stoneMap.remove(firstStoneKey);
                 }
-
-                System.out.println(stoneMap);
-
-
             }
         }
 
@@ -213,7 +196,6 @@ public class PlayScreen implements Screen {
             }
         }
 
-
         world.step(1 / 60f, 6, 2);
         player.update(dt);
         ninja.update(dt, player);
@@ -225,12 +207,9 @@ public class PlayScreen implements Screen {
         men3.update(dt, player);
         men4.update(dt, player);
         bobby.update(dt, player);
-
-
         hud.update(dt);
         gameCam.update();
         renderer.setView(gameCam);
-
     }
 
     @Override
@@ -277,7 +256,6 @@ public class PlayScreen implements Screen {
         if (gameOver()) {
             System.out.println("game over true");
             game.setScreen(new GameOverScreen(game));
-            dispose();
         }
 
 
@@ -329,7 +307,6 @@ public class PlayScreen implements Screen {
         edge.set(new Vector2(mapWidth, 0), new Vector2(mapWidth, mapHeight));
         fdef.shape = edge;
         body.createFixture(fdef);
-
         edge.dispose();
     }
 
@@ -360,7 +337,8 @@ public class PlayScreen implements Screen {
     }
 
     public boolean gameOver() {
-        if (player.isDead() && player.getStateTimer() > 0) { //we might move this value to 2 or 3 if we add a tomb sprite
+        if (player.isDead() && player.getStateTimer() > 0) {
+            DungeonExplorer.resetStaticVariables();
             return true;
         }
         return false;
@@ -398,5 +376,12 @@ public class PlayScreen implements Screen {
         men3.dispose();
         men4.dispose();
         bobby.dispose();
+        atlas.dispose();
+        for (Projectile projectile : player.getProjectiles()) {
+            projectile.dispose();
+        }
+        for (EnemyProjectile projectile : enemyProjectiles) {
+            projectile.dispose();
+        }
     }
 }

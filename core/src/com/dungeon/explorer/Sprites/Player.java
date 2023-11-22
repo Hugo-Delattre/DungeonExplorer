@@ -34,11 +34,11 @@ public class Player extends Sprite {
     private boolean runningRight;
     private Array<AllyProjectile> projectiles;
 
-    private static boolean invincible = false;
-    private static float invincibilityTimer = 0;
+    public static boolean invincible = false;
+    public static float invincibilityTimer = 0;
     private float blinkTimer = 0;
 
-    private static boolean playerIsDead = false;
+    public static boolean playerIsDead = false;
 
     public Player(PlayScreen screen) {
         super(screen.getAtlas().findRegion("link"));
