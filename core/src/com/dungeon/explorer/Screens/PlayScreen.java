@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -60,6 +61,7 @@ public class PlayScreen implements Screen {
     public static int currentLevel = 1;
     private boolean shouldMoveCamera = false;
     private float cameraMoveTime = 0;
+    private Sound wooshShound;
 
     private HashMap<Integer, Integer> levelToStoneLayerMap;
     private boolean hasLevelChangedRecently = false;
@@ -82,6 +84,7 @@ public class PlayScreen implements Screen {
 
         world = new World(new Vector2(0, 0), true);
         createBorders();
+        wooshShound = Gdx.audio.newSound(Gdx.files.internal("music/woosh.mp3"));
 
         // Uncomment this line and the b2dr.render(world, gameCam.combined); below to
         // see the Box2D debug lines
@@ -124,6 +127,7 @@ public class PlayScreen implements Screen {
         if (moveCamera) {
             cameraMoveTime = 0; // Réinitialiser le compteur de temps quand on commence à déplacer
         }
+        wooshShound.play();
     }
 
     public void addEnemyProjectile(EnemyProjectile projectile) {
@@ -412,10 +416,11 @@ public class PlayScreen implements Screen {
         map.dispose();
         renderer.dispose();
         world.dispose();
-        b2dr.dispose();
+//        b2dr.dispose();
         hud.dispose();
-        backgroundMusic.dispose();
         ninja.dispose();
+        backgroundMusic.pause();
+        backgroundMusic.dispose();
         ninja2.dispose();
         ninja3.dispose();
         ninja4.dispose();

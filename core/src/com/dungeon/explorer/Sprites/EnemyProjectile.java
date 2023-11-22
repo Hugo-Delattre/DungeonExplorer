@@ -10,9 +10,10 @@ import com.dungeon.explorer.Screens.PlayScreen;
 
 public class EnemyProjectile extends Projectile {
     public EnemyProjectile(PlayScreen screen, float x, float y, float directionX, float directionY) {
-        super(screen, x, y, new Texture("textures/heart.png"), directionX, directionY);
+        super(screen, x, y, new Texture("textures/fireball.png"), directionX, directionY);
         defineProjectile(x, y);
         setVelocity(directionX, directionY);
+        setBounds(0, 0, 150 / Player.PPM, 100 / Player.PPM);
     }
 
     @Override
