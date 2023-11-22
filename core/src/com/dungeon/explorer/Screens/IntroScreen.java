@@ -1,10 +1,12 @@
 package com.dungeon.explorer.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -27,6 +29,8 @@ public class IntroScreen extends ScreenAdapter {
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
+
+
         Image buttonBeginImage = new Image(buttonBeginTexture);
         buttonBeginImage.setPosition(520, 150); // Position du bouton
         buttonBeginImage.addListener(new ClickListener() {
@@ -44,6 +48,17 @@ public class IntroScreen extends ScreenAdapter {
             }
         });
         stage.addActor(buttonBeginImage);
+
+        stage.addListener(new InputListener() {
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == Input.Keys.SPACE) {
+                    game.setScreen(new PlayScreen(game));
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
