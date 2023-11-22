@@ -36,7 +36,7 @@ public abstract class Enemy extends Sprite {
         this.screen = screen;
         setPosition(x, y);
 //        enemyCounter++;
-        Gdx.app.log("Enemy", "Created. " + enemyCounter + " instances.");
+//        Gdx.app.log("Enemy", "Created. " + enemyCounter + " instances.");
         defineEnemy();
         velocity = new Vector2(1, 0);
     }

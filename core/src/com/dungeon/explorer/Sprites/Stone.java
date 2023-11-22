@@ -15,7 +15,7 @@ public class Stone extends InteractiveTileObject {
     public Stone(PlayScreen screen, Rectangle bounds) {
         super(screen, bounds);
         fixture.setUserData(this);
-        setCategoryFilter(DungeonExplorer.WALL_BIT);
+        setCategoryFilter(DungeonExplorer.STONE_BIT);
         this.screen = screen;
     }
 

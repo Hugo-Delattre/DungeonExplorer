@@ -28,7 +28,7 @@ public class AllyProjectile extends Projectile {
         shape.setRadius(12 / Player.PPM);
 
         fdef.filter.categoryBits = DungeonExplorer.ALLY_PROJECTILE_BIT;
-        fdef.filter.maskBits = DungeonExplorer.ENEMY_BIT | DungeonExplorer.BARRIER_BIT;
+        fdef.filter.maskBits = DungeonExplorer.ENEMY_BIT | DungeonExplorer.BARRIER_BIT | DungeonExplorer.STONE_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
