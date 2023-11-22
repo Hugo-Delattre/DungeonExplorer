@@ -23,7 +23,7 @@ public abstract class Projectile extends Sprite {
         setTexture(projectileTexture);
         this.world = screen.getWorld();
         defineProjectile(x, y);
-        setBounds(0, 0, 48 / Player.PPM, 48 / Player.PPM); // Adjust the size as needed
+//        setBounds(0, 0, 48 / Player.PPM, 48 / Player.PPM); // Adjust the size as needed
         toDestroy = false;
         b2body.setLinearVelocity(new Vector2(directionX, directionY)); // Set the velocity based on the player's input
         timeSinceCreation = 0;

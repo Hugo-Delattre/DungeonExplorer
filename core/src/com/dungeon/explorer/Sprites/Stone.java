@@ -34,6 +34,7 @@ public class Stone extends InteractiveTileObject {
                     Timer.schedule(new Timer.Task() {
                         @Override
                         public void run() {
+                            System.out.println("Entering stage 2");
                             Enemy.enemyCounter = 6; // When changing level, the enemy counter updates
                             PlayScreen.currentLevel++;
                             System.out.println("Enemy counter: " + Enemy.enemyCounter);
@@ -45,6 +46,7 @@ public class Stone extends InteractiveTileObject {
                     Timer.schedule(new Timer.Task() {
                         @Override
                         public void run() {
+                            System.out.println("Entering final stage");
                             Enemy.enemyCounter = 1; // There's only the boss in the final room
                             PlayScreen.currentLevel++;
                             System.out.println("Enemy counter: " + Enemy.enemyCounter);
@@ -56,7 +58,7 @@ public class Stone extends InteractiveTileObject {
                 @Override
                 public void run() {
                     hasStoneBeenRecentlyActivated = false;
-                    System.out.println("Stone can be activated again");
+//                    System.out.println("Stone can be activated again");
                 }
             }, 4);
         } else if (Enemy.enemyCounter <= 0 && hasStoneBeenRecentlyActivated) {
