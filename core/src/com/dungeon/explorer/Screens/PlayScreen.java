@@ -311,6 +311,7 @@ public class PlayScreen implements Screen {
         if (Tresor.win){
             return true;
         }
+        return false;
     }
 
     @Override
