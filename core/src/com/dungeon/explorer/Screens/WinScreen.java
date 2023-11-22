@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dungeon.explorer.DungeonExplorer;
 
-public class GameOverScreen implements Screen {
+public class WinScreen implements Screen {
     private final DungeonExplorer game;
     private final SpriteBatch batch;
     private final BitmapFont font;
@@ -20,7 +20,7 @@ public class GameOverScreen implements Screen {
     private OrthographicCamera gameCam;
     private Viewport gamePort;
 
-    public GameOverScreen(DungeonExplorer game) {
+    public WinScreen(DungeonExplorer game) {
         //backgroundTexture = new Texture("assetsIntro/backgroundIntro.png");
         this.game = game;
         gameCam = new OrthographicCamera();
@@ -45,7 +45,7 @@ public class GameOverScreen implements Screen {
 
         game.batch.begin();
         //game.batch.draw(backgroundTexture, 0, 0, 960, 700);
-        font.draw(game.batch, "Game over!", 460, 480);
+        font.draw(game.batch, "Win!", 480, 480);
         game.batch.end();
 
         if (Gdx.input.justTouched()) {

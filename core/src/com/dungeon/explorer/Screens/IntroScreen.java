@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -21,6 +22,8 @@ public class IntroScreen extends ScreenAdapter {
     private final Texture buttonBeginTexture;
     private final Texture logoDungeonExplorerTexture;
     private final Stage stage;
+    private Viewport viewport;
+    private OrthographicCamera camera;
 
     public IntroScreen(final DungeonExplorer game) {
         this.game = game;
@@ -28,11 +31,15 @@ public class IntroScreen extends ScreenAdapter {
         buttonBeginTexture = new Texture("assetsIntro/buttonBegin.png");
         logoDungeonExplorerTexture = new Texture("assetsIntro/logoDungeonExplorer.png");
 
-        stage = new Stage();
+        camera = new OrthographicCamera();
+        viewport = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT, camera);
+        viewport.apply();
+
+        stage = new Stage(viewport);
         Gdx.input.setInputProcessor(stage);
 
         Image buttonBeginImage = new Image(buttonBeginTexture);
-        buttonBeginImage.setPosition(520, 150); // Position du bouton
+        buttonBeginImage.setPosition(350, 100); // Position du bouton
         buttonBeginImage.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -63,13 +70,20 @@ public class IntroScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+        game.batch.setProjectionMatrix(camera.combined);
+
         game.batch.begin();
-        game.batch.draw(backgroundTexture, 0, 0, 1280, 922);
-        game.batch.draw(logoDungeonExplorerTexture, 330, 300);
+        game.batch.draw(backgroundTexture, 0, 0, 960, 700);
+        game.batch.draw(logoDungeonExplorerTexture, 200, 300, 600, 400);
         game.batch.end();
 
         stage.act(delta);
         stage.draw();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height);
     }
 
     @Override

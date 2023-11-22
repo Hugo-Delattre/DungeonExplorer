@@ -235,7 +235,7 @@ public class Player extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(18 / Player.PPM);
         fdef.filter.categoryBits = DungeonExplorer.PLAYER_BIT;
-        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.ENEMY_PROJECTILE_BIT | DungeonExplorer.BARRIER_BIT | DungeonExplorer.STONE_BIT;
+        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.ENEMY_PROJECTILE_BIT | DungeonExplorer.BARRIER_BIT | DungeonExplorer.STONE_BIT | DungeonExplorer.TRESOR_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef);

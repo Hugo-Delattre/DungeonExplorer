@@ -56,18 +56,17 @@ public class PlayScreen implements Screen {
     private TextureAtlas atlas;
     private Music backgroundMusic;
     private Array<EnemyProjectile> enemyProjectiles;
-
     private B2WorldCreator worldCreator;
     public static int currentLevel = 1;
     private boolean shouldMoveCamera = false;
     private float cameraMoveTime = 0;
+
     private Sound wooshShound;
     private Sound breakStoneSound;
 
+
     private HashMap<Integer, Integer> levelToStoneLayerMap;
     private boolean hasLevelChangedRecently = false;
-
-
 
     public PlayScreen(DungeonExplorer game) {
         Gdx.input.setInputProcessor(null);
@@ -111,10 +110,8 @@ public class PlayScreen implements Screen {
         men4 = new Men(this, 3.42f, 10.92f);
         men5 = new Men(this, 7.52f, 10.92f);
 
-
         //Level 3 - Boss Level
         bobby = new PinkFish(this, 6.92f, 15.22f, player);
-
 
         enemyProjectiles = new Array<EnemyProjectile>();
         worldCreator = new B2WorldCreator(this, player);
@@ -163,8 +160,7 @@ public class PlayScreen implements Screen {
             movement.y -= velocity;
         }
 
-        player.b2body.setLinearVelocity(movement.scl(dt)); // Appliquer la vitesse multipliée par le delta pour un
-        // mouvement fluide
+        player.b2body.setLinearVelocity(movement.scl(dt));
     }
 
     public void update(float dt) {
@@ -317,7 +313,18 @@ public class PlayScreen implements Screen {
             game.setScreen(new GameOverScreen(game));
         }
 
+        if (win()) {
+            System.out.println("win true");
+            game.setScreen(new WinScreen(game));
+        }
 
+    }
+
+    public boolean win(){
+        if (Tresor.win){
+            return true;
+        }
+        return false;
     }
 
     @Override
