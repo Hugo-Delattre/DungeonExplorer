@@ -163,67 +163,66 @@ public class PlayScreen implements Screen {
     public void update(float dt) {
         handleInput(dt);
 
+        System.out.println("CurrentLevel" + currentLevel);
 
+        if (Enemy.enemyCounter <= 0 && !hasLevelChangedRecently && currentLevel == 1) {
+            hasLevelChangedRecently = true;
+            System.out.println("Destroying level 1 stones");
 
-//        System.out.println(currentLevel);
-//
-//        if (Enemy.enemyCounter <= 0 && currentLevel == 1 && !hasLevelChangedRecently) {
-//            hasLevelChangedRecently = true;
-////            System.out.println(levelToStoneLayerMap.size());
-////            removeStoneForCurrentLevel();
-//            removeStoneForFistLevel();
-//            currentLevel++;
-////            Enemy.enemyCounter = 6;
-//
-//            Timer.schedule(new Timer.Task() {
-//                @Override
-//                public void run() {
-//                    hasLevelChangedRecently = false;
-//                    System.out.println("Stone can be activated again");
-//                }
-//            }, 5);
-        if (Enemy.enemyCounter <= 0 && currentLevel == 1) {
-            Gdx.app.log("EnemyCounter", "All enemies have been destroyed!");
-            currentLevel++;
-            // Get stones from B2WorldCreator
-            HashMap<String, Stone> stoneMap = worldCreator.getStoneMap();
-            Gdx.app.log("StoneCounter", "There are " + stoneMap.size() + " stones in the map.");
-
-
-            if (stoneMap.size() > 0) {
-                //get first element of the hashMap
-                String firstStoneKey = (String) stoneMap.keySet().toArray()[0];
-                Stone stone = stoneMap.get(firstStoneKey);
-
-                System.out.println(stone);
-                System.out.println(stoneMap);
-
-                if (stone != null) {
-                    // Appeler la méthode pour casser la pierre
-                    stone.breakStone();
-
-                    // Supprimer la première pierre de la stoneMap
-                    stoneMap.remove(firstStoneKey);
-                }
-
-                System.out.println(stoneMap);
-
-
+            TiledMapTileLayer layerToRemove = (TiledMapTileLayer) map.getLayers().get(8);
+            if (layerToRemove != null) {
+                map.getLayers().remove(layerToRemove);
             }
+
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    hasLevelChangedRecently = false;
+                    System.out.println("mob can be checked again, hasLevelChangedRecently: " + hasLevelChangedRecently);
+                }
+            }, 10);
         }
-//        if (Enemy.enemyCounter <= 0 && currentLevel == 3) {
-//            currentLevel++;
-//            System.out.println(levelToStoneLayerMap.size());
-//            removeStoneForSecondLevel();
-//        }
-//        if (Enemy.enemyCounter <= 0 && currentLevel == 3) {
-//            currentLevel++;
-//            System.out.println(levelToStoneLayerMap.size());
-//            removeStoneForCurrentLevel();
-//        }
-//        if (Enemy.enemyCounter <= 0 && currentLevel >= 2) {
-//            stone.breakStone();
-//        }
+
+        if (Enemy.enemyCounter <= 0 && !hasLevelChangedRecently && currentLevel == 2) {
+            hasLevelChangedRecently = true;
+            System.out.println("Destroying level 2 stones");
+
+
+            TiledMapTileLayer layerToRemove = (TiledMapTileLayer) map.getLayers().get(8);
+            if (layerToRemove != null) {
+                map.getLayers().remove(layerToRemove);
+            }
+
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    hasLevelChangedRecently = false;
+                    System.out.println("mob can be checked again");
+                }
+            }, 10);
+        }
+
+        System.out.println("Enemy counter: " + Enemy.enemyCounter);
+
+        if (Enemy.enemyCounter <= 0 && !hasLevelChangedRecently && currentLevel == 3) {
+            hasLevelChangedRecently = true;
+            System.out.println("Destroying level 3 stones");
+
+
+            TiledMapTileLayer layerToRemove = (TiledMapTileLayer) map.getLayers().get(8);
+            if (layerToRemove != null) {
+                map.getLayers().remove(layerToRemove);
+            }
+
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    hasLevelChangedRecently = false;
+                    System.out.println("mob can be checked again");
+                }
+            }, 5);
+        }
+//
 
         if (shouldMoveCamera) {
             cameraMoveTime += dt;
@@ -232,7 +231,6 @@ public class PlayScreen implements Screen {
 
                 Vector3 targetPosition = new Vector3(gameCam.position.x, targetY, 0);
                 gameCam.position.lerp(targetPosition, cameraMoveTime / 2);
-//                gameCam.position.set(0, 0, 30);
             } else {
                 cameraMoveTime = 0;
                 shouldMoveCamera = false;
