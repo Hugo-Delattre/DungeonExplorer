@@ -1,6 +1,7 @@
 package com.dungeon.explorer.Sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -25,6 +26,8 @@ public class Men extends Enemy {
     private float moveSpeed = 1f;
     private float shootTimer;
     private float shootCooldown; // Le temps avant le prochain tir
+    private Sound damageSound;
+
 
     public Men(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -39,7 +42,10 @@ public class Men extends Enemy {
         setToDestroy = false;
         destroyed = false;
         lifePoints = 4;
+        damageSound = Gdx.audio.newSound(Gdx.files.internal("music/punch.mp3"));
+        damageSound.setVolume(0, 0.5f);
         resetShootCooldown();
+
     }
 
     public void update(float dt, Player player) {
@@ -163,6 +169,7 @@ public class Men extends Enemy {
     @Override
     public void hit() {
         // Gdx.app.log("Test2", "Collision détectée !");
+        damageSound.play();
         lifePoints--;
         if (lifePoints == 0) {
             setToDestroy = true;

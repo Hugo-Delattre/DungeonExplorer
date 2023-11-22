@@ -14,6 +14,7 @@ public class AllyProjectile extends Projectile {
         super(screen, x, y, new Texture("textures/egg.png"), directionX, directionY);
         defineProjectile(x, y);
         setVelocity(directionX, directionY); // Set the projectile's velocity
+        setBounds(0, 0, 48 / Player.PPM, 48 / Player.PPM);
     }
 
     @Override

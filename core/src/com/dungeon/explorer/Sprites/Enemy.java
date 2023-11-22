@@ -1,6 +1,7 @@
 package com.dungeon.explorer.Sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -30,6 +31,7 @@ public abstract class Enemy extends Sprite {
     protected float blinkTimer = 0;
 
     public static int enemyCounter = 4;
+    private Sound damageSound;
 
     public Enemy(PlayScreen screen, float x, float y) {
         this.world = screen.getWorld();
@@ -39,13 +41,18 @@ public abstract class Enemy extends Sprite {
 //        Gdx.app.log("Enemy", "Created. " + enemyCounter + " instances.");
         defineEnemy();
         velocity = new Vector2(1, 0);
+        damageSound = Gdx.audio.newSound(Gdx.files.internal("music/punch.mp3"));
+        damageSound.setVolume(0, 0.2f);
+
     }
 
 
     protected abstract void defineEnemy();
+
     public abstract void update(float dt, Player player);
 
     public void hit() {
+        damageSound.play();
         if (!invincible) {
 //            Hud.removeLifePoints(1);
             invincible = true;
@@ -55,6 +62,7 @@ public abstract class Enemy extends Sprite {
         // Gdx.app.log("LifePoints", "- "+ lifePoints);
         if (lifePoints <= 0) {
             setToDestroy = true;
+//            dispose();
         }
     }
 
