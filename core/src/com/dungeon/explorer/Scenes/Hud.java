@@ -26,11 +26,11 @@ public class Hud implements Disposable {
     private Integer worldTimer;
     private float timeCount;
     private Integer score;
-    private static Integer level;
-    private static Integer dungeon;
+    public static Integer level;
+    public static Integer dungeon;
 
-    private static int lifePoints;
-    private static ArrayList<Image> lifeImages;
+    public static int lifePoints;
+    public static ArrayList<Image> lifeImages;
 
     private static Sound damageSound;
 
@@ -54,7 +54,6 @@ public class Hud implements Disposable {
         lifeImages = new ArrayList<Image>();
         Texture heartTexture = new Texture("textures/heart.png");
         damageSound = Gdx.audio.newSound(Gdx.files.internal("music/damageHit.mp3"));
-
 
         viewport = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, sb);

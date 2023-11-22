@@ -1,92 +1,70 @@
 package com.dungeon.explorer.Screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.dungeon.explorer.DungeonExplorer;
-import com.dungeon.explorer.Scenes.Hud;
-import com.dungeon.explorer.Sprites.Player;
 
 public class GameOverScreen implements Screen {
+    private DungeonExplorer game;
     private Viewport viewport;
-    private Stage stage;
+    private SpriteBatch batch;
+    private BitmapFont font;
 
-    private Game game;
-
-    public GameOverScreen(Game game) {
+    public GameOverScreen(DungeonExplorer game) {
         this.game = game;
-        viewport = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT, new OrthographicCamera());
-        stage = new Stage(viewport, ((DungeonExplorer) game).batch);
-
-        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
-
-        Table table = new Table();
-        table.center();
-        table.setFillParent(true);
-
-        Label gameOverLabel = new Label("GAME OVER", font);
-//        Label playAgainLabel = new Label("Click to Play Again", font);
-
-        table.add(gameOverLabel).expandX();
-//        table.row();
-//        table.add(playAgainLabel).expandX().padTop(10);
-
-
-        stage.addActor(table);
-
-
+        viewport = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT);
+        batch = new SpriteBatch();
+        font = new BitmapFont();
     }
 
     @Override
     public void show() {
-
     }
 
     @Override
     public void render(float delta) {
-        if (Gdx.input.justTouched()) {
-            Player.setPlayerIsDead(false);
-            // TODO Détruire les instances de Ninja et de Men
-            dispose();
-            game.setScreen(new PlayScreen((DungeonExplorer) game));
-        }
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.draw();
-    }
+        batch.setProjectionMatrix(viewport.getCamera().combined);
+        batch.begin();
+        font.draw(batch, "Game Over!", 80, 150); // You can adjust the position
+        batch.end();
 
+        if (Gdx.input.justTouched()) {
+            game.setScreen(new IntroScreen(game));
+            dispose();
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+            game.setScreen(new IntroScreen(game));
+            dispose();
+        }
+    }
 
     @Override
     public void resize(int width, int height) {
-
+        viewport.update(width, height);
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override
     public void dispose() {
-        stage.dispose();
+        batch.dispose();
+        font.dispose();
     }
 }

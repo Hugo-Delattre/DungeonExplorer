@@ -86,4 +86,7 @@ public abstract class Projectile extends Sprite {
     }
 
 
+    public void dispose() {
+        projectileTexture.dispose();
+    }
 }

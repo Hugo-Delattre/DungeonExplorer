@@ -1,5 +1,6 @@
 package com.dungeon.explorer.Screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -24,23 +25,21 @@ import com.dungeon.explorer.Sprites.*;
 import com.dungeon.explorer.Tools.B2WorldCreator;
 import com.dungeon.explorer.Tools.WorldContactListener;
 
+
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Iterator;
 
 public class PlayScreen implements Screen {
     private DungeonExplorer game;
     private OrthographicCamera gameCam;
-
     private Viewport gamePort;
     private Hud hud;
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
-
-    // Box2d variables
     private World world;
     private Box2DDebugRenderer b2dr;
-
     private Player player;
     private Ninja ninja;
     private Ninja ninja2;
@@ -55,9 +54,8 @@ public class PlayScreen implements Screen {
     private PinkFish bobby;
     private TextureAtlas atlas;
     private Music backgroundMusic;
-
     private Array<EnemyProjectile> enemyProjectiles;
-    //    private Array<Enemy> enemies;
+
     private B2WorldCreator worldCreator;
     public static int currentLevel = 1;
     private boolean shouldMoveCamera = false;
@@ -65,6 +63,7 @@ public class PlayScreen implements Screen {
 
     private HashMap<Integer, Integer> levelToStoneLayerMap;
     private boolean hasLevelChangedRecently = false;
+
 
 
     public PlayScreen(DungeonExplorer game) {
@@ -212,6 +211,7 @@ public class PlayScreen implements Screen {
             TiledMapTileLayer layerToRemove = (TiledMapTileLayer) map.getLayers().get(8);
             if (layerToRemove != null) {
                 map.getLayers().remove(layerToRemove);
+
             }
 
             Timer.schedule(new Timer.Task() {
@@ -237,7 +237,6 @@ public class PlayScreen implements Screen {
             }
         }
 
-
         world.step(1 / 60f, 6, 2);
         player.update(dt);
         ninja.update(dt, player);
@@ -251,17 +250,9 @@ public class PlayScreen implements Screen {
         men4.update(dt, player);
         men5.update(dt, player);
         bobby.update(dt, player);
-
-
         hud.update(dt);
         gameCam.update();
         renderer.setView(gameCam);
-
-//        for (Projectile projectile : player.getProjectiles()) {
-//            if (projectile.isDestroyed()) {
-//                projectile.destroyBody(); // Méthode pour détruire le corps
-//            }
-//        }
 
         for (Iterator<EnemyProjectile> iter = enemyProjectiles.iterator(); iter.hasNext(); ) {
             EnemyProjectile projectile = iter.next();
@@ -271,15 +262,6 @@ public class PlayScreen implements Screen {
                 projectile.destroyBody();
             }
         }
-
-//        for (EnemyProjectile projectile : enemyProjectiles) {
-//            projectile.update(dt);
-//            if (projectile.isDestroyed()) {
-//                enemyProjectiles.removeValue(projectile, true);
-//                projectile.destroyBody();
-//            }
-//        }
-
     }
 
     @Override
@@ -321,7 +303,6 @@ public class PlayScreen implements Screen {
         if (gameOver()) {
             System.out.println("game over true");
             game.setScreen(new GameOverScreen(game));
-            dispose();
         }
 
 
@@ -354,11 +335,6 @@ public class PlayScreen implements Screen {
         // Créer les bords
         Body body = world.createBody(bdef);
 
-        // Haut
-//        edge.set(new Vector2(0, mapHeight), new Vector2(mapWidth, mapHeight));
-//        fdef.shape = edge;
-//        body.createFixture(fdef);
-
         // Bas
         edge.set(new Vector2(0, 0), new Vector2(mapWidth, 0));
         fdef.shape = edge;
@@ -373,7 +349,6 @@ public class PlayScreen implements Screen {
         edge.set(new Vector2(mapWidth, 0), new Vector2(mapWidth, mapHeight));
         fdef.shape = edge;
         body.createFixture(fdef);
-
         edge.dispose();
     }
 
@@ -382,7 +357,8 @@ public class PlayScreen implements Screen {
     }
 
     public boolean gameOver() {
-        if (player.isDead() && player.getStateTimer() > 0) { //we might move this value to 2 or 3 if we add a tomb sprite
+        if (player.isDead() && player.getStateTimer() > 0) {
+            DungeonExplorer.resetStaticVariables();
             return true;
         }
         return false;
@@ -395,15 +371,6 @@ public class PlayScreen implements Screen {
         levelToStoneLayerMap.put(4, 10); // Niveau 4, Layer 10
     }
 
-//    private void removeStoneForCurrentLevel() {
-//        Integer layerIndex = levelToStoneLayerMap.get(currentLevel); //get 2 donnera 8, get 3 donnera 9, etc.
-//        if (layerIndex != null) {
-//            TiledMapTileLayer layerToRemove = (TiledMapTileLayer) map.getLayers().get(layerIndex);
-//            if (layerToRemove != null) {
-//                map.getLayers().remove(layerToRemove);
-//            }
-//        }
-//    }
 
     private void removeStoneForFistLevel() {
         Integer layerIndex = levelToStoneLayerMap.get(8); //get 2 donnera 8, get 3 donnera 9, etc.
@@ -459,5 +426,12 @@ public class PlayScreen implements Screen {
         men4.dispose();
         men5.dispose();
         bobby.dispose();
+        atlas.dispose();
+        for (Projectile projectile : player.getProjectiles()) {
+            projectile.dispose();
+        }
+        for (EnemyProjectile projectile : enemyProjectiles) {
+            projectile.dispose();
+        }
     }
 }

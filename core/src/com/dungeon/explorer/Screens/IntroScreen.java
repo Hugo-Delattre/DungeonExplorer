@@ -14,11 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.dungeon.explorer.DungeonExplorer;
 
 public class IntroScreen extends ScreenAdapter {
-    private DungeonExplorer game;
-    private Texture backgroundTexture;
-    private Texture buttonBeginTexture;
-    private Texture logoDungeonExplorerTexture;
-    private Stage stage;
+    private final DungeonExplorer game;
+    private final Texture backgroundTexture;
+    private final Texture buttonBeginTexture;
+    private final Texture logoDungeonExplorerTexture;
+    private final Stage stage;
 
     public IntroScreen(final DungeonExplorer game) {
         this.game = game;
