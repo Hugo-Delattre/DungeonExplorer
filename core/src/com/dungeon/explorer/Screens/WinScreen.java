@@ -45,8 +45,8 @@ public class WinScreen implements Screen {
 
         game.batch.begin();
         //game.batch.draw(backgroundTexture, 0, 0, 960, 700);
-        game.batch.draw(logoDungeonExplorerImgTexture, 425, 200, 200, 200);
-        font.draw(game.batch, "Win!", 480, 480);
+        game.batch.draw(logoDungeonExplorerImgTexture, 330, 260, 300, 300);
+        font.draw(game.batch, "You Won!", 460, 240);
         game.batch.end();
 
         if (Gdx.input.justTouched()) {

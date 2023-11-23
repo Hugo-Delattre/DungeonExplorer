@@ -18,6 +18,8 @@ public class GameOverScreen implements Screen {
     private final BitmapFont font;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
+    private final Texture tombImg;
+
 
     public GameOverScreen(DungeonExplorer game) {
         this.game = game;
@@ -26,6 +28,7 @@ public class GameOverScreen implements Screen {
         gamePort = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT, gameCam);
         batch = new SpriteBatch();
         font = new BitmapFont();
+        tombImg = new Texture("assetsIntro/tombImg.png");
     }
 
     @Override
@@ -40,7 +43,8 @@ public class GameOverScreen implements Screen {
         game.batch.setProjectionMatrix(gamePort.getCamera().combined);
 
         game.batch.begin();
-        font.draw(game.batch, "Game over!", 460, 480);
+        game.batch.draw(tombImg, 395, 300, 200, 200);
+        font.draw(game.batch, "Game over!", 460, 270);
         game.batch.end();
 
         if (Gdx.input.justTouched()) {
