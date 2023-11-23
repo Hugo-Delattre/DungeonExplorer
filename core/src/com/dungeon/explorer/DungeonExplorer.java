@@ -38,7 +38,7 @@ public class DungeonExplorer extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		setScreen(new IntroScreen(this));
+		setScreen(new WinScreen(this));
 	}
 
 	public static void resetStaticVariables() {

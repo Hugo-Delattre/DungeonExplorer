@@ -74,7 +74,7 @@ public class IntroScreen extends ScreenAdapter {
 
         game.batch.begin();
         game.batch.draw(backgroundTexture, 0, 0, 960, 700);
-        game.batch.draw(logoDungeonExplorerTexture, 200, 300, 600, 400);
+        game.batch.draw(logoDungeonExplorerTexture, 200, 300, 550, 440);
         game.batch.end();
 
         stage.act(delta);
