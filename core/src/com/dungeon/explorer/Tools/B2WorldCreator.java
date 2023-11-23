@@ -27,6 +27,12 @@ public class B2WorldCreator {
         this.player = player;
         stoneMap = new HashMap<String, Stone>();
 
+        //Tresor
+        for (MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            new Tresor(screen, rect);
+        }
 
         //Potion
         for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
@@ -56,6 +62,13 @@ public class B2WorldCreator {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             new Barrier(screen, rect);
+        }
+
+        //demiBarrier
+        for (MapObject object : map.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            new DemiBarrier(screen, rect);
         }
 
 

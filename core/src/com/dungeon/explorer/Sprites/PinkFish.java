@@ -1,5 +1,7 @@
 package com.dungeon.explorer.Sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -25,6 +27,7 @@ public class PinkFish extends Enemy {
     private float shootTimer;
     private float shootCooldown; // Le temps avant le prochain tir
     private Player player;
+    private Sound damageSound;
 
     public PinkFish(PlayScreen screen, float x, float y, Player player) {
         super(screen, x, y);
@@ -40,6 +43,8 @@ public class PinkFish extends Enemy {
         setToDestroy = false;
         destroyed = false;
         lifePoints = 15;
+        damageSound = Gdx.audio.newSound(Gdx.files.internal("music/punch.mp3"));
+        damageSound.setVolume(0, 0.5f);
         resetShootCooldown();
     }
 
@@ -163,8 +168,7 @@ public class PinkFish extends Enemy {
 //        CircleShape shape = new CircleShape();
 //        shape.setRadius(25 / Player.PPM);
         fdef.filter.categoryBits = DungeonExplorer.ENEMY_BIT;
-//        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT | DungeonExplorer.ALLY_PROJECTILE_BIT;
-        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT | DungeonExplorer.ALLY_PROJECTILE_BIT | DungeonExplorer.BARRIER_BIT | DungeonExplorer.STONE_BIT;
+        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT | DungeonExplorer.ALLY_PROJECTILE_BIT | DungeonExplorer.BARRIER_BIT | DungeonExplorer.STONE_BIT | DungeonExplorer.DEMI_BARRIER_BIT;
 
 
 //        fdef.shape = shape;
@@ -188,6 +192,7 @@ public class PinkFish extends Enemy {
     public void hit() {
         // Gdx.app.log("Test2", "Collision détectée !");
         lifePoints--;
+        damageSound.play();
         if (lifePoints == 0) {
             setToDestroy = true;
             dispose();

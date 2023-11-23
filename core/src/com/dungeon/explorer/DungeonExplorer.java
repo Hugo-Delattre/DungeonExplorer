@@ -2,8 +2,11 @@ package com.dungeon.explorer;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dungeon.explorer.Game.GameState;
+import com.dungeon.explorer.Screens.GameOverScreen;
 import com.dungeon.explorer.Screens.IntroScreen;
 import com.dungeon.explorer.Screens.PlayScreen;
+import com.dungeon.explorer.Screens.WinScreen;
 
 public class DungeonExplorer extends Game {
 //	public static final int V_WIDTH = 400;
@@ -24,6 +27,8 @@ public class DungeonExplorer extends Game {
 	public static final short PROJECTILE_BIT = 512;
 	public static final short ALLY_PROJECTILE_BIT = 1024;
 	public static final short ENEMY_PROJECTILE_BIT = 2048;
+	public static final short TRESOR_BIT = 4096;
+	public static final short DEMI_BARRIER_BIT = 8192;
 
 	public static final int V_WIDTH = 960;
 	public static final int V_HEIGHT = 700;
@@ -34,6 +39,10 @@ public class DungeonExplorer extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		setScreen(new IntroScreen(this));
+	}
+
+	public static void resetStaticVariables() {
+		GameState.reset();
 	}
 
 	@Override

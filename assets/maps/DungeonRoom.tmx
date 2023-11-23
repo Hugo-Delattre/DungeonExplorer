@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="80" tilewidth="32" tileheight="32" infinite="0" nextlayerid="18" nextobjectid="122">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="80" tilewidth="32" tileheight="32" infinite="0" nextlayerid="19" nextobjectid="147">
  <tileset firstgid="1" source="../textures/dungeonCrawl.tsx"/>
  <layer id="2" name="Floor" width="30" height="80">
   <data encoding="csv">
@@ -631,11 +631,26 @@
   <object id="112" name="Barriere" x="546" y="1890" width="414" height="30"/>
   <object id="114" name="Barriere" x="546.833" y="1280" width="415.667" height="30"/>
   <object id="115" name="Barriere" x="-5.5" y="1280.5" width="420.333" height="31.25"/>
-  <object id="116" name="Barriere" x="544.667" y="609.333" width="418.333" height="157.167"/>
-  <object id="117" name="Barriere" x="-2" y="638.667" width="417" height="127.333"/>
-  <object id="118" name="Barriere" x="0" y="0.666667" width="959" height="317.459"/>
-  <object id="119" name="Barriere" x="0.406433" y="316.333" width="190.52" height="320.667"/>
-  <object id="120" name="Barriere" x="738.462" y="317.667" width="222.076" height="289.833"/>
-  <object id="121" name="Barriere" x="351.167" y="702.667" width="66.3333" height="32"/>
+ </objectgroup>
+ <objectgroup id="18" name="DemiBarrieres">
+  <object id="123" name="DemiBarriere" x="-17" y="-93" width="27" height="2693"/>
+  <object id="125" name="DemiBarriere" x="948.5" y="-80.5" width="27" height="2693"/>
+  <object id="126" name="DemiBarriere" x="208" y="2350.5" width="171" height="3"/>
+  <object id="128" name="DemiBarriere" x="365.5" y="2351" width="2" height="155.5"/>
+  <object id="129" name="DemiBarriere" x="620.5" y="2176" width="2.5" height="234.5"/>
+  <object id="130" name="DemiBarriere" x="473" y="2157.5" width="247" height="1"/>
+  <object id="131" name="DemiBarriere" x="687" y="1562" width="1.5" height="149.5"/>
+  <object id="132" name="DemiBarriere" x="690.5" y="1550.5" width="152.5" height="2"/>
+  <object id="133" name="DemiBarriere" x="211" y="1615" width="218.5" height="3"/>
+  <object id="134" name="DemiBarriere" x="429" y="1517.5" width="2" height="81"/>
+  <object id="135" name="DemiBarriere" x="369" y="1033" width="1.5" height="99"/>
+  <object id="136" name="DemiBarriere" x="651" y="1041.5" width="37" height="1.5"/>
+  <object id="137" name="DemiBarriere" x="719" y="850" width="2.5" height="63"/>
+  <object id="138" name="DemiBarriere" x="178.5" y="879" width="132" height="2"/>
+  <object id="142" name="DemiBarriere" x="0" y="0" width="960" height="317"/>
+  <object id="143" name="DemiBarriere" x="738" y="288" width="222" height="480"/>
+  <object id="144" name="DemiBarriere" x="0" y="288" width="190" height="480"/>
+  <object id="145" name="DemiBarriere" x="160" y="609" width="255" height="159"/>
+  <object id="146" name="DemiBarriere" x="544" y="608" width="224" height="160"/>
  </objectgroup>
 </map>
