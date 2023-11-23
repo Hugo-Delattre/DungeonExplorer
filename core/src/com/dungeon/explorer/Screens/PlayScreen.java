@@ -128,8 +128,8 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.graphics.setWindowedMode(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT);
-        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//        Gdx.graphics.setWindowedMode(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT);
+//        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("music/dungeonBoss.mp3"));
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(0.5f);
