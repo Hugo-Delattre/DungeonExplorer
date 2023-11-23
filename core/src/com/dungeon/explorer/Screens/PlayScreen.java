@@ -63,6 +63,7 @@ public class PlayScreen implements Screen {
 
     private Sound wooshShound;
     private Sound breakStoneSound;
+    private Sound winSound;
 
     private boolean gameWin = false;
 
@@ -88,6 +89,7 @@ public class PlayScreen implements Screen {
         createBorders();
         wooshShound = Gdx.audio.newSound(Gdx.files.internal("music/woosh.mp3"));
         breakStoneSound = Gdx.audio.newSound(Gdx.files.internal("music/breakStone.mp3"));
+        winSound = Gdx.audio.newSound(Gdx.files.internal("music/victory.mp3"));
 
         // Uncomment this line and the b2dr.render(world, gameCam.combined); below to
         // see the Box2D debug lines
@@ -221,7 +223,6 @@ public class PlayScreen implements Screen {
             TiledMapTileLayer layerToRemove = (TiledMapTileLayer) map.getLayers().get(8);
             if (layerToRemove != null) {
                 map.getLayers().remove(layerToRemove);
-
             }
 
             Timer.schedule(new Timer.Task() {
@@ -230,7 +231,7 @@ public class PlayScreen implements Screen {
                     hasLevelChangedRecently = false;
 //                    System.out.println("mob can be checked again");
                 }
-            }, 5);
+            }, 120);
         }
 //
 
@@ -251,6 +252,8 @@ public class PlayScreen implements Screen {
             gameWin = true;
             Gdx.app.log("Win", "true");
             game.setScreen(new WinScreen(game));
+            backgroundMusic.pause();
+            winSound.play();
         }
 
         world.step(1 / 60f, 6, 2);
@@ -443,6 +446,8 @@ public class PlayScreen implements Screen {
         ninja.dispose();
 //        backgroundMusic.pause();
         backgroundMusic.dispose();
+        breakStoneSound.dispose();
+        winSound.dispose();
         ninja2.dispose();
         ninja3.dispose();
         ninja4.dispose();

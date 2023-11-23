@@ -22,6 +22,7 @@ public class GameState {
         Player.invincible= false;
         Player.invincibilityTimer=0;
         Player.playerIsDead = false;
+        Tresor.win = false;
         System.out.println("2");
     }
 }
