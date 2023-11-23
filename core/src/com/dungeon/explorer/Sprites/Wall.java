@@ -21,13 +21,11 @@ public class Wall extends InteractiveTileObject {
         Gdx.app.log("Wall", "-1 HP");
         setCategoryFilter(DungeonExplorer.DESTROYED_BIT);
         Player.loseLifePoint();
-
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 setCategoryFilter(DungeonExplorer.WALL_BIT);
             }
         }, 2f);
-
     }
 }

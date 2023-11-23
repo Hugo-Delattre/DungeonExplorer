@@ -27,8 +27,6 @@ public class WinScreen implements Screen {
         gameCam = new OrthographicCamera();
         gameCam.setToOrtho(false, DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT);
         gamePort = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT, gameCam);
-
-        //gamePort = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT);
         batch = new SpriteBatch();
         font = new BitmapFont();
         logoDungeonExplorerImgTexture = new Texture("assetsIntro/logoDungeonExplorerImg.png");

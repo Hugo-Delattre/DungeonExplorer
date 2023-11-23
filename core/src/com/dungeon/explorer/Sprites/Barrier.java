@@ -16,8 +16,6 @@ public class Barrier extends InteractiveTileObject {
 
     @Override
     public void onPlayerContact() {
-        Gdx.app.log("Barrier", "Collision");
-
-
+//        Gdx.app.log("Barrier", "Collision");
     }
 }

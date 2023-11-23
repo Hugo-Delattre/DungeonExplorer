@@ -18,34 +18,28 @@ public abstract class Enemy extends Sprite {
     protected PlayScreen screen;
     public Body b2body;
     public Vector2 velocity;
-
     protected int lifePoints;
     protected boolean setToDestroy;
     protected boolean destroyed;
     protected float stateTime;
     protected Animation<TextureRegion> walkAnimation;
     protected Array<TextureRegion> frames;
-
     protected boolean invincible = false;
     protected float invincibilityTimer = 0;
     protected float blinkTimer = 0;
-
     public static int enemyCounter = 4;
     private Sound damageSound;
+
 
     public Enemy(PlayScreen screen, float x, float y) {
         this.world = screen.getWorld();
         this.screen = screen;
         setPosition(x, y);
-//        enemyCounter++;
-//        Gdx.app.log("Enemy", "Created. " + enemyCounter + " instances.");
         defineEnemy();
         velocity = new Vector2(1, 0);
         damageSound = Gdx.audio.newSound(Gdx.files.internal("music/punch.mp3"));
         damageSound.setVolume(0, 0.2f);
-
     }
-
 
     protected abstract void defineEnemy();
 
@@ -54,23 +48,18 @@ public abstract class Enemy extends Sprite {
     public void hit() {
         damageSound.play();
         if (!invincible) {
-//            Hud.removeLifePoints(1);
             invincible = true;
             invincibilityTimer = 0;
             lifePoints--;
         }
-        // Gdx.app.log("LifePoints", "- "+ lifePoints);
         if (lifePoints <= 0) {
             setToDestroy = true;
-//            dispose();
         }
     }
 
     public void dispose() {
         enemyCounter--;
         Gdx.app.log("Enemy", "Disposed. " + enemyCounter + " instances left.");
-        // stone method here
-//        Stone.destroyRow = true;
     }
 
     public void reverseVelocity(boolean x, boolean y) {

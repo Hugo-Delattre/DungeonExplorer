@@ -21,11 +21,8 @@ public class Stone extends InteractiveTileObject {
 
     @Override
     public void onPlayerContact() {
-        Gdx.app.log("Stone", "Collision");
-        //TODO sound effect stone destroyed
         if (Enemy.enemyCounter == 0 && !hasStoneBeenRecentlyActivated) {
             hasStoneBeenRecentlyActivated = true;
-//            PlayScreen.currentLevel++;
             Gdx.app.log("Stone", "Reached");
             setCategoryFilter(DungeonExplorer.DESTROYED_BIT);
             screen.setShouldMoveCamera(true);
@@ -58,47 +55,10 @@ public class Stone extends InteractiveTileObject {
                 @Override
                 public void run() {
                     hasStoneBeenRecentlyActivated = false;
-//                    System.out.println("Stone can be activated again");
                 }
             }, 4);
         } else if (Enemy.enemyCounter <= 0 && hasStoneBeenRecentlyActivated) {
             setCategoryFilter(DungeonExplorer.DESTROYED_BIT);
-        }
-
-
-    }
-
-    public void breakStone() {
-        if (Enemy.enemyCounter == 0) {
-            Gdx.app.log("STONE", "BREAK");
-
-            if (body != null) {
-                world.destroyBody(body);
-            }
-
-            if (PlayScreen.currentLevel == 2) {
-                System.out.println("First stone to remove, " + PlayScreen.currentLevel);
-                TiledMapTileLayer layerToRemove = (TiledMapTileLayer) map.getLayers().get(8);
-                if (layerToRemove != null) {
-                    map.getLayers().remove(layerToRemove);
-                }
-            } else if (PlayScreen.currentLevel == 3) {
-                System.out.println("Second stone to remove, " + PlayScreen.currentLevel);
-                TiledMapTileLayer layerToRemove = (TiledMapTileLayer) map.getLayers().get(9);
-                if (layerToRemove != null) {
-                    map.getLayers().remove(layerToRemove);
-                }
-            } else if (PlayScreen.currentLevel == 4) {
-                System.out.println("Third stone to remove, " + PlayScreen.currentLevel);
-                TiledMapTileLayer layerToRemove = (TiledMapTileLayer) map.getLayers().get(10);
-                if (layerToRemove != null) {
-                    map.getLayers().remove(layerToRemove);
-                }
-            } else {
-                System.out.println("No stone to remove");
-            }
-
-
         }
     }
 }

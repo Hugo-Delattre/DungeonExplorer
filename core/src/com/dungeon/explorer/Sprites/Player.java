@@ -14,30 +14,23 @@ import com.dungeon.explorer.Screens.PlayScreen;
 public class Player extends Sprite {
     public enum State {GOINGUP, GOINGDOWN, GOINGRIGHT, GOINGLEFT, STANDINGDOWN, DEAD}
 
-    ;
-    // TODO: Implémenter STANDINGRIGHT, UP, LEFT en utilisant previous state cf 9:00 dans la partie 11
     public State currentState;
     public State previousState;
     public World world;
     public Body b2body;
     private TextureRegion playerStand;
     private PlayScreen screen;
-
     public static final float PPM = 100;
-
     private Animation<TextureRegion> playerStandingDown;
     private Animation<TextureRegion> playerGoingUp;
     private Animation<TextureRegion> playerGoingDown;
     private Animation<TextureRegion> playerGoingRight;
     private Animation<TextureRegion> playerGoingLeft;
     private float stateTimer;
-    private boolean runningRight;
     private Array<AllyProjectile> projectiles;
-
     public static boolean invincible = false;
     public static float invincibilityTimer = 0;
     private float blinkTimer = 0;
-
     public static boolean playerIsDead = false;
 
     public Player(PlayScreen screen) {
@@ -195,20 +188,10 @@ public class Player extends Sprite {
                 break;
         }
 
-        //POUR POISSON
-        //if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX()) {
-        //region.flip(true, false);
-        //runningRight = false;
-        //} else if ((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()) {
-        //region.flip(true, false);
-        //runningRight = true;
-        //}
-
         stateTimer = currentState == previousState ? stateTimer + dt : 0;
         previousState = currentState;
         return region;
     }
-
 
     public State getState() {
         if (b2body.getLinearVelocity().y < 0) {
@@ -243,9 +226,7 @@ public class Player extends Sprite {
         fdef.isSensor = true;
 
         b2body.createFixture(fdef).setUserData("playerBody");
-
     }
-
 
     public static void loseLifePoint() {
         if (!invincible) {
@@ -259,7 +240,6 @@ public class Player extends Sprite {
         playerIsDead = isDead;
     }
 
-
     public boolean isDead() {
         return playerIsDead;
     }
@@ -271,12 +251,5 @@ public class Player extends Sprite {
     public Array<AllyProjectile> getProjectiles() {
         return projectiles;
     }
-
-    // public void repelFrom(Vector2 position) {
-    //     Vector2 repelForce = b2body.getPosition().sub(position).nor();
-    //     float repelStrength = 2.0f; // Adjust the strength of the repulsion as needed
-    //     repelForce = repelForce.scl(repelStrength);
-    //     b2body.applyLinearImpulse(repelForce, b2body.getWorldCenter(), true);
-    // }
 
 }

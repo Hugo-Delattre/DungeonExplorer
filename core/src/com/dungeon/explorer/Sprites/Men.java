@@ -25,18 +25,17 @@ public class Men extends Enemy {
     private float moveInterval = 1.8f;
     private float moveSpeed = 1f;
     private float shootTimer;
-    private float shootCooldown; // Le temps avant le prochain tir
+    private float shootCooldown;
     private Sound damageSound;
 
 
     public Men(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         frames = new Array<TextureRegion>();
-//        Array<TextureRegion> frames = new Array<TextureRegion>();
         for (int i = 0; i <= 7; i++) {
             frames.add(new TextureRegion(screen.getAtlas().findRegion("men"), i * 70 - 20, 0, 70, 80));
         }
-        walkAnimation = new Animation(0.2f, frames); // ?
+        walkAnimation = new Animation(0.2f, frames);
         stateTime = 0;
         setBounds(getX(), getY(), 75 / Player.PPM, 90 / Player.PPM);
         setToDestroy = false;
@@ -65,8 +64,6 @@ public class Men extends Enemy {
         if (setToDestroy && !destroyed) {
             world.destroyBody(b2body);
             destroyed = true;
-            //Texture of dying men
-//            setRegion(new TextureRegion(screen.getAtlas().findRegion("men"), 60, 80, 90, 100));
             stateTime = 0;
         } else if (!destroyed) {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
@@ -87,7 +84,7 @@ public class Men extends Enemy {
 
         if (invincible) {
             invincibilityTimer += dt;
-            if (invincibilityTimer > 1.5f) { // Durée d'invincibilité, à ajuster selon le besoin
+            if (invincibilityTimer > 1.5f) { // invincibility duration
                 invincible = false;
             }
         }
@@ -117,7 +114,7 @@ public class Men extends Enemy {
     }
 
     private void resetShootCooldown() {
-        shootCooldown = MathUtils.random(1.0f, 3.0f); // Temps aléatoire entre 1 et 3 secondes
+        shootCooldown = MathUtils.random(1.0f, 3.0f); // Random duration between 1 and 3 seconds
         shootTimer = 0;
     }
 
@@ -125,32 +122,23 @@ public class Men extends Enemy {
         float directionX = MathUtils.random(-1.0f, 1.0f);
         float directionY = MathUtils.random(-1.0f, 1.0f);
         Vector2 direction = new Vector2(directionX, directionY).nor();
-        float speed = 2.5f; // Vitesse du projectile
+        float speed = 2.5f; // Projectile speed
         direction.scl(speed);
 
         EnemyProjectile projectile = new EnemyProjectile(screen, b2body.getPosition().x, b2body.getPosition().y, direction.x, direction.y);
-        screen.addEnemyProjectile(projectile); // Ajoutez cette méthode à PlayScreen pour gérer les projectiles ennemis
+        screen.addEnemyProjectile(projectile);
     }
 
     @Override
     protected void defineEnemy() {
         BodyDef bdef = new BodyDef();
-//        bdef.position.set(200 / Player.PPM, 400 / Player.PPM);
         bdef.position.set(getX(), getY());
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
-
         FixtureDef fdef = new FixtureDef();
         fdef.density = 1000f;
-//        CircleShape shape = new CircleShape();
-//        shape.setRadius(25 / Player.PPM);
         fdef.filter.categoryBits = DungeonExplorer.ENEMY_BIT;
-//        fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT | DungeonExplorer.ALLY_PROJECTILE_BIT;
         fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT | DungeonExplorer.ALLY_PROJECTILE_BIT | DungeonExplorer.BARRIER_BIT | DungeonExplorer.STONE_BIT | DungeonExplorer.DEMI_BARRIER_BIT;
-
-
-//        fdef.shape = shape;
-//        b2body.createFixture(fdef);
 
         PolygonShape menBody = new PolygonShape();
         Vector2[] vertice = new Vector2[4];
@@ -168,7 +156,6 @@ public class Men extends Enemy {
 
     @Override
     public void hit() {
-        // Gdx.app.log("Test2", "Collision détectée !");
         damageSound.play();
         lifePoints--;
         if (lifePoints == 0) {

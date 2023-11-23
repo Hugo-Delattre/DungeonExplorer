@@ -23,7 +23,6 @@ import java.util.ArrayList;
 public class Hud implements Disposable {
     public Stage stage;
     private Viewport viewport;
-
     private Integer worldTimer;
     private float timeCount;
     private Integer score;
@@ -32,11 +31,9 @@ public class Hud implements Disposable {
 
     public static int lifePoints;
     public static ArrayList<Image> lifeImages;
-
     private static Sound damageSound;
 
     private static Table bottomTable;
-
     Label counterLabel;
     Label dungeonNumberLabel;
     Label timeLabel;
@@ -51,7 +48,7 @@ public class Hud implements Disposable {
         score = 0;
         dungeon = 1;
         level = 1;
-        lifePoints = 20;
+        lifePoints = 6;
         lifeImages = new ArrayList<Image>();
         Texture heartTexture = new Texture("textures/heart.png");
         damageSound = Gdx.audio.newSound(Gdx.files.internal("music/damageHit.mp3"));

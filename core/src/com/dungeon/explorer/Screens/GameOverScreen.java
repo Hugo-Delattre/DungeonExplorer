@@ -16,18 +16,14 @@ public class GameOverScreen implements Screen {
     private final DungeonExplorer game;
     private final SpriteBatch batch;
     private final BitmapFont font;
-    //private final Texture backgroundTexture;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
 
     public GameOverScreen(DungeonExplorer game) {
-        //backgroundTexture = new Texture("assetsIntro/backgroundIntro.png");
         this.game = game;
         gameCam = new OrthographicCamera();
         gameCam.setToOrtho(false, DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT);
         gamePort = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT, gameCam);
-
-        //gamePort = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT);
         batch = new SpriteBatch();
         font = new BitmapFont();
     }
@@ -44,7 +40,6 @@ public class GameOverScreen implements Screen {
         game.batch.setProjectionMatrix(gamePort.getCamera().combined);
 
         game.batch.begin();
-        //game.batch.draw(backgroundTexture, 0, 0, 960, 700);
         font.draw(game.batch, "Game over!", 460, 480);
         game.batch.end();
 
@@ -76,6 +71,5 @@ public class GameOverScreen implements Screen {
     public void dispose() {
         batch.dispose();
         font.dispose();
-        //backgroundTexture.dispose();
     }
 }

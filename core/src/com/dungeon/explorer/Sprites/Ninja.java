@@ -21,7 +21,6 @@ public class Ninja extends Enemy {
     public Ninja(PlayScreen screen, float x, float y) {
         super(screen, x, y);
         frames = new Array<TextureRegion>();
-//        Array<TextureRegion> frames = new Array<TextureRegion>();
         for (int i = 1; i <= 3; i++) {
             frames.add(new TextureRegion(screen.getAtlas().findRegion("ninja"), i * 100, 255, 100, 130));
         }
@@ -43,13 +42,13 @@ public class Ninja extends Enemy {
             // Change direction randomly
             velocity.x = MathUtils.random(-1, 1); // Random value between -1 and 1
             velocity.y = MathUtils.random(-1, 1); // Random value between -1 and 1
-            velocity.nor().scl(1.8f); // Adjust the speed (1.8f in your case)
+            velocity.nor().scl(1.8f); // Speed
             timeSinceLastChange = 0;
         }
 
         if (invincible) {
             invincibilityTimer += dt;
-            if (invincibilityTimer > 1f) { // Durée d'invincibilité, à ajuster selon le besoin
+            if (invincibilityTimer > 1f) { // Invicibility duration
                 invincible = false;
             }
         }
@@ -59,10 +58,9 @@ public class Ninja extends Enemy {
         if (setToDestroy && !destroyed) {
             world.destroyBody(b2body);
             destroyed = true;
-            //Texture of dying ninja
             setRegion(new TextureRegion(screen.getAtlas().findRegion("ninja"), 300, 255, 100, 130));
             stateTime = 0;
-            
+
             dispose();
         } else if (!destroyed) {
             b2body.setLinearVelocity(velocity);
@@ -111,5 +109,4 @@ public class Ninja extends Enemy {
         fdef.filter.categoryBits = DungeonExplorer.ENEMY_BIT;
         b2body.createFixture(fdef).setUserData(this);
     }
-
 }

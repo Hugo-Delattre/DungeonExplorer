@@ -32,7 +32,6 @@ public class PinkFish extends Enemy {
     public PinkFish(PlayScreen screen, float x, float y, Player player) {
         super(screen, x, y);
         frames = new Array<TextureRegion>();
-//        Array<TextureRegion> frames = new Array<TextureRegion>();
         for (int i = 0; i < 2; i++) {
             frames.add(new TextureRegion(screen.getAtlas().findRegion("pinkFish"), i * 270, 0, 270, 280));
         }
@@ -65,8 +64,6 @@ public class PinkFish extends Enemy {
         if (setToDestroy && !destroyed) {
             world.destroyBody(b2body);
             destroyed = true;
-            //Texture of dying men
-//            setRegion(new TextureRegion(screen.getAtlas().findRegion("men"), 60, 80, 90, 100));
             stateTime = 0;
         } else if (!destroyed) {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
@@ -87,7 +84,7 @@ public class PinkFish extends Enemy {
 
         if (invincible) {
             invincibilityTimer += dt;
-            if (invincibilityTimer > 1.5f) { // Durée d'invincibilité, à ajuster selon le besoin
+            if (invincibilityTimer > 1.5f) { // Invincibility duration
                 invincible = false;
                 invincibilityTimer = 0;
             }
@@ -107,7 +104,7 @@ public class PinkFish extends Enemy {
 
     public void draw(Batch batch) {
         if (!destroyed) {
-            if (!invincible || (invincible && stateTime % 0.2 > 0.1)) { // Clignote toutes les 0.2 secondes
+            if (!invincible || (invincible && stateTime % 0.2 > 0.1)) {
                 super.draw(batch);
             }
         } else if (stateTime < 1) {
@@ -120,14 +117,14 @@ public class PinkFish extends Enemy {
         Vector2 playerPosition = player.b2body.getPosition();
         Vector2 directionToPlayer = playerPosition.sub(position).nor();
 
-        // Choisissez aléatoirement entre se déplacer aléatoirement ou vers le joueur
+        // Choose between random move or go to the player direction
         float randomChoice = MathUtils.random();
         Vector2 movement;
 
-        if (randomChoice < 0.3) { // 30% de chance de se déplacer aléatoirement
+        if (randomChoice < 0.3) { // 30% chance to go to a random direction
             float randomAngle = MathUtils.random(0f, 2 * MathUtils.PI);
             movement = new Vector2(MathUtils.cos(randomAngle), MathUtils.sin(randomAngle));
-        } else { // 50% de chance de se diriger vers le joueur
+        } else { // 70% chance to go to the player direction
             movement = directionToPlayer;
         }
 
@@ -136,43 +133,36 @@ public class PinkFish extends Enemy {
     }
 
     private void resetShootCooldown() {
-        shootCooldown = MathUtils.random(1.0f, 2.0f); // Temps aléatoire entre 1 et 3 secondes
+        shootCooldown = MathUtils.random(1.0f, 2.0f);
         shootTimer = 0;
     }
 
     private void fireProjectile() {
-        float speed = 7f; // Vitesse du projectile
+        float speed = 7f; // Projectile speed
 
         for (int i = 0; i < 10; i++) {
-            float angle = (float) Math.toRadians(i * 36); // Crée un angle en radians
+            float angle = (float) Math.toRadians(i * 36); // Shoot angle
             float directionX = MathUtils.cos(angle);
             float directionY = MathUtils.sin(angle);
             Vector2 direction = new Vector2(directionX, directionY).nor();
             direction.scl(speed);
 
             EnemyProjectile projectile = new EnemyProjectile(screen, b2body.getPosition().x, b2body.getPosition().y, direction.x, direction.y);
-            screen.addEnemyProjectile(projectile); // Ajoutez cette méthode à PlayScreen pour gérer les projectiles ennemis}
+            screen.addEnemyProjectile(projectile);
         }
     }
 
     @Override
     protected void defineEnemy() {
         BodyDef bdef = new BodyDef();
-//        bdef.position.set(200 / Player.PPM, 400 / Player.PPM);
         bdef.position.set(getX(), getY());
         bdef.type = BodyDef.BodyType.DynamicBody;
         b2body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
         fdef.density = 1000f;
-//        CircleShape shape = new CircleShape();
-//        shape.setRadius(25 / Player.PPM);
         fdef.filter.categoryBits = DungeonExplorer.ENEMY_BIT;
         fdef.filter.maskBits = DungeonExplorer.GROUND_BIT | DungeonExplorer.POTION_BIT | DungeonExplorer.WALL_BIT | DungeonExplorer.ENEMY_BIT | DungeonExplorer.OBJECT_BIT | DungeonExplorer.PLAYER_BIT | DungeonExplorer.ALLY_PROJECTILE_BIT | DungeonExplorer.BARRIER_BIT | DungeonExplorer.STONE_BIT | DungeonExplorer.DEMI_BARRIER_BIT;
-
-
-//        fdef.shape = shape;
-//        b2body.createFixture(fdef);
 
         PolygonShape menBody = new PolygonShape();
         Vector2[] vertice = new Vector2[4];
@@ -190,7 +180,6 @@ public class PinkFish extends Enemy {
 
     @Override
     public void hit() {
-        // Gdx.app.log("Test2", "Collision détectée !");
         lifePoints--;
         damageSound.play();
         if (lifePoints == 0) {
