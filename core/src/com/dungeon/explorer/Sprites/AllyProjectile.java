@@ -41,10 +41,7 @@ public class AllyProjectile extends Projectile {
     public void draw(Batch batch) {
         if (b2body != null) {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
-//            super.draw(batch);
             batch.draw(projectileTexture, b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2, getWidth(), getHeight());
         }
-
-
     }
 }

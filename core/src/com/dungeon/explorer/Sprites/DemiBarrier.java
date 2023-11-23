@@ -15,8 +15,6 @@ public class DemiBarrier extends InteractiveTileObject {
 
     @Override
     public void onPlayerContact() {
-        Gdx.app.log("DemiBarrier", "Collision");
-
-
+//        Gdx.app.log("DemiBarrier", "Collision");
     }
 }

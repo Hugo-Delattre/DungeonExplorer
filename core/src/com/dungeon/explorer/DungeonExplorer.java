@@ -9,12 +9,6 @@ import com.dungeon.explorer.Screens.PlayScreen;
 import com.dungeon.explorer.Screens.WinScreen;
 
 public class DungeonExplorer extends Game {
-//	public static final int V_WIDTH = 400;
-//	public static final int	V_HEIGHT = 208;
-
-	// 16:9 aspect ratio, 960x540 resolution
-	// width = 30 tiles x 32 pixels = 960 pixels
-
 	public static final short GROUND_BIT = 1;
 	public static final short PLAYER_BIT = 2;
 	public static final short POTION_BIT = 4;
@@ -53,6 +47,5 @@ public class DungeonExplorer extends Game {
 	@Override
 	public void dispose () {
 		batch.dispose();
-//		img.dispose();
 	}
 }

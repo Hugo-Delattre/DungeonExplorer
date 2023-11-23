@@ -70,8 +70,6 @@ public class B2WorldCreator {
 
             new DemiBarrier(screen, rect);
         }
-
-
     }
 
     public HashMap<String, Stone> getStoneMap() {

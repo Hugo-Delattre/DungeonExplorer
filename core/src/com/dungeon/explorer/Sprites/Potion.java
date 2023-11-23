@@ -16,11 +16,9 @@ public class Potion extends InteractiveTileObject {
         setCategoryFilter(DungeonExplorer.POTION_BIT);
     }
 
-
     @Override
     public void onPlayerContact() {
         Gdx.app.log("Potion", "Collision");
-        //TODO sound effect potion
         Hud.addLifePoints(2);
         setCategoryFilter(DungeonExplorer.DESTROYED_BIT);
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(2);

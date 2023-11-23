@@ -31,7 +31,6 @@ public abstract class InteractiveTileObject {
 
         shape.setAsBox(bounds.getWidth() / 2 / Player.PPM, bounds.getHeight() / 2 / Player.PPM);
         fdef.shape = shape;
-//        fdef.filter.categoryBits = Player.OBJECT_BIT;
         fixture = body.createFixture(fdef);
     }
 
@@ -47,7 +46,4 @@ public abstract class InteractiveTileObject {
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(2);
         return layer.getCell((int)(body.getPosition().x * Player.PPM / 32), (int)(body.getPosition().y * Player.PPM / 32));
     }
-
-
-
 }

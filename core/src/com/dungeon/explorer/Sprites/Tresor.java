@@ -11,9 +11,10 @@ import com.dungeon.explorer.Screens.PlayScreen;
 
 public class Tresor extends InteractiveTileObject {
     public static boolean win;
+
     public Tresor(PlayScreen screen, Rectangle bounds) {
         super(screen, bounds);
-        win=false;
+        win = false;
         fixture.setUserData(this);
         setCategoryFilter(DungeonExplorer.TRESOR_BIT);
     }
@@ -21,10 +22,6 @@ public class Tresor extends InteractiveTileObject {
     @Override
     public void onPlayerContact() {
         Gdx.app.log("Tresor", "Collision");
-//        setCategoryFilter(DungeonExplorer.DESTROYED_BIT);
-//        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(6);
-//        layer.getCell((int)(body.getPosition().x * Player.PPM / 32), (int)(body.getPosition().y * Player.PPM / 32));
-//        getCell().setTile(null);
-        win=true;
+        win = true;
     }
 }
