@@ -1,6 +1,8 @@
 # T-JAV-501-BDX_2
 
-Welcome to the T-JAVA-501 2D Game project by Nina Girard and Hugo Delattre.
+Welcome to DungeonExplorer, the T-JAVA-501 2D Game project by Nina Girard and Hugo Delattre.
+
+![DungeonExplorerLogo](assets/assetsIntro/logoDungeonExplorerImg.png)
 
 ## Getting Started
 
