@@ -64,6 +64,13 @@ public class B2WorldCreator {
             new Barrier(screen, rect);
         }
 
+        //demiBarrier
+        for (MapObject object : map.getLayers().get(13).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            new DemiBarrier(screen, rect);
+        }
+
 
     }
 
