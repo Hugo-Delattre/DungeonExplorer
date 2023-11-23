@@ -64,6 +64,8 @@ public class PlayScreen implements Screen {
     private Sound wooshShound;
     private Sound breakStoneSound;
 
+    private boolean gameWin = false;
+
 
     private HashMap<Integer, Integer> levelToStoneLayerMap;
     private boolean hasLevelChangedRecently = false;
@@ -245,6 +247,12 @@ public class PlayScreen implements Screen {
             }
         }
 
+        if (win() && !gameWin) {
+            gameWin = true;
+            Gdx.app.log("Win", "true");
+            game.setScreen(new WinScreen(game));
+        }
+
         world.step(1 / 60f, 6, 2);
         player.update(dt);
         ninja.update(dt, player);
@@ -270,6 +278,8 @@ public class PlayScreen implements Screen {
                 projectile.destroyBody();
             }
         }
+
+
     }
 
     @Override
@@ -313,10 +323,7 @@ public class PlayScreen implements Screen {
             game.setScreen(new GameOverScreen(game));
         }
 
-        if (win()) {
-            System.out.println("win true");
-            game.setScreen(new WinScreen(game));
-        }
+
 
     }
 

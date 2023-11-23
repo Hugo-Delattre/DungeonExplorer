@@ -21,11 +21,10 @@ public class Tresor extends InteractiveTileObject {
     @Override
     public void onPlayerContact() {
         Gdx.app.log("Tresor", "Collision");
-        //TODO sound effect potion
-        setCategoryFilter(DungeonExplorer.DESTROYED_BIT);
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(6);
-        layer.getCell((int)(body.getPosition().x * Player.PPM / 32), (int)(body.getPosition().y * Player.PPM / 32));
-        getCell().setTile(null);
+//        setCategoryFilter(DungeonExplorer.DESTROYED_BIT);
+//        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(6);
+//        layer.getCell((int)(body.getPosition().x * Player.PPM / 32), (int)(body.getPosition().y * Player.PPM / 32));
+//        getCell().setTile(null);
         win=true;
     }
 }
