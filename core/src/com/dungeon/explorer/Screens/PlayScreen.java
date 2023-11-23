@@ -235,7 +235,7 @@ public class PlayScreen implements Screen {
         if (shouldMoveCamera) {
             cameraMoveTime += dt;
             if (cameraMoveTime <= 2f) {
-                float targetY = gameCam.position.y + 0.11f; // Par exemple, 5 unités plus haut que la position actuelle
+                float targetY = gameCam.position.y + 0.1f; // Par exemple, 5 unités plus haut que la position actuelle
 
                 Vector3 targetPosition = new Vector3(gameCam.position.x, targetY, 0);
                 gameCam.position.lerp(targetPosition, cameraMoveTime / 2);
