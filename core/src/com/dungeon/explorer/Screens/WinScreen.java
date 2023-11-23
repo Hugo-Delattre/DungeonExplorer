@@ -19,6 +19,7 @@ public class WinScreen implements Screen {
     //private final Texture backgroundTexture;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
+    private final Texture logoDungeonExplorerImgTexture;
 
     public WinScreen(DungeonExplorer game) {
         //backgroundTexture = new Texture("assetsIntro/backgroundIntro.png");
@@ -30,6 +31,7 @@ public class WinScreen implements Screen {
         //gamePort = new FitViewport(DungeonExplorer.V_WIDTH, DungeonExplorer.V_HEIGHT);
         batch = new SpriteBatch();
         font = new BitmapFont();
+        logoDungeonExplorerImgTexture = new Texture("assetsIntro/logoDungeonExplorerImg.png");
     }
 
     @Override
@@ -45,6 +47,7 @@ public class WinScreen implements Screen {
 
         game.batch.begin();
         //game.batch.draw(backgroundTexture, 0, 0, 960, 700);
+        game.batch.draw(logoDungeonExplorerImgTexture, 425, 200, 200, 200);
         font.draw(game.batch, "Win!", 480, 480);
         game.batch.end();
 
@@ -76,6 +79,7 @@ public class WinScreen implements Screen {
     public void dispose() {
         batch.dispose();
         font.dispose();
+        logoDungeonExplorerImgTexture.dispose();
         //backgroundTexture.dispose();
     }
 }
